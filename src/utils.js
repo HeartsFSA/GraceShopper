@@ -12,6 +12,10 @@ function setHeaders() {
   return config
 }
 
+function setToken(token) {
+  localStorage.setItem('token', token)
+}
+
 /**
  * If logged on returns user data and json web token.  If not logged on, an error will be thrown
  * And no data will be returned
@@ -97,6 +101,25 @@ export async function register(username, password) {
   }
 }
 
-function setToken(token) {
-  localStorage.setItem('token', token)
+export async function getAllProducts() {
+  try {
+    const {data} = await axios.get('/api/products')
+    return data
+  } catch (err) {
+    console.error('getAllProducts(): Unable to get all products.\n', err)
+    return err
+  }
+}
+
+export async function getShoppingCart(userId) {
+  try {
+    const {data} = await axios.get('/api/cart/:userId', {
+      params: {
+        'userId': userId
+      }
+    })
+    return data
+  } catch (err) {
+    return err
+  }
 }

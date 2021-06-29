@@ -1,6 +1,35 @@
 /*
-    Basic Styling to get started (feel free to erase and add as needed)
+COLOR PALLETE
+
+#0B0A07 (Rich Black)
+#BBCEA8 (Laurel Green)
+#E3D87E (Flax: Gold)
+#F0EC57 (Icterine: Yellow)
+#748067 (Xanadu: Green)
+#345995 (Bdazzled Blue)
+
+https://coolors.co/0b0a07-bbcea8-e3d87e-f0ec57-748067-345995
 */
+
+
+
+* {
+  font-size: 12px;
+  --black: #0b0a07ff;
+  --light-green: #bbcea8ff;
+  --gold: #e3d87eff;
+  --yellow: #f0ec57ff;
+  --dark-green: #748067ff;
+  --blue: #345995ff;
+}
+
+h1 {
+  color: var(--black);
+  font-size: 2rem;
+}
+
+
+/* -------------------------------------------------- */
 
 nav a {
   margin-left: 10px;

@@ -2,6 +2,12 @@
     Basic Styling to get started (feel free to erase and add as needed)
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&family=Telex&display=swap');
+
+*{
+  --body-font: 'Telex', Verdana, Geneva, Tahoma, sans-serif;
+  --title-font: 'Akaya Kanadaka', cursive;
+}
 nav a {
   margin-left: 10px;
 }

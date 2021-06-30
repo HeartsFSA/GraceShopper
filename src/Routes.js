@@ -21,7 +21,7 @@ function Routes(props) {
         )}
       />
       <Route 
-        path='/home'
+        path='/'
         render={(props) => (
           <Home {...props} products={products} />
         )} />

@@ -30,9 +30,9 @@ function Navbar() {
             </div>
           </Link>
         </div>
-
+      
         {/* 2nd Link */}
-        <Link to="/Register" className="header__link">
+        <Link to="/signup" className="header__link">
             <div className="header__option">
               <span className="header__optionLineOne"> Hello Guest</span>
               <span className="header__optionLineTwo"> Register</span>

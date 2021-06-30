@@ -1,0 +1,21 @@
+.modal {
+    /* VARIABLES */
+    --modal-height: 120px;
+
+    position: absolute;
+    right: 0;
+    bottom: calc(var(--modal-height) * -1);
+    width: 400px;
+    height: var(--modal-height);
+    background-color: var(--navbar-background);
+}
+
+.visible {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}

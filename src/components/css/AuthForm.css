@@ -1,0 +1,18 @@
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    font-size: 24px;
+    color: white;
+}
+  
+.auth-form input {
+    width: 250px;
+    margin: 5px 10px;
+}
+
+.auth-form button {
+    color: white;
+}

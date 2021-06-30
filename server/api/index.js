@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router()
+const apiRouter = express.Router()
 const jwt = require('jsonwebtoken')
 const { JWT_SECRET = 'neverTell' } = process.env
 const { getUserById } = require('../db')
@@ -7,7 +7,8 @@ const { getUserById } = require('../db')
 /* Middlware to see if user is logged in already*/
 
 // set `req.user` if possible
-router.use(async (req, res, next) => {
+apiRouter.use(async (req, res, next) => {
+  console.log('api router got hit')
   const prefix = 'Bearer '
   const auth = req.header('Authorization')
   if (!auth) {
@@ -35,17 +36,22 @@ router.use(async (req, res, next) => {
   }
 })
 
-router.use((req, res, next) => {
+apiRouter.use((req, res, next) => {
   if (req.user) {
     console.log('User is set:', req.user)
   }
   next()
 })
 
+apiRouter.get((req, res, next) => {
+  console.log('api hit')
+  res.send('api got hit')
+})
+
 // ROUTER: /api/users
 const usersRouter = require('./users')
-router.use('/users', usersRouter)
+apiRouter.use('/users', usersRouter)
 
 // ------ ADD MORE ROUTES BELOW ------
 
-module.exports = router
+module.exports = apiRouter

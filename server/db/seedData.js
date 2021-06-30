@@ -28,7 +28,7 @@ async function createTables() {
         username VARCHAR(255) UNIQUE NOT NULL, 
         password VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE,
-        permission INT DEFAULT '1'
+        permission INT DEFAULT 1
         
       );
     `)
@@ -61,10 +61,10 @@ async function createInitialUsers() {
   console.log('Starting to create users...')
   try {
     const usersToCreate = [
-      { username: 'albert', password: 'bertie99', email: 'albert@fullstack.com', account_permission: 0 },
-      { username: 'sandra', password: 'sandra123', email: 'sandra@fullstack.com', account_permission: 0 },
-      { username: 'glamgal', password: 'glamgal123', email: 'glamgal@fullstack.com', account_permission: 0 },
-      {username: 'viral', password: 'FSAtest99', email: 'bhavsar.viral@outlook.com', account_permission: 4}
+      { username: 'albert', password: 'bertie99', email: 'albert@fullstack.com', permission: 1 },
+      { username: 'sandra', password: 'sandra123', email: 'sandra@fullstack.com', permission: 1 },
+      { username: 'glamgal', password: 'glamgal123', email: 'glamgal@fullstack.com', permission: 1 },
+      {username: 'viral', password: 'FSAtest99', email: 'bhavsar.viral@outlook.com', permission: 4}
     ]
     const users = await Promise.all(usersToCreate.map(createUser))
 

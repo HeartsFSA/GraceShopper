@@ -1,5 +1,10 @@
 // require in the database adapter functions as you write them (createUser, createActivity...)
 const { createUser } = require('./')
+const {
+  createProduct,
+  getProductBy,
+  getAllProducts,
+} = require('./')
 const client = require('./client')
 
 async function dropTables() {
@@ -9,6 +14,7 @@ async function dropTables() {
   //  Add more tables as you need them
   try {
     await client.query(`
+    DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS users;
   `)
   } catch (error) {
@@ -27,6 +33,18 @@ async function createTables() {
         id  SERIAL PRIMARY KEY, 
         username VARCHAR(255) UNIQUE NOT NULL, 
         password VARCHAR(255) NOT NULL
+      );
+
+      CREATE TABLE products (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE NOT NULL,
+        description VARCHAR(1023) UNIQUE NOT NULL,
+        price MONEY NOT NULL,
+        hours VARCHAR(255),
+        datesOpen VARCHAR(255),
+        location VARCHAR(255) NOT NULL,
+        category VARCHAR(255),
+        creatorId INTEGER REFERENCES users(id)
       );
     `)
 
@@ -63,18 +81,63 @@ async function createInitialUsers() {
   }
 }
 
+async function createInitialProducts() {
+  console.log("starting to create products...") 
+  try {
+    const productsToCreate = [
+      {
+        name: "Banana Land",
+        description: "Banana fun!",
+        price: "$56.99",
+        location: "the moon"
+      },
+      {
+        name: "Seven Flags Mediocre America",
+        description: "There will be more here later",
+        price: "$69.99",
+        location: "Chicago, IL"
+      }
+    ]
+
+    console.log("products to Create:");
+    console.log(productsToCreate)
+
+    const products = await Promise.all(productsToCreate.map(createProduct));
+    console.log("products created:")
+    console.log(products);
+    console.log("Finished creating products!")
+  } catch (error) {
+    console.error("Error creating products!");
+    throw error;
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect()
     await dropTables()
     await createTables()
     await createInitialUsers()
+    await createInitialProducts()
+
+    // remove if not testing db calls
+    await testDB();
+
 
     // create other data
   } catch (error) {
     console.log('Error during rebuildDB')
     throw error
   }
+}
+
+async function testDB() {
+
+  console.log("getting product by id:");
+  console.log(await getProductBy("id", 1));
+
+  console.log("getting all products:")
+  console.log(await getAllProducts());
 }
 
 module.exports = {

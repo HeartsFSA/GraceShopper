@@ -52,6 +52,12 @@ apiRouter.get((req, res, next) => {
 const usersRouter = require('./users')
 apiRouter.use('/users', usersRouter)
 
+// ROUTER: /api/products
+// const productsRouter = require('./products')
+
+// ROUTER: /api/carts
+
+
 // ------ ADD MORE ROUTES BELOW ------
 
 module.exports = apiRouter

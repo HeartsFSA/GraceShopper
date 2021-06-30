@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { checkLogin } from '../utils'
+import ProductCard from './ProductCard'
+
+import './css/Home.css'
 
 function Home(props) {
+  const {products} = props
   const [user, setUser] = useState({})
 
   useEffect(() => {
+    /*
+    Why don't we pass the user from the App.js?
+    */
     async function setUserData() {
       let data = await checkLogin()
       console.log(data)
@@ -19,8 +26,23 @@ function Home(props) {
   }, [])
 
   return (
-    <div className='Home'>
-      <h1>Welcome home, {user.username}</h1>
+    <div className='home'>
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
     </div>
   )
 }

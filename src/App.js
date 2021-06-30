@@ -25,7 +25,9 @@ function App() {
       if (checkedUser.id) {
         let cart = await getShoppingCart(checkedUser.id)
 
-        // Might want to add an empty array even if cart is empty
+        /*
+          Might want to add an empty array even if cart is empty
+        */
         if(cart) {
           checkedUser.cart = cart
         }
@@ -33,73 +35,19 @@ function App() {
       }
     }
 
-    setAllProducts()
+    // setAllProducts()
     setLogIn()
   }, [])
 
   return (
-    <Router>
-      <div className="App">
-        <Switch>
-
-          <Route path="/cart">
-          <Navbar />
-            <h1> Cart </h1>
-          </Route>
-
-          <Route path="login">
-            <h1> Login Page </h1>
-          </Route>
-
-          <Route path="/">
-            <Navbar />
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-            <h1> Test </h1>
-          </Route>
-        </Switch>
-        </div>
-    </Router>
-  );
+    <div className='App'>
+      <Navbar user={user} setUser={setUser} />
+      <Routes 
+        user={user} 
+        setUser={setUser}
+        products={products} />
+    </div>
+  )
 }
 
 export default App

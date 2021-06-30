@@ -5,7 +5,7 @@ import AuthForm from './components/AuthForm'
 import Landing from './components/Landing'
 
 function Routes(props) {
-  const { user, setUser } = props
+  const { user, setUser, products } = props
   return (
     <Switch>
       <Route
@@ -20,7 +20,11 @@ function Routes(props) {
           <AuthForm type='register' {...props} setUser={setUser} />
         )}
       />
-      <Route path='/home' component={Home} />
+      <Route 
+        path='/home'
+        render={(props) => (
+          <Home {...props} products={products} />
+        )} />
 
       <Route path='/' component={Landing} />
     </Switch>

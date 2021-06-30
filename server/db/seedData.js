@@ -26,9 +26,22 @@ async function createTables() {
       CREATE TABLE users(
         id  SERIAL PRIMARY KEY, 
         username VARCHAR(255) UNIQUE NOT NULL, 
-        password VARCHAR(255) NOT NULL
+        password VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE,
+        permission INT DEFAULT 1
+        
       );
     `)
+        /* Account Permission
+         0  Guest User (Extra parameter, in case need to use)
+         1  Basic User (Default in most case)
+         2  Seller / Vender Access
+         3  Admin User
+         4  Super Admin (Extra)
+         */
+        
+
+
 
     // Add tables as you need them (A good place to start is Products and Orders
     // You may also need an extra table that links products and orders together (HINT* Many-To-Many)
@@ -48,9 +61,10 @@ async function createInitialUsers() {
   console.log('Starting to create users...')
   try {
     const usersToCreate = [
-      { username: 'albert', password: 'bertie99' },
-      { username: 'sandra', password: 'sandra123' },
-      { username: 'glamgal', password: 'glamgal123' },
+      { username: 'albert', password: 'bertie99', email: 'albert@fullstack.com', permission: 1 },
+      { username: 'sandra', password: 'sandra123', email: 'sandra@fullstack.com', permission: 1 },
+      { username: 'glamgal', password: 'glamgal123', email: 'glamgal@fullstack.com', permission: 1 },
+      {username: 'viral', password: 'FSAtest99', email: 'bhavsar.viral@outlook.com', permission: 4}
     ]
     const users = await Promise.all(usersToCreate.map(createUser))
 

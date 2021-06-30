@@ -21,9 +21,9 @@ function ProductCard(props) {
                     <p>Product Body</p>
                 </div>
                 <div className='card-footer'>
-                    <button><OpenWithIcon fontSize='Large' /></button>
+                    <button><OpenWithIcon fontSize='large' /></button>
                     <h4>Seller</h4>
-                    <button><AddShoppingCartIcon fontSize='Large'/></button>
+                    <button><AddShoppingCartIcon fontSize='large'/></button>
                 </div>
             </div>
         </Card>

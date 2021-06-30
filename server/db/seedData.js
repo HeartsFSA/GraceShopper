@@ -42,7 +42,7 @@ async function createTables() {
         price MONEY NOT NULL,
         hours VARCHAR(255),
         datesOpen VARCHAR(255),
-        location VARCHAR(255),
+        location VARCHAR(255) NOT NULL,
         category VARCHAR(255),
         creatorId INTEGER REFERENCES users(id)
       );
@@ -88,12 +88,14 @@ async function createInitialProducts() {
       {
         name: "Banana Land",
         description: "Banana fun!",
-        price: "$56.99"
+        price: "$56.99",
+        location: "the moon"
       },
       {
         name: "Seven Flags Mediocre America",
         description: "There will be more here later",
-        price: "$69.99"
+        price: "$69.99",
+        location: "Chicago, IL"
       }
     ]
 

@@ -101,6 +101,7 @@ export async function register(username, password) {
   }
 }
 
+
 export async function getAllProducts() {
   try {
     const {data} = await axios.get('/api/products')

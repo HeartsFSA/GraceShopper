@@ -21,6 +21,7 @@ https://coolors.co/0b0a07-bbcea8-e3d87e-f0ec57-748067-345995
   --yellow: #f0ec57ff;
   --dark-green: #748067ff;
   --blue: #345995ff;
+  --body-background: #bfbfbf;
   --body-font: 'Telex', Verdana, Geneva, Tahoma, sans-serif;
   --title-font: 'Akaya Kanadaka', cursive;
   --body-font2: 'Dosis', Verdana, Geneva, Tahoma, sans-serif;
@@ -30,6 +31,18 @@ h1 {
   color: var(--black);
   font-size: 2rem;
 }
+
+h2 {
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
   
 nav a {
   margin-left: 10px;
@@ -38,11 +51,15 @@ nav {
   border-bottom: 1px solid gray;
   padding: 5px;
 }
+body {
+  margin: 0;
+  padding: 0;
+}
 .landing,
-.Home {
+.home {
   font-size: 24px;
   font-weight: bold;
-  margin: 10px 40px;
+  padding: 30px;
 }
 
 .AuthForm {

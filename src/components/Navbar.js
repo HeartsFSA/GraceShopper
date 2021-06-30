@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
 
-function Navbar({ user, setUser, history }) {
+function Navbar({ user, setUser }) {
   function handleLogout() {
     localStorage.removeItem('token')
     setUser({})
@@ -23,8 +23,7 @@ function Navbar({ user, setUser, history }) {
           </div>
         ) : (
           <div>
-            <NavLink to='/login'>Login</NavLink>
-            <NavLink to='/signup'>Sign Up</NavLink>
+            <div id='login' user={user} setUser={setUser}>Login / Register </div>
           </div>
         )}
       </nav>

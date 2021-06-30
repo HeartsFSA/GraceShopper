@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import './components/css/App.css';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Navbar from './components/Navbar'
+
 import Routes from './Routes'
 import {
   checkLogin,
@@ -35,11 +38,68 @@ function App() {
   }, [])
 
   return (
-    <div className='App'>
-      <Navbar user={user} setUser={setUser} />
-      <Routes user={user} setUser={setUser} />
-    </div>
-  )
+    <Router>
+      <div className="App">
+        <Switch>
+
+          <Route path="/cart">
+          <Navbar />
+            <h1> Cart </h1>
+          </Route>
+
+          <Route path="login">
+            <h1> Login Page </h1>
+          </Route>
+
+          <Route path="/">
+            <Navbar />
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+            <h1> Test </h1>
+          </Route>
+        </Switch>
+        </div>
+    </Router>
+  );
 }
 
 export default App

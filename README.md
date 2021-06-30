@@ -8,7 +8,7 @@ to venues/events such as Carnivals, Museums, Amusement Parks, Aquariums, Zoos, R
 Our website will allow guests AND signed in users add items to their cart and proceed to checkout as a guest or an authenticated user.
 
 The cart will be completely saved and stored in our database so their items will not be deleted upon refreshing or exiting the website.
-Our customers will have the options to view their order history. update the quantity of items, remove items, and also add products to their wishlist if they want.
+Our customers will have the options to view their order history, update the quantity of items, remove items, and also add products to their wishlist if they want.
 
 ## ------- [WORK IN PROGRESSS] -------------
 

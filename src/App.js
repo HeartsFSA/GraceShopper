@@ -13,16 +13,16 @@ function App() {
 
   useEffect(() => {
     const setAllProducts = async () => {
-      let {data: prods} = await getAllProducts()
+      let prods = await getAllProducts()
       setProducts(prods)
     }
 
     const setLogIn = async () => {
-      let {data: checkedUser} = await checkLogin()
+      let checkedUser = await checkLogin()
       if (checkedUser.id) {
-        let {data: cart} = await getShoppingCart(checkedUser.id)
-        
-        // Might want to add an empty array if cart is empty
+        let cart = await getShoppingCart(checkedUser.id)
+
+        // Might want to add an empty array even if cart is empty
         if(cart) {
           checkedUser.cart = cart
         }

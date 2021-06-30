@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
+import AuthForm from './AuthForm'
 
 function Navbar({ user, setUser }) {
   function handleLogout() {
@@ -23,7 +24,8 @@ function Navbar({ user, setUser }) {
           </div>
         ) : (
           <div>
-            <div id='login' user={user} setUser={setUser}>Login / Register </div>
+            <div id='login'  > Login / Register </div>
+            <AuthForm user={user} setUser={setUser}/>
           </div>
         )}
       </nav>

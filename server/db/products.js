@@ -1,5 +1,7 @@
 const { createContext } = require('react');
 const client = require('./client');
+const {photosByProductId} = require('./photos')
+
 
 // product functions
 
@@ -44,6 +46,8 @@ async function getProductBy(column, value) {
             WHERE ${column} = $1;
         `, [value]) 
 
+        
+
         return product;
     } catch(error) {
         console.error("thrown from db/products.js/getProductBy", error);
@@ -53,11 +57,15 @@ async function getProductBy(column, value) {
 
 async function getAllProducts() {
     try {
-        const {rows: productList} = await client.query(`
+        let {rows: productList} = await client.query(`
             SELECT * FROM products;
         `);
 
-        return productList;
+        const productListWithPhotos = Promise.all(productList.map( async (product) => {
+           product.photos = await photosByProductId(product.id)
+           return product
+        }))
+        return productListWithPhotos;
     } catch (error) {
         console.error("thrown from db/products.js/getAllProducts", error);
         throw error;

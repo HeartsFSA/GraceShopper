@@ -62,19 +62,19 @@ async function createTables() {
         product_id INTEGER REFERENCES products(id),
         photo_url VARCHAR(255),
         rel_path VARCHAR(51)
-        )
+        );
 
 
 
       CREATE TABLE carts (
-        id SERIAL,
+        id SERIAL PRIMARY KEY,
         "productId" INTEGER,
         "userId" INTEGER,
         quantity INTEGER DEFAULT 1,
         dateAdded DATE,
         FOREIGN KEY ("productId") REFERENCES products(id),
         FOREIGN KEY ("userId") REFERENCES users(id),
-        CONSTRAINT id UNIQUE (carts."productId", carts."userId")
+        CONSTRAINT id UNIQUE ("productId", "userId")
       );
 
     `)

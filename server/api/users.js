@@ -1,12 +1,13 @@
 const express = require('express')
-const router = express.Router()
+const usersRouter = express.Router()
 const jwt = require('jsonwebtoken')
 const { createUser, getUser, getUserByUsername, getUserById } = require('../db')
 const SALT_COUNT = 10
 const { JWT_SECRET = 'neverTell' } = process.env
 
+usersRouter.use((req,res,next) => {console.log('usersRouter is working'); next()})
 // POST /api/users/login
-router.post('/login', async (req, res, next) => {
+usersRouter.post('/login', async (req, res, next) => {
   const { username, password } = req.body
 
   // request must have both
@@ -40,7 +41,7 @@ router.post('/login', async (req, res, next) => {
 })
 
 // POST /api/users/register
-router.post('/register', async (req, res, next) => {
+usersRouter.post('/register', async (req, res, next) => {
   try {
     const { username, password } = req.body
     const queriedUser = await getUserByUsername(username)
@@ -77,7 +78,7 @@ router.post('/register', async (req, res, next) => {
 })
 
 // GET /api/users/me
-router.get('/me', (req, res, next) => {
+usersRouter.get('/me', (req, res, next) => {
   try {
     res.send(req.user)
   } catch (error) {
@@ -86,4 +87,4 @@ router.get('/me', (req, res, next) => {
 })
 
 // --------- ADD ADDITONAL USER ROUTES AS NEEDED ---------
-module.exports = router
+module.exports = usersRouter

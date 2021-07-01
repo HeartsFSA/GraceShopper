@@ -39,8 +39,10 @@ function Navbar(props) {
           setRegisterModalVisible(false)
           setLoginModalVisible(!loginModalVisible)
         }}>
-          <span className="header__optionLineOne"></span>
-          <span className="header__optionLineTwo"> Sign In</span>
+          <div className="header__option">
+            <span className="header__optionLineOne"></span>
+            <span className="header__optionLineTwo"> Sign In</span>
+          </div>
         </button>
       </div>
         {/* <div className="header__nav">
@@ -59,8 +61,10 @@ function Navbar(props) {
             setLoginModalVisible(false)
             setRegisterModalVisible(!registerModalVisible)
           }}>
-            <span className="header__optionLineOne"> Hello Guest</span>
-            <span className="header__optionLineTwo"> Register</span>
+            <div className="header__option">
+              <span className="header__optionLineOne"> Hello Guest,</span>
+              <span className="header__optionLineTwo"> Register</span>
+            </div>
           </button>
         </div>
 

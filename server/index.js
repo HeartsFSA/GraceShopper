@@ -21,7 +21,7 @@ server.use('/api', apiRouter)
 
 // Error Handler
 server.use((err, req, res, next) => {
-  let status = err.status || 500
+  let status = (err.status || 500)
   res.status(status).json({
     error: 'An error has occurred: ' + err.message,
     status,
@@ -29,9 +29,9 @@ server.use((err, req, res, next) => {
 })
 
 // For any get routes that are not in /api, rely on ReactRouter to handle
-server.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.js'))
-})
+// server.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.js'))
+// })
 
 // 404 Handler
 server.use('*', (req, res) => {

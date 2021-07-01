@@ -8,7 +8,6 @@ const { getUserById } = require('../db')
 
 // set `req.user` if possible
 apiRouter.use(async (req, res, next) => {
-  console.log('api router got hit')
   const prefix = 'Bearer '
   const auth = req.header('Authorization')
   if (!auth) {
@@ -43,17 +42,19 @@ apiRouter.use((req, res, next) => {
   next()
 })
 
-apiRouter.get((req, res, next) => {
-  console.log('api hit')
-  res.send('api got hit')
-})
+// apiRouter.get((req, res, next) => {
+//   console.log('api hit')
+//   res.send('api got hit')
+// })
 
 // ROUTER: /api/users
-const usersRouter = require('./users')
-apiRouter.use('/users', usersRouter)
+const usersRouter = require('./users');
+apiRouter.use('/users', usersRouter);
+
 
 // ROUTER: /api/products
-// const productsRouter = require('./products')
+const productsRouter = require('./products')
+apiRouter.use('/products', productsRouter);
 
 // ROUTER: /api/carts
 

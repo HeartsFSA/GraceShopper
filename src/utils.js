@@ -30,6 +30,7 @@ function setToken(token) {
  */
 export async function checkLogin() {
   try {
+    console.log("in checkLogin")
     let { data } = await axios.get('/api/users/me', setHeaders())
     // if data has an id and user the user is logged on
     return data
@@ -104,11 +105,33 @@ export async function register(username, password) {
 
 export async function getAllProducts() {
   try {
-    const {data} = await axios.get('/api/products')
+    const {data} = await axios.get('/api/products/all')
     return data
   } catch (err) {
     console.error('getAllProducts(): Unable to get all products.\n', err)
     return err
+  }
+}
+
+export async function getProductBy(col, val) {
+  try {
+    const {data} = await axios.get(`/api/products/${col}/${val}`)
+    return data;
+  } catch (error) {
+    console.error("getProductBy(): Unable to get product.\n", error);
+    return error;
+  }
+}
+
+export async function createProduct(product) {
+  try {
+    const {data} = await axios.post('/api/products',
+      product
+    );
+    return data;
+  } catch (error) {
+    console.error("createProduct(): Unable to create product.\n", error);
+    return error;
   }
 }
 

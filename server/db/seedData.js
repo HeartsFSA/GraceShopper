@@ -4,6 +4,7 @@ const {
   createProduct,
   getProductBy,
   getAllProducts,
+  createPhotos
 } = require('./')
 const client = require('./client')
 
@@ -14,7 +15,11 @@ async function dropTables() {
   //  Add more tables as you need them
   try {
     await client.query(`
+
+    DROP TABLE IF EXISTS photos;
+
     DROP TABLE IF EXISTS carts;
+
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS users;
   `)
@@ -51,6 +56,16 @@ async function createTables() {
         creatorId INTEGER REFERENCES users(id)
       );
 
+
+      CREATE TABLE photos (
+        photo_id SERIAL PRIMARY KEY,
+        product_id INTEGER REFERENCES products(id),
+        photo_url VARCHAR(255),
+        rel_path VARCHAR(51)
+        )
+
+
+
       CREATE TABLE carts (
         id SERIAL,
         "productId" INTEGER,
@@ -61,6 +76,7 @@ async function createTables() {
         FOREIGN KEY ("userId") REFERENCES users(id),
         CONSTRAINT id UNIQUE (carts."productId", carts."userId")
       );
+
     `)
         /* Account Permission
          0  Guest User (Extra parameter, in case need to use)
@@ -138,6 +154,69 @@ async function createInitialProducts() {
   }
 }
 
+async function createInitialPhotos() {
+  console.log("starting to create photos table...") 
+  try {
+    const photosToCreate = [
+      {
+        product_id: "2",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      {
+        product_id: "1",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      {
+        product_id: "1",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      {
+        product_id: "2",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      {
+        product_id: "1",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      {
+        product_id: "1",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      {
+        product_id: "2",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      {
+        product_id: "2",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      {
+        product_id: "1",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      {
+        product_id: "2",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      {
+        product_id: "1",
+        photo_url: "https://placeimg.com/480/480/nature"
+      },
+      
+    ]
+
+    console.log("photos to Create:");
+    console.log(photosToCreate)
+
+    const photos = await Promise.all(photosToCreate.map(createPhotos));
+    console.log("photos created:")
+    console.log(photos);
+    console.log("Finished creating photos!")
+  } catch (error) {
+    console.error("Error creating photos!");
+    throw error;
+  }
+}
 async function rebuildDB() {
   try {
     client.connect()
@@ -145,6 +224,8 @@ async function rebuildDB() {
     await createTables()
     await createInitialUsers()
     await createInitialProducts()
+    await createInitialPhotos()
+    
 
     // remove if not testing db calls
     await testDB();

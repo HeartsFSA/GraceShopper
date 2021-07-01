@@ -1,6 +1,13 @@
 // require in the database adapter functions as you write them (createUser, createActivity...)
 const { createUser } = require('./')
 const {
+  getAllUsers,
+  createCartItem,
+  getRawCartByUserId,
+  getCartByUserId,
+  deleteCartItemByCartId,
+  deleteCartByUserId,
+  deleteCartByProductId,
   createProduct,
   getProductBy,
   getAllProducts,
@@ -62,19 +69,19 @@ async function createTables() {
         product_id INTEGER REFERENCES products(id),
         photo_url VARCHAR(255),
         rel_path VARCHAR(51)
-        )
+        );
 
 
 
       CREATE TABLE carts (
-        id SERIAL,
+        id SERIAL PRIMARY KEY,
         "productId" INTEGER,
         "userId" INTEGER,
         quantity INTEGER DEFAULT 1,
         dateAdded DATE,
         FOREIGN KEY ("productId") REFERENCES products(id),
         FOREIGN KEY ("userId") REFERENCES users(id),
-        CONSTRAINT id UNIQUE (carts."productId", carts."userId")
+        CONSTRAINT id UNIQUE ("productId", "userId")
       );
 
     `)
@@ -217,6 +224,32 @@ async function createInitialPhotos() {
     throw error;
   }
 }
+
+async function createInitialCarts() {
+  console.log('Starting to create initial carts...')
+  try {
+    const users = await getAllUsers()
+    const prods = await getAllProducts()
+
+    const cartsToCreate = users.map((user) => {
+      const prodId = Math.floor(Math.random() * prods.length) + 1
+      const quantity = Math.floor(Math.random() * 5) + 1
+      return {'productId': prodId, 'userId': user.id, 'quantity': quantity}
+    })
+
+    console.log('Carts to Create: ')
+    console.log(cartsToCreate)
+
+    const carts = await Promise.all(cartsToCreate.map(createCartItem))
+
+    console.log('Carts created: ')
+    console.log(carts)
+  } catch (error) {
+    console.error('Error creating carts!')
+    throw error
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect()
@@ -225,6 +258,7 @@ async function rebuildDB() {
     await createInitialUsers()
     await createInitialProducts()
     await createInitialPhotos()
+    await createInitialCarts()
     
 
     // remove if not testing db calls
@@ -245,6 +279,15 @@ async function testDB() {
 
   console.log("getting all products:")
   console.log(await getAllProducts());
+
+  console.log('Getting raw carts by user id: ')
+  console.log(await getRawCartByUserId(1))
+
+  console.log('Getting carts by user id: ')
+  console.log(await getCartByUserId(1))
+
+  console.log('Deleting carts by product id: ')
+  console.log(await deleteCartByProductId(1))
 }
 
 module.exports = {

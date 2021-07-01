@@ -53,7 +53,7 @@ async function createTables() {
         datesOpen VARCHAR(255),
         location VARCHAR(255) NOT NULL,
         category VARCHAR(255),
-        creatorId INTEGER REFERENCES users(id)
+        creatorName VARCHAR(255) REFERENCES users(username) NOT NULL
       );
 
 
@@ -73,8 +73,7 @@ async function createTables() {
         quantity INTEGER DEFAULT 1,
         dateAdded DATE,
         FOREIGN KEY ("productId") REFERENCES products(id),
-        FOREIGN KEY ("userId") REFERENCES users(id),
-        CONSTRAINT id UNIQUE (carts."productId", carts."userId")
+        FOREIGN KEY ("userId") REFERENCES users(id)
       );
 
     `)
@@ -110,7 +109,10 @@ async function createInitialUsers() {
       { username: 'albert', password: 'bertie99', email: 'albert@fullstack.com', permission: 1 },
       { username: 'sandra', password: 'sandra123', email: 'sandra@fullstack.com', permission: 1 },
       { username: 'glamgal', password: 'glamgal123', email: 'glamgal@fullstack.com', permission: 1 },
-      {username: 'viral', password: 'FSAtest99', email: 'bhavsar.viral@outlook.com', permission: 4}
+      {username: 'viral', password: 'FSAtest99', email: 'bhavsar.viral@outlook.com', permission: 4},
+      {username: "Hisshey's", password: 'totallynothersheys', email: 'hisshey@example.com', permission: 2},
+      {username: 'SevenFlags', password: 'totallynotsixflags', email: 'sevenflags@example.com', permission: 2},
+      {username: 'HowlCat', password: 'totallynotmeowwolf', email: 'howlcat@example.com', permission: 2}
     ]
     const users = await Promise.all(usersToCreate.map(createUser))
 
@@ -131,13 +133,36 @@ async function createInitialProducts() {
         name: "Banana Land",
         description: "Banana fun!",
         price: "$56.99",
-        location: "the moon"
+        location: "the moon",
+        creatorName: "Hisshey's"
       },
       {
         name: "Seven Flags Mediocre America",
         description: "There will be more here later",
         price: "$69.99",
-        location: "Chicago, IL"
+        location: "Chicago, IL",
+        creatorName: "SevenFlags"
+      },
+      {
+        name: "Seven Flags over Oklahoma",
+        description: "The original Seven Flags park!",
+        price: "$59.99",
+        location: "Oklahoma City, OK",
+        creatorName: "SevenFlags"
+      },
+      {
+        name: "The House of Eventual Comeback",
+        description: "A mind-bending, interactive, explorable art exhibit for all ages",
+        price: "$9.99",
+        location: "Santa Fe, NM",
+        creatorName: "HowlCat"
+      },
+      {
+        name: "Omicron Mart",
+        description: "A mind-bending interactive art exhibit",
+        price: "$9.99",
+        location: "Las Vegas, NV",
+        creatorName: "HowlCat"
       }
     ]
 

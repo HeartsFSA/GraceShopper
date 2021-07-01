@@ -102,7 +102,7 @@ export async function register(username, password) {
   }
 }
 
-
+/* PRODUCT FUNCTIONS */
 export async function getAllProducts() {
   try {
     const {data} = await axios.get('/api/products/all')
@@ -134,6 +134,30 @@ export async function createProduct(product) {
     return error;
   }
 }
+
+export async function updateProduct(id, productInfo) {
+  try {
+    const {data} = await axios.patch(`/${id}`,
+      productInfo
+    );
+    return data;
+  } catch (error) {
+    console.error("updateProduct(): Unable to update product.\n", error);
+    return error;
+  }
+}
+
+export async function deleteProduct(id) {
+  try {
+    const {data} = await axios.delete(`/${id}`);
+    return data;
+  } catch (error) {
+    console.error("deleteProduct(): Unable to delete product.\n", error);
+    return error;
+  }
+}
+
+/* END PRODUCT FUNCTIONS */
 
 export async function getShoppingCart(userId) {
   try {

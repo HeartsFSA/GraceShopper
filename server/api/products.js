@@ -3,7 +3,9 @@ const router = express.Router();
 const {
     getAllProducts, 
     getProductBy, 
-    createProduct
+    createProduct,
+    deleteProduct,
+    updateProduct,
 } = require('../db');
 
 // GET /api/products/all
@@ -38,6 +40,40 @@ router.post('/', async (req, res, next ) => {
         res.send(await createProduct(req.body))
     } catch (error) {
         console.error("Error in API creating product:", error);
+        throw error;
+    }
+})
+
+router.patch('/:productID', async (req, res, next) => {
+    try {
+        let productToBeUpdated = await getProductBy("id", req.params.productID)
+        if ( productToBeUpdated.creatorname !== req.user.username){
+            console.log("user", req.user.username, "tried to edit", productToBeUpdated);
+            res.send("Error: you are not logged as the creator of this item")
+        } else {
+            res.send(await updateProduct(req.params.productID, req.body));
+        }
+    } catch (error) {
+        console.error("Error in API updating product:", error);
+        throw error;
+    }
+})
+
+// DELETE /api/products
+// I'm requiring that the id be in the body of the request so that people cant
+// delete products by typing the right URL
+router.delete('/', async (req, res, next) => {
+    try {
+        let productToBeDeleted = await getProductBy("id", req.body.id)
+
+        if ( productToBeDeleted.creatorname !== req.user.username){
+            console.log("user", req.user.username, "tried to edit", productToBeDeleted);
+            res.send("Error: you are not logged as the creator of this item")
+        } else {
+            res.send(await deleteProduct(req.body.id));
+        }
+    } catch (error) {
+        console.error("Error in API deleting product:", error);
         throw error;
     }
 })

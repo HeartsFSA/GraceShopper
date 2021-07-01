@@ -1,8 +1,9 @@
 .header {
-    background-color: #131921;
+    background-color: var(--navbar-background);
     display: flex;
     align-items: center;
     position: sticky;
+    height: 60px;
     top: 0;
     z-index: 100;
 }

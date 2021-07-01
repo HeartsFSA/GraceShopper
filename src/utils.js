@@ -30,6 +30,7 @@ function setToken(token) {
  */
 export async function checkLogin() {
   try {
+    console.log("in checkLogin")
     let { data } = await axios.get('/api/users/me', setHeaders())
     // if data has an id and user the user is logged on
     return data

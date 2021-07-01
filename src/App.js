@@ -18,6 +18,7 @@ function App() {
     const setAllProducts = async () => {
       let prods = await getAllProducts()
       setProducts(prods)
+      console.log(prods)
     }
 
     const setLogIn = async () => {

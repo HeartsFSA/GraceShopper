@@ -59,7 +59,7 @@ async function createTables() {
         dateAdded DATE,
         FOREIGN KEY ("productId") REFERENCES products(id),
         FOREIGN KEY ("userId") REFERENCES users(id),
-        CONSTRAINT id UNIQUE (carts."productId", carts."userId")
+        CONSTRAINT id UNIQUE ("productId", "userId")
       );
     `)
         /* Account Permission

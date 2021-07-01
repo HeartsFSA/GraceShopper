@@ -22,7 +22,7 @@ function Home(props) {
         setUser(data)
       }
     }
-    // setUserData() //invoke
+    setUserData() //invoke
   }, [])
 
   return (

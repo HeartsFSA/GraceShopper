@@ -4,7 +4,7 @@ import './css/Navbar.css';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import SearchIcon from "@material-ui/icons/Search";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'; 
-import Cart from '../components/Cart';
+import { useStateValue } from '../StateProvider'
 
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
@@ -16,6 +16,7 @@ function Navbar(props) {
   // UseState
   const [loginModalVisible, setLoginModalVisible] = useState(false)
   const [registerModalVisible, setRegisterModalVisible] = useState(false)
+  const [{ cart }] = useStateValue();
 
   return (
     <nav className="header">
@@ -76,7 +77,7 @@ function Navbar(props) {
               {/* Shopping cart icon */}
               <ShoppingCartIcon />
               {/* Number of items in the cart */}
-              <span className="header__optionLineTwo header__cartCount">0</span>
+              <span className="header__optionLineTwo header__cartCount">{cart?.length}</span>
           </div>
         </Link>
         

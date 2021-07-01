@@ -51,11 +51,11 @@ router.post('/register', async (req, res, next) => {
         message: 'A user by that username already exists',
       })
     } else {
+
+      // Add email and permission later
       const user = await createUser({
         username,
-        password,
-        email,
-        permission: 1
+        password
       })
       if (!user) {
         next({

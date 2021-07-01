@@ -14,6 +14,7 @@ async function dropTables() {
   //  Add more tables as you need them
   try {
     await client.query(`
+    DROP TABLE IF EXISTS carts;
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS users;
   `)
@@ -48,6 +49,17 @@ async function createTables() {
         location VARCHAR(255) NOT NULL,
         category VARCHAR(255),
         creatorId INTEGER REFERENCES users(id)
+      );
+
+      CREATE TABLE carts (
+        id SERIAL,
+        "productId" INTEGER,
+        "userId" INTEGER,
+        quantity INTEGER DEFAULT 1,
+        dateAdded DATE,
+        FOREIGN KEY ("productId") REFERENCES products(id),
+        FOREIGN KEY ("userId") REFERENCES users(id),
+        CONSTRAINT id UNIQUE (carts."productId", carts."userId")
       );
     `)
         /* Account Permission

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { login, register } from '../utils'
 
+import './css/AuthForm.css'
+
 function AuthForm(props) {
   let { type, setUser } = props // type of auth form (login or signup) and isLoggedIn Function
   const [username, setUsername] = useState('')
@@ -22,8 +24,8 @@ function AuthForm(props) {
           await setUsername('')
           await setPassword('')
           await setUser(data.user)
-          props.history.push('/home') // send it home
         }
+        console.log(data)
       } catch (error) {
         console.log(error)
       }
@@ -31,7 +33,7 @@ function AuthForm(props) {
   }
 
   return (
-    <form className='AuthForm' onSubmit={handleSubmit}>
+    <form className='auth-form' onSubmit={handleSubmit}>
       <div>
         <label htmlFor='username'>Username:</label>
         <input

@@ -3,11 +3,15 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 import Home from './components/Home'
 import AuthForm from './components/AuthForm'
 import Landing from './components/Landing'
+import Cart from './components/Cart';
 
 function Routes(props) {
   const { user, setUser, products } = props
   return (
     <Switch>
+      <Route path='/cart' component={Cart}
+      />
+
       <Route
         path='/login'
         render={(props) => (

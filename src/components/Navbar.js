@@ -3,6 +3,7 @@ import './css/Navbar.css';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import SearchIcon from "@material-ui/icons/Search";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'; 
+import Cart from '../components/Cart';
 
 function Navbar() {
   return (

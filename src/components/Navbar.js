@@ -4,6 +4,7 @@ import './css/Navbar.css';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import SearchIcon from "@material-ui/icons/Search";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'; 
+import { useStateValue } from '../StateProvider'
 
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
@@ -15,6 +16,7 @@ function Navbar(props) {
   // UseState
   const [loginModalVisible, setLoginModalVisible] = useState(false)
   const [registerModalVisible, setRegisterModalVisible] = useState(false)
+  const [{ cart }] = useStateValue();
 
   return (
     <nav className="header">
@@ -37,8 +39,10 @@ function Navbar(props) {
           setRegisterModalVisible(false)
           setLoginModalVisible(!loginModalVisible)
         }}>
-          <span className="header__optionLineOne"></span>
-          <span className="header__optionLineTwo"> Sign In</span>
+          <div className="header__option">
+            <span className="header__optionLineOne"></span>
+            <span className="header__optionLineTwo"> Sign In</span>
+          </div>
         </button>
       </div>
         {/* <div className="header__nav">
@@ -57,8 +61,10 @@ function Navbar(props) {
             setLoginModalVisible(false)
             setRegisterModalVisible(!registerModalVisible)
           }}>
-            <span className="header__optionLineOne"> Hello Guest</span>
-            <span className="header__optionLineTwo"> Register</span>
+            <div className="header__option">
+              <span className="header__optionLineOne"> Hello Guest,</span>
+              <span className="header__optionLineTwo"> Register</span>
+            </div>
           </button>
         </div>
 
@@ -75,7 +81,7 @@ function Navbar(props) {
               {/* Shopping cart icon */}
               <ShoppingCartIcon />
               {/* Number of items in the cart */}
-              <span className="header__optionLineTwo header__cartCount">0</span>
+              <span className="header__optionLineTwo header__cartCount">{cart?.length}</span>
           </div>
         </Link>
         

@@ -1,6 +1,13 @@
 // require in the database adapter functions as you write them (createUser, createActivity...)
 const { createUser } = require('./')
 const {
+  getAllUsers,
+  createCartItem,
+  getRawCartByUserId,
+  getCartByUserId,
+  deleteCartItemByCartId,
+  deleteCartByUserId,
+  deleteCartByProductId,
   createProduct,
   getProductBy,
   getAllProducts,
@@ -17,9 +24,7 @@ async function dropTables() {
     await client.query(`
 
     DROP TABLE IF EXISTS photos;
-
     DROP TABLE IF EXISTS carts;
-
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS users;
   `)
@@ -53,7 +58,7 @@ async function createTables() {
         datesOpen VARCHAR(255),
         location VARCHAR(255) NOT NULL,
         category VARCHAR(255),
-        creatorId INTEGER REFERENCES users(id)
+        creatorName VARCHAR(255) REFERENCES users(username) NOT NULL
       );
 
 
@@ -110,7 +115,10 @@ async function createInitialUsers() {
       { username: 'albert', password: 'bertie99', email: 'albert@fullstack.com', permission: 1 },
       { username: 'sandra', password: 'sandra123', email: 'sandra@fullstack.com', permission: 1 },
       { username: 'glamgal', password: 'glamgal123', email: 'glamgal@fullstack.com', permission: 1 },
-      {username: 'viral', password: 'FSAtest99', email: 'bhavsar.viral@outlook.com', permission: 4}
+      {username: 'viral', password: 'FSAtest99', email: 'bhavsar.viral@outlook.com', permission: 4},
+      {username: "Hisshey's", password: 'totallynothersheys', email: 'hisshey@example.com', permission: 2},
+      {username: 'SevenFlags', password: 'totallynotsixflags', email: 'sevenflags@example.com', permission: 2},
+      {username: 'HowlCat', password: 'totallynotmeowwolf', email: 'howlcat@example.com', permission: 2}
     ]
     const users = await Promise.all(usersToCreate.map(createUser))
 
@@ -131,13 +139,36 @@ async function createInitialProducts() {
         name: "Banana Land",
         description: "Banana fun!",
         price: "$56.99",
-        location: "the moon"
+        location: "the moon",
+        creatorName: "Hisshey's"
       },
       {
         name: "Seven Flags Mediocre America",
         description: "There will be more here later",
         price: "$69.99",
-        location: "Chicago, IL"
+        location: "Chicago, IL",
+        creatorName: "SevenFlags"
+      },
+      {
+        name: "Seven Flags over Oklahoma",
+        description: "The original Seven Flags park!",
+        price: "$59.99",
+        location: "Oklahoma City, OK",
+        creatorName: "SevenFlags"
+      },
+      {
+        name: "The House of Eventual Comeback",
+        description: "A mind-bending, interactive, explorable art exhibit for all ages",
+        price: "$9.99",
+        location: "Santa Fe, NM",
+        creatorName: "HowlCat"
+      },
+      {
+        name: "Omicron Mart",
+        description: "A mind-bending interactive art exhibit",
+        price: "$9.99",
+        location: "Las Vegas, NV",
+        creatorName: "HowlCat"
       }
     ]
 
@@ -217,6 +248,32 @@ async function createInitialPhotos() {
     throw error;
   }
 }
+
+async function createInitialCarts() {
+  console.log('Starting to create initial carts...')
+  try {
+    const users = await getAllUsers()
+    const prods = await getAllProducts()
+
+    const cartsToCreate = users.map((user) => {
+      const prodId = Math.floor(Math.random() * prods.length) + 1
+      const quantity = Math.floor(Math.random() * 5) + 1
+      return {'productId': prodId, 'userId': user.id, 'quantity': quantity}
+    })
+
+    console.log('Carts to Create: ')
+    console.log(cartsToCreate)
+
+    const carts = await Promise.all(cartsToCreate.map(createCartItem))
+
+    console.log('Carts created: ')
+    console.log(carts)
+  } catch (error) {
+    console.error('Error creating carts!')
+    throw error
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect()
@@ -225,6 +282,7 @@ async function rebuildDB() {
     await createInitialUsers()
     await createInitialProducts()
     await createInitialPhotos()
+    await createInitialCarts()
     
 
     // remove if not testing db calls
@@ -245,6 +303,12 @@ async function testDB() {
 
   console.log("getting all products:")
   console.log(await getAllProducts());
+
+  console.log('Getting raw carts by user id: ')
+  console.log(await getRawCartByUserId(1))
+
+  console.log('Getting carts by user id: ')
+  console.log(await getCartByUserId(1))
 }
 
 module.exports = {

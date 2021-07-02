@@ -57,6 +57,8 @@ const productsRouter = require('./products')
 apiRouter.use('/products', productsRouter);
 
 // ROUTER: /api/carts
+const cartsRouter = require('./carts')
+apiRouter.use('/carts', cartsRouter)
 
 
 // ------ ADD MORE ROUTES BELOW ------

@@ -23,6 +23,21 @@ async function createUser({ username, password }) {
     throw error
   }
 }
+
+async function getAllUsers() {
+  try {
+    const {
+      rows: users
+    } = await client.query(`
+      SELECT *
+      FROM users
+    `)
+    return users
+  } catch (error) {
+    throw error
+  }
+}
+
 async function getUser({ username, password }) {
   if (!username || !password) {
     return
@@ -88,6 +103,7 @@ async function getUserByUsername(userName) {
 }
 module.exports = {
   createUser,
+  getAllUsers,
   getUser,
   getUserById,
   getUserByUsername,

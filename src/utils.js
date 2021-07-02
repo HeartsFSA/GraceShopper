@@ -102,7 +102,7 @@ export async function register(username, password) {
   }
 }
 
-
+/* PRODUCT FUNCTIONS */
 export async function getAllProducts() {
   try {
     const {data} = await axios.get('/api/products/all')
@@ -135,15 +135,87 @@ export async function createProduct(product) {
   }
 }
 
-export async function getShoppingCart(userId) {
+export async function updateProduct(id, productInfo) {
   try {
-    const {data} = await axios.get('/api/cart/:userId', {
-      params: {
-        'userId': userId
-      }
-    })
+    const {data} = await axios.patch(`/${id}`,
+      productInfo
+    );
+    return data;
+  } catch (error) {
+    console.error("updateProduct(): Unable to update product.\n", error);
+    return error;
+  }
+}
+
+export async function deleteProduct(id) {
+  try {
+    const {data} = await axios.delete(`/${id}`);
+    return data;
+  } catch (error) {
+    console.error("deleteProduct(): Unable to delete product.\n", error);
+    return error;
+  }
+}
+
+/* SHOPPING CART FUNCTIONS */
+
+export async function getShoppingCart() {
+  try {
+    const {data} = await axios.get('/api/carts/me', setHeaders())
     return data
-  } catch (err) {
-    return err
+  } catch (error) {
+    return error
+  }
+}
+
+export async function addCartItem(productId, userId, quantity) {
+  let config = setHeaders()
+  config.body = {
+    "productId": productId,
+    "userId": userId,
+    "quantity": quantity
+  }
+  try {
+    const {data} = await axios.post('/api/carts/item', config)
+    return data
+  } catch (error) {
+    return error 
+  }
+}
+
+export async function updateCartItemQuantity(itemId, quantity, method) {
+  let config = setHeaders()
+  config.body = {
+    "itemId": itemId,
+    "inputQuantity": quantity,
+    "method": method
+  }
+  try {
+    const {data} = await axios.patch('/api/carts/item', config)
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+export async function deleteShoppingCart() {
+  try {
+    const {data} = await axios.delete('/api/carts/me', setHeaders())
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+export async function deleteShoppingCartItem(itemId) {
+  let config = setHeaders()
+  config.body = {
+    "itemId": itemId
+  }
+  try {
+    const {data} = await axios.delete('/api/carts/item', config)
+    return data 
+  } catch (error) {
+    return error
   }
 }

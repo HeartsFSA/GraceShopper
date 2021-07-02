@@ -1,4 +1,4 @@
-const { createContext } = require('react');
+
 const client = require('./client');
 const {photosByProductId} = require('./photos')
 
@@ -20,6 +20,10 @@ async function createProduct(inputProduct) {
         throw new Error("Error: no product price given");
     }
 
+    if (!inputProduct.creatorName) {
+        throw new Error("Error: no creator name given")
+    }
+
     // the meat of it
     try {
         const {rows: [product]} = await client.query(`
@@ -36,6 +40,7 @@ async function createProduct(inputProduct) {
     }
 }
 
+// combines getProductById, getProductByName, getProductByPrice, etc.
 async function getProductBy(column, value) {
     try {
 
@@ -72,8 +77,45 @@ async function getAllProducts() {
     }
 }
 
+// takes id, might change later
+// productInfo is an object which contains all updated info
+async function updateProduct(id, productInfo) {
+    try {
+        const {rows: [updatedProduct]} = await client.query(`
+            UPDATE products
+            SET ${Object.keys(productInfo).map((val, idx) => `${val}=$${idx+1}`).join()}
+            WHERE id=${id}
+            RETURNING *;
+        `, Object.values(productInfo));
+
+        return updatedProduct;
+    } catch (error) {
+        console.error("thrown from db/products.js/updateProduct");
+        throw error;
+    }
+}
+
+// takes id, might change later
+async function deleteProduct(id) {
+    try {
+        const {rows: [product]} = await client.query(`
+            DELETE FROM products
+            WHERE id=$1
+            RETURNING *;
+        `, [id])
+
+        console.log("product being deleted:", product)
+        return product;
+    } catch (error) {
+        console.error("thrown from db/products.js/deleteProduct", error);
+        throw error;
+    }
+}
+
 module.exports = {
     createProduct,
     getProductBy,
     getAllProducts,
+    updateProduct,
+    deleteProduct,
 }

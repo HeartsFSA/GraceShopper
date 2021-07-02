@@ -51,7 +51,7 @@ productsRouter.post('/', async (req, res, next ) => {
 })
 
 
-router.patch('/:productID', async (req, res, next) => {
+productsRouter.patch('/:productID', async (req, res, next) => {
     try {
         let productToBeUpdated = await getProductBy("id", req.params.productID)
         if ( productToBeUpdated.creatorname !== req.user.username){
@@ -69,7 +69,7 @@ router.patch('/:productID', async (req, res, next) => {
 // DELETE /api/products
 // I'm requiring that the id be in the body of the request so that people cant
 // delete products by typing the right URL
-router.delete('/', async (req, res, next) => {
+productsRouter.delete('/', async (req, res, next) => {
     try {
         let productToBeDeleted = await getProductBy("id", req.body.id)
 

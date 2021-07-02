@@ -154,56 +154,56 @@ async function createInitialProducts() {
         description: "Come see the world-famous ball of twine!",
         price: "$2.99",
         location: "Darwin, MN",
-        creatorName: "FrancisJohnson"
+        creatorName: "Francis Johnson"
       },
       {
         name: "The Leavre",
         description: "The world-famous art museum will absolutely, 100%, definitely make you want to stay!",
         price: "$59.99",
         location: "Paris, WI",
-        creatorName: "MuseeDuLeavre"
+        creatorName: "Musee Du Leavre"
       },
       {
         name: "National Space and Air Museum",
         description: "Come see fabulous space and air, with none of those pesky rockets and stuff in the way!",
         price: "$0.00",
         location: "Washington, DC",
-        creatorName: "TheJohnsonian"
+        creatorName: "The Johnsonian"
       },
       {
         name: "The Even Freer Gallery of Art",
         description: "This one is even more free than that other one!",
         price: "$5.99",
         location: "Washington, DC",
-        creatorName: "TheJohnsonian"
+        creatorName: "The Johnsonian"
       },
       {
         name: "The National Going Postal Museum",
         description: "The museum of all things relating to violent outbursts of uncontrolled rage!  Fun for whole family!",
         price: "$0.00",
         location: "Washington, DC",
-        creatorName: "TheJohnsonian"
+        creatorName: "The Johnsonian"
       },
       {
         name: "Seven Flags Mediocre America",
         description: "There will be more here later",
         price: "$69.99",
         location: "Chicago, IL",
-        creatorName: "SevenFlags"
+        creatorName: "Seven Flags"
       },
       {
         name: "Seven Flags over Oklahoma",
         description: "The original Seven Flags park!",
         price: "$59.99",
         location: "Oklahoma City, OK",
-        creatorName: "SevenFlags"
+        creatorName: "Seven Flags"
       },
       {
         name: "The State Hermit Museum",
         description: "The world-famous museum of hermits and everything hermit-related",
         price: "$0.75",
         location: "St Petersburg, FL",
-        creatorName: "StateHermitMuseum"
+        creatorName: "State Hermit Museum"
       },
       {
         name: "Noah's Ark",
@@ -217,7 +217,7 @@ async function createInitialProducts() {
         description: "A mouth-watering pile of every kind of food imaginable! We promise it hasn't spoiled in the desert sun!",
         price: "$9.99",
         location: "Niland, CA",
-        creatorName: "SalivationMountain"
+        creatorName: "Salivation Mountain"
       },
       {
         name: "The House of Eventual Comeback",

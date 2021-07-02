@@ -25,7 +25,7 @@ function AuthForm(props) {
           await setPassword('')
           await setUser(data.user)
         }
-        // console.log(data)
+        console.log(data)
       } catch (error) {
         console.log(error)
       }

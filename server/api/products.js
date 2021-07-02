@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const productsRouter = express.Router();
 const {
     getAllProducts, 
     getProductBy, 
@@ -10,7 +10,9 @@ const {
 
 // GET /api/products/all
 // sends all products
-router.get('/all', async (req, res, next) => {
+productsRouter.use((req,res,next) => {console.log('productsRouter is working'); next()})
+
+productsRouter.get('/all', async (req, res, next) => {
     try {
         res.send(await getAllProducts());
     } catch (error) {
@@ -22,7 +24,7 @@ router.get('/all', async (req, res, next) => {
 // GET /api/products/:column/:value
 // finds product by column value
 // use %20 to represent a space in the path e.g, /name/Banana%20Land
-router.get('/:column/:value', async (req, res, next) => {
+productsRouter.get('/:column/:value', async (req, res, next) => {
     try {
         res.send(await getProductBy(req.params.column, req.params.value));
     } catch (error) {
@@ -35,7 +37,10 @@ router.get('/:column/:value', async (req, res, next) => {
 // creates a new product
 // remember that the req.body needs to be json (axios takes care of this for you,
 // but postman does not, so bear that in mind when testing)
-router.post('/', async (req, res, next ) => {
+const photosRouter = require('./photos')
+productsRouter.use('/photos', photosRouter)
+
+productsRouter.post('/', async (req, res, next ) => {
     try {
         res.send(await createProduct(req.body))
     } catch (error) {
@@ -43,6 +48,7 @@ router.post('/', async (req, res, next ) => {
         throw error;
     }
 })
+
 
 router.patch('/:productID', async (req, res, next) => {
     try {
@@ -78,4 +84,4 @@ router.delete('/', async (req, res, next) => {
     }
 })
 
-module.exports = router;
+module.exports = productsRouter;

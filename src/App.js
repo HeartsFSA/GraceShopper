@@ -16,12 +16,16 @@ function App() {
   const [cart, setCart] = useState([])
   const [products, setProducts] = useState([])
 
-  useEffect(() => {
+  useEffect(async () => {
     const setAllProducts = async () => {
       let prods = await getAllProducts()
       setProducts(prods)
-      console.log(prods)
+      console.log("from the useEffec in app.js:\n",prods)
     }
+
+    // invocation
+    await setAllProducts();
+    console.log("Products from app.js:\n", products)
 
     const setLogIn = async () => {
 
@@ -33,7 +37,7 @@ function App() {
     }
 
     // setAllProducts()
-    setLogIn()
+    await setLogIn()
   }, [])
 
   return (

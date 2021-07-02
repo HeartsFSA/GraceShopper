@@ -108,7 +108,7 @@ export async function getAllProducts() {
     const {data} = await axios.get('/api/products/all')
     return data
   } catch (err) {
-    console.error('getAllProducts(): Unable to get all products.\n', err)
+    console.error('utils.js: getAllProducts(): Unable to get all products.\n', err)
     return err
   }
 }

@@ -4,6 +4,7 @@ import { useStateValue } from '../StateProvider'
 import Card from './Card';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 import OpenWithIcon from '@material-ui/icons/OpenWith'
+import { Switch, Route, withRouter, Link } from 'react-router-dom'
 
 function Cart(props) {
     const [{ cart }] = useStateValue();
@@ -51,13 +52,18 @@ function Cart(props) {
             <div className="continueShop">
                 <button> Continue Shopping </button>
             </div>
-
-            <div className="checkout"> 
-                <button> Checkout </button>
-            </div>
+            
+            <Switch>
+                <Link to='/checkout'>
+                <div className="checkout"> 
+                    
+                    <button> Checkout </button>
+                </div>
+                </Link>
+            </Switch>
 
         </div>
     )
 }
 
-export default Cart;
+export default withRouter(Cart);

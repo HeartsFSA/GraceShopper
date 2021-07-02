@@ -2,6 +2,8 @@
 const {createUser} = require('./')
 const {
   getAllUsers,
+  createOrder,
+  createOrderProduct,
   createCartItem,
   getRawCartByUserId,
   getCartByUserId,
@@ -22,11 +24,10 @@ async function dropTables() {
   //  Add more tables as you need them
   try {
     await client.query(`
-
-    DROP TABLE IF EXISTS photos;
-    DROP TABLE IF EXISTS order_products;
-    DROP TABLE IF EXISTS orders;
-    DROP TABLE IF EXISTS products;
+    DROP TABLE IF EXISTS photos CASCADE;
+    DROP TABLE IF EXISTS order_products CASCADE;
+    DROP TABLE IF EXISTS orders CASCADE;
+    DROP TABLE IF EXISTS products CASCADE;
     DROP TABLE IF EXISTS users;
   `)
   } catch (error) {
@@ -39,7 +40,7 @@ async function createTables() {
     console.log('Starting to build tables...')
     // create all tables, in the correct order
 
-    // User's Table
+    console.log('Creating users table...')
     await client.query(`
       CREATE TABLE users(
         id  SERIAL PRIMARY KEY, 
@@ -49,7 +50,10 @@ async function createTables() {
         permission INT DEFAULT 1
         
       );
+      `)
 
+    console.log('Creating products table...')
+    await client.query(`
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) UNIQUE NOT NULL,
@@ -61,35 +65,44 @@ async function createTables() {
         category VARCHAR(255),
         creatorName VARCHAR(255) REFERENCES users(username) NOT NULL
       );
+      `)
 
-
+    console.log('Creating photos table...')
+    await client.query(`
       CREATE TABLE photos (
         photo_id SERIAL PRIMARY KEY,
         product_id INTEGER REFERENCES products(id),
         photo_url VARCHAR(255),
         rel_path VARCHAR(51)
       );
+      `)
 
+    console.log('Creating orders table...')
+    await client.query(`
       CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
         "userId" INTEGER,
         status INTEGER DEFAULT 0,
-        datePurchased DATE DEFAULT NULL
-      )
+        datePurchased DATE DEFAULT NULL,
+        FOREIGN KEY ("userId") REFERENCES users(id)
+      );
+      `)
 
+    console.log('Creating order_products table...')
+    await client.query(`
       CREATE TABLE order_products (
         id SERIAL PRIMARY KEY,
         "productId" INTEGER,
         "orderId" INTEGER,
         quantity INTEGER DEFAULT 1,
-        totalPrice MONEY, 
+        totalPrice MONEY,
         dateAdded DATE,
         FOREIGN KEY ("productId") REFERENCES products(id),
         FOREIGN KEY ("orderId") REFERENCES orders(id),
-        CONSTRAINT id UNIQUE ("productId", "orderId")
+        CONSTRAINT po_id UNIQUE ("productId", "orderId")
       );
+      `)
 
-    `)
     /* Account Permission
          0  Guest User (Extra parameter, in case need to use)
          1  Basic User (Default in most case)
@@ -391,25 +404,48 @@ async function createInitialPhotos() {
   }
 }
 
-async function createInitialCarts() {
+async function createInitialOrders() {
   console.log('Starting to create initial carts...')
   try {
     const users = await getAllUsers()
     const prods = await getAllProducts()
 
-    const cartsToCreate = users.map((user) => {
+    // const ordersToCreate = users.map((user) => {
+    //   const prodId = Math.floor(Math.random() * prods.length) + 1
+    //   const quantity = Math.floor(Math.random() * 5) + 1
+    //   return {productId: prodId, userId: user.id, quantity: quantity}
+    // })
+    const ordersToCreate = users.map((user) => user.id)
+
+    console.log('Users to create orders for: ')
+    console.log(ordersToCreate)
+
+    const orders = await Promise.all(ordersToCreate.map(createOrder))
+
+    console.log('Orders created: ')
+    console.log(orders)
+
+    const orderProductsToCreate = orders.map((order) => {
       const prodId = Math.floor(Math.random() * prods.length) + 1
-      const quantity = Math.floor(Math.random() * 5) + 1
-      return {productId: prodId, userId: user.id, quantity: quantity}
+      const quantity = Math.floor(Math.random() * 10) + 1
+      const totalPrice = Math.floor(Math.random() * 250)
+      return {
+        orderId: order.id,
+        productId: prodId,
+        quantity: quantity,
+        totalPrice: totalPrice
+      }
     })
 
-    console.log('Carts to Create: ')
-    console.log(cartsToCreate)
+    console.log('Order products to create: ')
+    console.log(orderProductsToCreate)
 
-    const carts = await Promise.all(cartsToCreate.map(createCartItem))
+    const orderProducts = await Promise.all(
+      orderProductsToCreate.map(createOrderProduct)
+    )
 
-    console.log('Carts created: ')
-    console.log(carts)
+    console.log('Order products created: ')
+    console.log(orderProducts)
   } catch (error) {
     console.error('Error creating carts!')
     throw error
@@ -424,7 +460,7 @@ async function rebuildDB() {
     await createInitialUsers()
     await createInitialProducts()
     await createInitialPhotos()
-    await createInitialCarts()
+    await createInitialOrders()
 
     // remove if not testing db calls
     await testDB()
@@ -443,11 +479,11 @@ async function testDB() {
   console.log('getting all products:')
   console.log(await getAllProducts())
 
-  console.log('Getting raw carts by user id: ')
-  console.log(await getRawCartByUserId(1))
+  // console.log('Getting raw carts by user id: ')
+  // console.log(await getRawCartByUserId(1))
 
-  console.log('Getting carts by user id: ')
-  console.log(await getCartByUserId(1))
+  // console.log('Getting carts by user id: ')
+  // console.log(await getCartByUserId(1))
 }
 
 module.exports = {

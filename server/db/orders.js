@@ -18,6 +18,23 @@ async function createOrder(userId) {
   }
 }
 
+async function getOrdersByUserId(userId) {
+  try {
+    const {rows: orders} = await client.query(
+      `
+            SELECT * 
+            FROM orders
+            WHERE "userId"=$1
+        `,
+      [userId]
+    )
+    return orders
+  } catch (error) {
+    throw error
+  }
+}
+
 module.exports = {
-  createOrder
+  createOrder,
+  getOrdersByUserId
 }

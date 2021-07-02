@@ -19,6 +19,32 @@ async function createOrderProduct({orderId, productId, quantity, totalPrice}) {
   }
 }
 
+async function _getOrderProductsBy(column, value) {
+  try {
+    const {rows} = await client.query(
+      `
+            SELECT * 
+            FROM order_products
+            WHERE ${column}=$1
+        `,
+      [value]
+    )
+    return rows
+  } catch (error) {
+    throw error
+  }
+}
+
+async function getOrderProductsByOrderId(orderId) {
+  try {
+    const products = await _getOrderProductsBy('"orderId"', orderId)
+    return products
+  } catch (error) {
+    throw error
+  }
+}
+
 module.exports = {
-  createOrderProduct
+  createOrderProduct,
+  getOrderProductsByOrderId
 }

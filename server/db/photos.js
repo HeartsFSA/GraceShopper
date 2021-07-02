@@ -37,7 +37,7 @@ async function getPhotoById(photo_id) {
 
         const {rows: [photo]} = await client.query(`
             SELECT * FROM photos 
-            WHERE photo_id={photo_id};
+            WHERE photo_id=${photo_id};
         `)
 
         return photo;
@@ -64,13 +64,13 @@ async function getAllPhotos() {
 // I am thinking using this for photo carousel
 
 async function photosByProductId(product_id){
+    
     try {
-        const {rows: [photos]} = await client.query(`
+        const {rows : photos} = await client.query(`
         SELECT * FROM photos
-        	JOIN products
-	        ON photos.product_id=products.id
-            WHERE products.id={product_id};
-        `)
+        WHERE product_id=$1
+        `, [product_id])
+        console.log(photos)
         return photos;
     } catch (error) {
         console.log("from DB / all photos by ID")
@@ -83,7 +83,7 @@ async function delPhotoById(photo_id) {
     try {
         const {rows: [photo]} = await client.query(`
         DELETE FROM photos
-        WHERE photos.photo_id={photo_id}
+        WHERE photos.photo_id=${photo_id}
         `)
     return photo;
     } catch(error) {
@@ -96,7 +96,7 @@ async function delPhotoByProductId(product_id) {
     try {
         const {rows: [photo]} = await client.query(`
         DELETE FROM photos
-        WHERE photos.product_id={product_id}
+        WHERE photos.product_id=${product_id}
         `)
     return photo;
     } catch (error) {
@@ -111,5 +111,6 @@ module.exports = {
     getPhotoById,
     getAllPhotos,
     delPhotoById,
-    delPhotoByProductId
+    delPhotoByProductId,
+    photosByProductId
 }

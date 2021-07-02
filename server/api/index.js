@@ -5,7 +5,7 @@ const { JWT_SECRET = 'neverTell' } = process.env
 const { getUserById } = require('../db')
 
 /* Middlware to see if user is logged in already*/
-
+apiRouter.use((req,res, next) => {console.log('apirouter is working'); next()})
 // set `req.user` if possible
 apiRouter.use(async (req, res, next) => {
   const prefix = 'Bearer '
@@ -57,6 +57,8 @@ const productsRouter = require('./products')
 apiRouter.use('/products', productsRouter);
 
 // ROUTER: /api/carts
+const cartsRouter = require('./carts')
+apiRouter.use('/carts', cartsRouter)
 
 
 // ------ ADD MORE ROUTES BELOW ------

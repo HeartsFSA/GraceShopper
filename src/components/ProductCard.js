@@ -5,8 +5,17 @@ import OpenWithIcon from '@material-ui/icons/OpenWith'
 import Card from './Card'
 
 import './css/ProductCard.css'
+import { useStateValue } from '../StateProvider'
 
 function ProductCard({product}) {
+    const [{ cart }, dispatch ] = useStateValue();
+
+    // function to addToBasket
+    const addToBasket = () => {
+        dispatch({
+            type: 'ADD_TO_BASKET'
+        })
+    }
     return (
         <Card>
             <div className='card-content'>
@@ -23,7 +32,7 @@ function ProductCard({product}) {
                 <div className='card-footer'>
                     <button><OpenWithIcon fontSize='large' /></button>
                     <h4>{product.creatorname}</h4>
-                    <button><AddShoppingCartIcon fontSize='large'/></button>
+                    <button onClick={addToBasket}><AddShoppingCartIcon fontSize='large'/></button>
                 </div>
             </div>
         </Card>

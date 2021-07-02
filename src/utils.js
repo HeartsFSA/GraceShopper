@@ -157,17 +157,65 @@ export async function deleteProduct(id) {
   }
 }
 
-/* END PRODUCT FUNCTIONS */
+/* SHOPPING CART FUNCTIONS */
 
-export async function getShoppingCart(userId) {
+export async function getShoppingCart() {
   try {
-    const {data} = await axios.get('/api/cart/:userId', {
-      params: {
-        'userId': userId
-      }
-    })
+    const {data} = await axios.get('/api/carts/me', setHeaders())
     return data
-  } catch (err) {
-    return err
+  } catch (error) {
+    return error
+  }
+}
+
+export async function addCartItem(productId, userId, quantity) {
+  let config = setHeaders()
+  config.body = {
+    "productId": productId,
+    "userId": userId,
+    "quantity": quantity
+  }
+  try {
+    const {data} = await axios.post('/api/carts/item', config)
+    return data
+  } catch (error) {
+    return error 
+  }
+}
+
+export async function updateCartItemQuantity(itemId, quantity, method) {
+  let config = setHeaders()
+  config.body = {
+    "itemId": itemId,
+    "inputQuantity": quantity,
+    "method": method
+  }
+  try {
+    const {data} = await axios.patch('/api/carts/item', config)
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+export async function deleteShoppingCart() {
+  try {
+    const {data} = await axios.delete('/api/carts/me', setHeaders())
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+export async function deleteShoppingCartItem(itemId) {
+  let config = setHeaders()
+  config.body = {
+    "itemId": itemId
+  }
+  try {
+    const {data} = await axios.delete('/api/carts/item', config)
+    return data 
+  } catch (error) {
+    return error
   }
 }

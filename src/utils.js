@@ -169,12 +169,14 @@ export async function getShoppingCart() {
 }
 
 export async function addCartItem(productId, userId, quantity) {
+  let config = setHeaders()
+  config.body = {
+    "productId": productId,
+    "userId": userId,
+    "quantity": quantity
+  }
   try {
-    const {data} = await axios.post('/api/carts/item', setHeaders(), {
-      "productId": productId,
-      "userId": userId,
-      "quantity": quantity
-    })
+    const {data} = await axios.post('/api/carts/item', config)
     return data
   } catch (error) {
     return error 
@@ -182,12 +184,14 @@ export async function addCartItem(productId, userId, quantity) {
 }
 
 export async function updateCartItemQuantity(itemId, quantity, method) {
+  let config = setHeaders()
+  config.body = {
+    "itemId": itemId,
+    "inputQuantity": quantity,
+    "method": method
+  }
   try {
-    const {data} = await axios.patch('/api/carts/item', setHeaders(), {
-      "itemId": itemId,
-      "inputQuantity": quantity,
-      "method": method
-    })
+    const {data} = await axios.patch('/api/carts/item', config)
     return data
   } catch (error) {
     return error
@@ -204,10 +208,12 @@ export async function deleteShoppingCart() {
 }
 
 export async function deleteShoppingCartItem(itemId) {
+  let config = setHeaders()
+  config.body = {
+    "itemId": itemId
+  }
   try {
-    const {data} = await axios.delete('/api/carts/item', setHeaders(), {
-      "itemId": itemId
-    })
+    const {data} = await axios.delete('/api/carts/item', config)
     return data 
   } catch (error) {
     return error

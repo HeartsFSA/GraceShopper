@@ -20,6 +20,21 @@ async function createCartItem({productId, userId, quantity}) {
     }
 }
 
+async function getCartItemById(itemId) {
+    try {
+        const {
+            rows: [item]
+        } = await client.query(`
+            SELECT * 
+            FROM carts
+            WHERE id=$1
+        `, [itemId])
+        return item
+    } catch (error) {
+        throw error
+    }
+}
+
 
 /**
  * 
@@ -75,6 +90,32 @@ async function getCartByUserId(userId) {
     }
 }
 
+async function updateCartItemQuantity(itemId, inputQuantity, method) {
+    try {
+        const {quantity} = await getCartItemById(itemId)
+        let newQuantity = 0
+        if(method === 'add') {
+            newQuantity = quantity + inputQuantity
+        } else if(method === 'sub') {
+            newQuantity = quantity - inputQuantity
+        } else {
+            throw error 
+        }
+
+        const {
+            rows: [item]
+        } = await client.query(`
+            UPDATE carts
+            SET quantity=$1
+            WHERE id=$2
+            RETURNING *
+        `, [newQuantity, itemId])
+        return item
+    } catch (error) {
+        throw error
+    }
+}
+
 async function _deleteCartItemBy(column, value) {
     try {
         const {
@@ -90,6 +131,16 @@ async function _deleteCartItemBy(column, value) {
     }
 }
 
+/**
+ * 
+ * @param {number} userId 
+ * @returns {Array.<{
+ * id: number, 
+ * productId: number, 
+ * userId: number, 
+ * quantity: number, 
+ * dateadded: Date}>}
+ */
 async function deleteCartItemByCartId(cartId) {
     try {
         const item = await _deleteCartItemBy('id', cartId)
@@ -99,6 +150,16 @@ async function deleteCartItemByCartId(cartId) {
     }
 }
 
+/**
+ * 
+ * @param {number} userId 
+ * @returns {Array.<{
+ * id: number, 
+ * productId: number, 
+ * userId: number, 
+ * quantity: number, 
+ * dateadded: Date}>}
+ */
 async function deleteCartByProductId(productId) {
     try {
         const items = await _deleteCartItemBy('"productId"', productId)
@@ -108,6 +169,16 @@ async function deleteCartByProductId(productId) {
     }
 }
 
+/**
+ * 
+ * @param {number} userId 
+ * @returns {Array.<{
+ * id: number, 
+ * productId: number, 
+ * userId: number, 
+ * quantity: number, 
+ * dateadded: Date}>}
+ */
 async function deleteCartByUserId(userId) {
     try {
         const items = await _deleteCartItemBy('"userId"', userId)
@@ -121,6 +192,7 @@ module.exports = {
     createCartItem,
     getRawCartByUserId,
     getCartByUserId,
+    updateCartItemQuantity,
     deleteCartItemByCartId,
     deleteCartByProductId,
     deleteCartByUserId

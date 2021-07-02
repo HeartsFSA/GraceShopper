@@ -24,9 +24,7 @@ async function dropTables() {
     await client.query(`
 
     DROP TABLE IF EXISTS photos;
-
     DROP TABLE IF EXISTS carts;
-
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS users;
   `)
@@ -311,9 +309,6 @@ async function testDB() {
 
   console.log('Getting carts by user id: ')
   console.log(await getCartByUserId(1))
-
-  console.log('Deleting carts by product id: ')
-  console.log(await deleteCartByProductId(1))
 }
 
 module.exports = {

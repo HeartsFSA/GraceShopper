@@ -119,8 +119,15 @@ async function createInitialUsers() {
       { username: 'glamgal', password: 'glamgal123', email: 'glamgal@fullstack.com', permission: 1 },
       {username: 'viral', password: 'FSAtest99', email: 'bhavsar.viral@outlook.com', permission: 4},
       {username: "Hisshey's", password: 'totallynothersheys', email: 'hisshey@example.com', permission: 2},
-      {username: 'SevenFlags', password: 'totallynotsixflags', email: 'sevenflags@example.com', permission: 2},
-      {username: 'HowlCat', password: 'totallynotmeowwolf', email: 'howlcat@example.com', permission: 2}
+      {username: "The Johnsonian", password: 'totallynotthesmithsonian', email: 'thejohnsonian@example.com', permission: 2},
+      {username: 'Seven Flags', password: 'totallynotsixflags', email: 'sevenflags@example.com', permission: 2},
+      {username: "Francis Johnson", password: 'totallynotfrancisjohnson', email:'fjohnson@example.com', permission: 2},
+      {username: 'HowlCat', password: 'totallynotmeowwolf', email: 'howlcat@example.com', permission: 2},
+      {username: 'Musee Du Leavre', password: 'totallynotmuseedulouvre', email: 'mdl@example.com', permission: 2},
+      {username: 'State Hermit Museum', password: 'totallynottherussiangovernment', email: 'hermit@example.com', permission: 2},
+      {username: 'Salivation Mountain', password: 'totallynotsalvationmountain', email: 'salmountain@example.com', permission: 2},
+      {username: "Noah", password: 'totallynotnoah', email: 'noah@example.com', permission: 2}
+
     ]
     const users = await Promise.all(usersToCreate.map(createUser))
 
@@ -145,6 +152,41 @@ async function createInitialProducts() {
         creatorName: "Hisshey's"
       },
       {
+        name: "The Smallest Ball of Twine in Minnesota",
+        description: "Come see the world-famous ball of twine!",
+        price: "$2.99",
+        location: "Darwin, MN",
+        creatorName: "FrancisJohnson"
+      },
+      {
+        name: "The Leavre",
+        description: "The world-famous art museum will absolutely, 100%, definitely make you want to stay!",
+        price: "$59.99",
+        location: "Paris, WI",
+        creatorName: "MuseeDuLeavre"
+      },
+      {
+        name: "National Space and Air Museum",
+        description: "Come see fabulous space and air, with none of those pesky rockets and stuff in the way!",
+        price: "$0.00",
+        location: "Washington, DC",
+        creatorName: "TheJohnsonian"
+      },
+      {
+        name: "The Even Freer Gallery of Art",
+        description: "This one is even more free than that other one!",
+        price: "$5.99",
+        location: "Washington, DC",
+        creatorName: "TheJohnsonian"
+      },
+      {
+        name: "The National Going Postal Museum",
+        description: "The museum of all things relating to violent outbursts of uncontrolled rage!  Fun for whole family!",
+        price: "$0.00",
+        location: "Washington, DC",
+        creatorName: "TheJohnsonian"
+      },
+      {
         name: "Seven Flags Mediocre America",
         description: "There will be more here later",
         price: "$69.99",
@@ -157,6 +199,27 @@ async function createInitialProducts() {
         price: "$59.99",
         location: "Oklahoma City, OK",
         creatorName: "SevenFlags"
+      },
+      {
+        name: "The State Hermit Museum",
+        description: "The world-famous museum of hermits and everything hermit-related",
+        price: "$0.75",
+        location: "St Petersburg, FL",
+        creatorName: "StateHermitMuseum"
+      },
+      {
+        name: "Noah's Ark",
+        description: "No, not the waterpark, this is the real thing, so I suggest you get on real soon",
+        price: "$0.00",
+        location: "Lake Delton, WI",
+        creatorName: "Noah"
+      },
+      {
+        name: "Salivation Mountain",
+        description: "A mouth-watering pile of every kind of food imaginable! We promise it hasn't spoiled in the desert sun!",
+        price: "$9.99",
+        location: "Niland, CA",
+        creatorName: "SalivationMountain"
       },
       {
         name: "The House of Eventual Comeback",

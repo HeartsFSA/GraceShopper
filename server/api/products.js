@@ -6,6 +6,7 @@ const {
     createProduct,
     deleteProduct,
     updateProduct,
+    deleteCartByProductId,
 } = require('../db');
 
 // GET /api/products/all
@@ -70,6 +71,7 @@ router.delete('/', async (req, res, next) => {
             console.log("user", req.user.username, "tried to edit", productToBeDeleted);
             res.send("Error: you are not logged as the creator of this item")
         } else {
+            await deleteCartByProductId(req.body.id);
             res.send(await deleteProduct(req.body.id));
         }
     } catch (error) {

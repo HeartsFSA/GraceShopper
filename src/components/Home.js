@@ -12,6 +12,7 @@ function Home(props) {
     /*
     Why don't we pass the user from the App.js?
     */
+
     async function setUserData() {
       let data = await checkLogin()
       console.log(data)
@@ -22,27 +23,14 @@ function Home(props) {
         setUser(data)
       }
     }
+
+    console.log("products in home.js:", products)
     // setUserData() //invoke
   }, [])
 
   return (
     <div className='home'>
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
+      {products.map((product, idx) => <ProductCard product={product} key={idx}/>)}
     </div>
   )
 }

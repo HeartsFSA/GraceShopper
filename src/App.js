@@ -14,12 +14,16 @@ function App() {
   const [user, setUser] = useState({})
   const [products, setProducts] = useState([])
 
-  useEffect(() => {
+  useEffect(async () => {
     const setAllProducts = async () => {
       let prods = await getAllProducts()
       setProducts(prods)
-      console.log(prods)
+      console.log("from the useEffec in app.js:\n",prods)
     }
+
+    // invocation
+    await setAllProducts();
+    console.log("Products from app.js:\n", products)
 
     const setLogIn = async () => {
       let checkedUser = await checkLogin()
@@ -37,7 +41,7 @@ function App() {
     }
 
     // setAllProducts()
-    setLogIn()
+    await setLogIn()
   }, [])
 
   return (

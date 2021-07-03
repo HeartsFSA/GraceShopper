@@ -1,5 +1,16 @@
 const client = require('./client')
 
+/**
+ * 
+ * @param {object} param0 
+ * @returns {<{
+ * id: number,
+ * productId: number,
+ * orderId: number,
+ * quantity: number,
+ * totalPrice: 'money',
+ * dateAdded: Date}>}
+ */
 async function createOrderProduct({orderId, productId, quantity, totalPrice}) {
   const today = new Date()
   try {
@@ -44,7 +55,24 @@ async function getOrderProductsByOrderId(orderId) {
   }
 }
 
+async function updateOrderProductsById({orderProductId, quantity, totalPrice}) {
+  try {
+    const {
+      rows: [orderProduct]
+    } = await client.query(`
+      UPDATE order_products
+      SET quantity=$1, totalPrice=$2
+      WHERE id=$3
+      RETURNING *
+    `, [quantity, totalPrice, orderProductId])
+    return orderProduct
+  } catch (error) {
+    throw error
+  }
+}
+
 module.exports = {
   createOrderProduct,
-  getOrderProductsByOrderId
+  getOrderProductsByOrderId,
+  updateOrderProductsById
 }

@@ -425,17 +425,18 @@ async function createInitialOrders() {
     console.log('Orders created: ')
     console.log(orders)
 
-    const orderProductsToCreate = orders.map((order) => {
+    const orderProductsToCreate = await Promise.all(orders.map(async (order) => {
       const prodId = Math.floor(Math.random() * prods.length) + 1
       const quantity = Math.floor(Math.random() * 10) + 1
-      const totalPrice = Math.floor(Math.random() * 250)
+      const product = await getProductBy('id', prodId)
+      const totalPrice = product.price
       return {
         orderId: order.id,
         productId: prodId,
         quantity: quantity,
         totalPrice: totalPrice
       }
-    })
+    }))
 
     console.log('Order products to create: ')
     console.log(orderProductsToCreate)

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { checkLogin } from '../utils'
+import React, {useState, useEffect} from 'react'
+import {checkLogin} from '../utils'
 import ProductCard from './ProductCard'
 
 import './css/Home.css'
 
 function Home(props) {
+  console.log('Props: ', props)
   const {products} = props
   const [user, setUser] = useState({})
 
@@ -24,13 +25,15 @@ function Home(props) {
       }
     }
 
-    console.log("products in home.js:", products)
+    console.log('products in home.js:', products)
     // setUserData() //invoke
   }, [])
 
   return (
-    <div className='home'>
-      {products.map((product, idx) => <ProductCard product={product} key={idx}/>)}
+    <div className="home">
+      {products.map((product, idx) => (
+        <ProductCard product={product} key={idx} />
+      ))}
     </div>
   )
 }

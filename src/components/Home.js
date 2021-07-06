@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { checkLogin } from '../utils';
+import React, {useState, useEffect} from 'react';
+import {checkLogin} from '../utils';
 import ProductCard from './ProductCard';
 
 import './css/Home.css';
 
 function Home(props) {
-  const { products } = props;
+  const {products} = props;
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function Home(props) {
       }
     }
 
-    setUserData(); //invoke
+    // setUserData(); //invoke
   }, []);
 
   return (

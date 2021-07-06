@@ -6,7 +6,6 @@ import Cart from './components/Cart';
 
 import Routes from './Routes';
 
-
 import {PinDropSharp} from '@material-ui/icons';
 
 import {
@@ -15,7 +14,6 @@ import {
   getShoppingCart,
   getOrderHistory
 } from './utils';
-
 
 function App() {
   const [user, setUser] = useState({});
@@ -78,6 +76,9 @@ function App() {
         setUser={setUser}
         setCart={setCart}
         setOrders={setOrders}
+        query={query}
+        setQuery={setQuery}
+        products={products}
       />
       <Routes user={user} setUser={setUser} products={products} />
       {hasLoaded ? (

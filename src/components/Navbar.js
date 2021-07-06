@@ -14,6 +14,7 @@ function Navbar(props) {
 
   const {user, setUser, query, setQuery, products, setCart, setOrders} = props;
 
+  console.log(products);
 
   // UseState
   const [loginModalVisible, setLoginModalVisible] = useState(false);

@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+import React, {useState} from 'react';
+import {useStateValue} from '../StateProvider';
+import axios from 'axios';
+import {login, register, getShoppingCart, getOrderHistory} from '../utils';
+
+import './css/AuthForm.css';
+
+function AuthForm(props) {
+  let {type, setUser, setCart, setOrders} = props; // type of auth form (login or signup) and isLoggedIn Function
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+=======
 import React, { useState } from "react";
 import axios from "axios";
 import { login, register } from "../utils";
@@ -9,12 +22,17 @@ function AuthForm(props) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+>>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
 
   async function handleSubmit(evt) {
     evt.preventDefault();
 
     if (!username || !password) {
+<<<<<<< HEAD
+      return; // need to fill out username and password
+=======
       return alert("Please enter details"); // need to fill out username and password
+>>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
     } else {
       try {
         let data =
@@ -22,6 +40,13 @@ function AuthForm(props) {
             ? await login(username, password)
             : await register(username, password);
         if (data.user) {
+<<<<<<< HEAD
+          await setUsername('');
+          await setPassword('');
+          await setUser(data.user);
+          setCart(await getShoppingCart());
+          setOrders(await getOrderHistory());
+=======
           await setUsername("");
           await setPassword("");
           await setUser(data.user);
@@ -34,8 +59,9 @@ function AuthForm(props) {
             : setRegisterModalVisible(false);
           // ? setLoginModalVisible(false);
           // : setRegisterModalVisible(false);
+>>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
         }
-        console.log(data)
+        console.log(data);
       } catch (error) {
         console.log(error);
       }

@@ -1,11 +1,14 @@
 const express = require('express')
 const apiRouter = express.Router()
 const jwt = require('jsonwebtoken')
-const { JWT_SECRET = 'neverTell' } = process.env
-const { getUserById } = require('../db')
+const {JWT_SECRET = 'neverTell'} = process.env
+const {getUserById} = require('../db')
 
 /* Middlware to see if user is logged in already*/
-apiRouter.use((req,res, next) => {console.log('apirouter is working'); next()})
+apiRouter.use((req, res, next) => {
+  console.log('apirouter is working')
+  next()
+})
 // set `req.user` if possible
 apiRouter.use(async (req, res, next) => {
   const prefix = 'Bearer '
@@ -30,7 +33,7 @@ apiRouter.use(async (req, res, next) => {
   } else {
     next({
       name: 'AuthorizationHeaderError',
-      message: `Authorization token must start with ${prefix}`,
+      message: `Authorization token must start with ${prefix}`
     })
   }
 })
@@ -48,18 +51,16 @@ apiRouter.use((req, res, next) => {
 // })
 
 // ROUTER: /api/users
-const usersRouter = require('./users');
-apiRouter.use('/users', usersRouter);
-
+const usersRouter = require('./users')
+apiRouter.use('/users', usersRouter)
 
 // ROUTER: /api/products
 const productsRouter = require('./products')
-apiRouter.use('/products', productsRouter);
+apiRouter.use('/products', productsRouter)
 
 // ROUTER: /api/carts
-const cartsRouter = require('./carts')
-apiRouter.use('/carts', cartsRouter)
-
+const ordersRouter = require('./orders')
+apiRouter.use('/orders', ordersRouter)
 
 // ------ ADD MORE ROUTES BELOW ------
 

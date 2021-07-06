@@ -38,7 +38,6 @@ function Routes(props) {
         render={(props) => <Home {...props} products={products} />}
       />
 
-      {/* <Route path="/" component={Landing} /> */}
     </Switch>
   );
 }

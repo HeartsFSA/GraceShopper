@@ -22,11 +22,12 @@ function App() {
       let prods = await getAllProducts();
       setProducts(prods);
     };
-
+    // invocation
     await setAllProducts();
 
     const setLogIn = async () => {
       let checkedUser = await checkLogin();
+
       if (checkedUser.id) {
         setUser(checkedUser);
         setCart(await getShoppingCart());

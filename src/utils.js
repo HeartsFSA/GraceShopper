@@ -1,19 +1,19 @@
-import axios from 'axios'
+import axios from 'axios';
 
 function setHeaders() {
-  let token = localStorage.getItem('token')
+  let token = localStorage.getItem('token');
   let config = token
     ? {
         headers: {
           Authorization: `Bearer ${token}`
         }
       }
-    : {}
-  return config
+    : {};
+  return config;
 }
 
 function setToken(token) {
-  localStorage.setItem('token', token)
+  localStorage.setItem('token', token);
 }
 
 /**
@@ -30,13 +30,13 @@ function setToken(token) {
  */
 export async function checkLogin() {
   try {
-    console.log('in checkLogin')
-    let {data} = await axios.get('/api/users/me', setHeaders())
+    console.log('in checkLogin');
+    let {data} = await axios.get('/api/users/me', setHeaders());
     // if data has an id and user the user is logged on
-    return data
+    return data;
   } catch (err) {
-    console.log('checkLogin(): User is not logged on.\n', err)
-    return err
+    console.log('checkLogin(): User is not logged on.\n', err);
+    return err;
   }
 }
 
@@ -59,15 +59,15 @@ export async function login(username, password) {
     const {data} = await axios.post('/api/users/login', {
       username,
       password
-    })
+    });
     if (data.token) {
-      setToken(data.token)
+      setToken(data.token);
     }
-    return data
+    return data;
   } catch (err) {
-    console.error('login(): Unable to login.\n', err)
+    console.error('login(): Unable to login.\n', err);
     // returns error to be handled.
-    return err
+    return err;
   }
 }
 
@@ -90,69 +90,69 @@ export async function register(username, password) {
     const {data} = await axios.post('/api/users/register', {
       username,
       password
-    })
+    });
     if (data.token) {
-      setToken(data.token)
+      setToken(data.token);
     }
-    return data
+    return data;
   } catch (err) {
-    console.error('register(): Unable to register user.\n', err)
+    console.error('register(): Unable to register user.\n', err);
     // returns error to be handled
-    return err
+    return err;
   }
 }
 
 /* PRODUCT FUNCTIONS */
 export async function getAllProducts() {
   try {
-    const {data} = await axios.get('/api/products/all')
-    return data
+    const {data} = await axios.get('/api/products/all');
+    return data;
   } catch (err) {
     console.error(
       'utils.js: getAllProducts(): Unable to get all products.\n',
       err
-    )
-    return err
+    );
+    return err;
   }
 }
 
 export async function getProductBy(col, val) {
   try {
-    const {data} = await axios.get(`/api/products/${col}/${val}`)
-    return data
+    const {data} = await axios.get(`/api/products/${col}/${val}`);
+    return data;
   } catch (error) {
-    console.error('getProductBy(): Unable to get product.\n', error)
-    return error
+    console.error('getProductBy(): Unable to get product.\n', error);
+    return error;
   }
 }
 
 export async function createProduct(product) {
   try {
-    const {data} = await axios.post('/api/products', product)
-    return data
+    const {data} = await axios.post('/api/products', product);
+    return data;
   } catch (error) {
-    console.error('createProduct(): Unable to create product.\n', error)
-    return error
+    console.error('createProduct(): Unable to create product.\n', error);
+    return error;
   }
 }
 
 export async function updateProduct(id, productInfo) {
   try {
-    const {data} = await axios.patch(`/${id}`, productInfo)
-    return data
+    const {data} = await axios.patch(`/${id}`, productInfo);
+    return data;
   } catch (error) {
-    console.error('updateProduct(): Unable to update product.\n', error)
-    return error
+    console.error('updateProduct(): Unable to update product.\n', error);
+    return error;
   }
 }
 
 export async function deleteProduct(id) {
   try {
-    const {data} = await axios.delete(`/${id}`)
-    return data
+    const {data} = await axios.delete(`/${id}`);
+    return data;
   } catch (error) {
-    console.error('deleteProduct(): Unable to delete product.\n', error)
-    return error
+    console.error('deleteProduct(): Unable to delete product.\n', error);
+    return error;
   }
 }
 
@@ -160,62 +160,74 @@ export async function deleteProduct(id) {
 
 export async function getShoppingCart() {
   try {
-    const {data} = await axios.get('/api/carts/me', setHeaders())
-    console.log('Cart: ', data)
-    return data
+    const {data} = await axios.get('/api/orders/carts', setHeaders());
+    console.log('Cart: ', data);
+    return data;
   } catch (error) {
-    return error
+    return error;
   }
 }
 
 export async function addCartItem(productId, userId, quantity) {
-  let config = setHeaders()
+  let config = setHeaders();
   config.body = {
     productId: productId,
     userId: userId,
     quantity: quantity
-  }
+  };
   try {
-    const {data} = await axios.post('/api/carts/item', config)
-    return data
+    const {data} = await axios.post('/api/carts/item', config);
+    return data;
   } catch (error) {
-    return error
+    return error;
   }
 }
 
 export async function updateCartItemQuantity(itemId, quantity, method) {
-  let config = setHeaders()
+  let config = setHeaders();
   config.body = {
     itemId: itemId,
     inputQuantity: quantity,
     method: method
-  }
+  };
   try {
-    const {data} = await axios.patch('/api/carts/item', config)
-    return data
+    const {data} = await axios.patch('/api/carts/item', config);
+    return data;
   } catch (error) {
-    return error
+    return error;
   }
 }
 
 export async function deleteShoppingCart() {
   try {
-    const {data} = await axios.delete('/api/carts/me', setHeaders())
-    return data
+    const {data} = await axios.delete('/api/carts/me', setHeaders());
+    return data;
   } catch (error) {
-    return error
+    return error;
   }
 }
 
 export async function deleteShoppingCartItem(itemId) {
-  let config = setHeaders()
+  let config = setHeaders();
   config.body = {
     itemId: itemId
-  }
+  };
   try {
-    const {data} = await axios.delete('/api/carts/item', config)
-    return data
+    const {data} = await axios.delete('/api/carts/item', config);
+    return data;
   } catch (error) {
-    return error
+    return error;
+  }
+}
+
+/* ORDER HISTORY FUNCTIONS */
+
+export async function getOrderHistory() {
+  try {
+    const {data} = await axios.get('/api/orders/history', setHeaders());
+    console.log('Orders: ', data);
+    return data;
+  } catch (error) {
+    return error;
   }
 }

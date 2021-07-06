@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import {useStateValue} from '../StateProvider';
 import axios from 'axios';
-import {login, register, getShoppingCart} from '../utils';
+import {login, register, getShoppingCart, getOrderHistory} from '../utils';
 
 import './css/AuthForm.css';
 
 function AuthForm(props) {
-  let {type, setUser} = props; // type of auth form (login or signup) and isLoggedIn Function
+  let {type, setUser, setCart, setOrders} = props; // type of auth form (login or signup) and isLoggedIn Function
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [{setCart}] = useStateValue();
 
   async function handleSubmit(evt) {
     evt.preventDefault();
@@ -27,6 +26,7 @@ function AuthForm(props) {
           await setPassword('');
           await setUser(data.user);
           setCart(await getShoppingCart());
+          setOrders(await getOrderHistory());
         }
         console.log(data);
       } catch (error) {

@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from 'react'
-import {checkLogin} from '../utils'
-import ProductCard from './ProductCard'
+import React, {useState, useEffect} from 'react';
+import {checkLogin} from '../utils';
+import ProductCard from './ProductCard';
 
-import './css/Home.css'
+import './css/Home.css';
 
 function Home(props) {
-  console.log('Props: ', props)
-  const {products} = props
-  const [user, setUser] = useState({})
+  const {products} = props;
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     /*
@@ -15,19 +14,19 @@ function Home(props) {
     */
 
     async function setUserData() {
-      let data = await checkLogin()
-      console.log(data)
+      let data = await checkLogin();
+      console.log(data);
       if (!data.id) {
         // no user, return to login
-        props.history.push('/login')
+        props.history.push('/login');
       } else {
-        setUser(data)
+        setUser(data);
       }
     }
 
-    console.log('products in home.js:', products)
+    console.log('products in home.js:', products);
     // setUserData() //invoke
-  }, [])
+  }, []);
 
   return (
     <div className="home">
@@ -35,7 +34,7 @@ function Home(props) {
         <ProductCard product={product} key={idx} />
       ))}
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

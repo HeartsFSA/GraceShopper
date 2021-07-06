@@ -46,7 +46,10 @@ router.get('/history', async (req, res, next) => {
     req.data = await getOrdersByUserId(userId);
     next();
   } catch (error) {
-    next(error);
+    next({
+      name: 'OrderHistoryFetchError',
+      message: 'The users order history was not received'
+    });
   }
 });
 
@@ -59,7 +62,10 @@ router.get('/carts', async (req, res, next) => {
     req.data = await getCartsByUserId(userId);
     next();
   } catch (error) {
-    next(error);
+    next({
+      name: 'CartFetchError',
+      message: 'The users cart was not received'
+    });
   }
 });
 
@@ -74,7 +80,10 @@ router.post('/item', async (req, res, next) => {
     req.data = await getCartsByUserId(userId);
     next();
   } catch (error) {
-    next(error);
+    next({
+      name: 'OrderItemCreationError',
+      message: 'An item for this order was not able to be created'
+    });
   }
 });
 
@@ -89,7 +98,10 @@ router.patch('/item', async (req, res, next) => {
     req.data = await getCartsByUserId(userId);
     next();
   } catch (error) {
-    next(error);
+    next({
+      name: 'OrderItemUpdateError',
+      message: 'An item for this order was not able to be updated'
+    });
   }
 });
 
@@ -103,7 +115,10 @@ router.patch('/carts', async (req, res, next) => {
     req.data = await getCartsByUserId(userId);
     next();
   } catch (error) {
-    next(error);
+    next({
+      name: 'CartToOrderError',
+      message: 'The cart was not able to be converted to an order'
+    });
   }
 });
 
@@ -118,7 +133,10 @@ router.delete('/item', async (req, res, next) => {
     req.data = await getCartByUserId(userId);
     next();
   } catch (error) {
-    next(error);
+    next({
+      name: 'OrderItemDeleteError',
+      message: 'An item for this order was not able to be deleted'
+    });
   }
 });
 

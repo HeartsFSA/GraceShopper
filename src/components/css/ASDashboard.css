@@ -1,0 +1,49 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 8fr;
+  grid-template-rows: 1fr 2fr;
+  height: 100%;
+  background-color: var(--body-background);
+}
+
+.dashboard-navbar {
+  grid-row-start: 1;
+  grid-row-end: 3;
+  background-color: var(--navbar-background);
+}
+
+.dashboard-navbar h1 {
+  color: white;
+}
+
+.dashboard-editor,
+.dashboard-list {
+  padding: 20px;
+}
+
+.dashboard-editor {
+  border-bottom: 1px solid black;
+}
+
+.dashboard-list {
+  overflow-y: scroll;
+}
+
+table {
+  width: 100%;
+}
+
+tr {
+  text-align: left;
+  height: 100px;
+}
+
+th {
+  font-size: 2rem;
+  min-width: 150px;
+  border-bottom: 1px solid black;
+}
+
+td {
+  font-size: 1.5rem;
+}

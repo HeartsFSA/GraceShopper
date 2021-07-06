@@ -45,17 +45,18 @@ function App() {
 
     // setAllProducts()
     await setLogIn();
+    setHasLoaded(true);
   }, []);
 
   return (
     <div className="App">
-      <Navbar
+      {/* <Navbar
         user={user}
         setUser={setUser}
         setCart={setCart}
         setOrders={setOrders}
       />
-      <Routes user={user} setUser={setUser} products={products} />
+      <Routes user={user} setUser={setUser} products={products} /> */}
       {hasLoaded ? (
         <>
           <Navbar user={user} setUser={setUser} />

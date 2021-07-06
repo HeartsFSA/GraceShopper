@@ -134,6 +134,22 @@ async function createInitialUsers() {
   console.log('Starting to create users...')
   try {
     const usersToCreate = [
+<<<<<<< HEAD
+      {username: 'albert', password: 'bertie99', email: 'albert@fullstack.com', permission: 1},
+      {username: 'sandra', password: 'sandra123', email: 'sandra@fullstack.com', permission: 1},
+      {username: 'glamgal', password: 'glamgal123', email: 'glamgal@fullstack.com', permission: 1},
+      {username: 'viral', password: 'FSAtest99', email: 'bhavsar.viral@outlook.com', permission: 4},
+      {username: "Hisshey's", password: 'totallynothersheys', email: 'hisshey@example.com', permission: 2},
+      {username: "The Johnsonian", password: 'totallynotthesmithsonian', email: 'thejohnsonian@example.com', permission: 2},
+      {username: 'Seven Flags', password: 'totallynotsixflags', email: 'sevenflags@example.com', permission: 2},
+      {username: "Francis Johnson", password: 'totallynotfrancisjohnson', email:'fjohnson@example.com', permission: 2},
+      {username: 'HowlCat', password: 'totallynotmeowwolf', email: 'howlcat@example.com', permission: 2},
+      {username: 'Musee Du Leavre', password: 'totallynotmuseedulouvre', email: 'mdl@example.com', permission: 2},
+      {username: 'State Hermit Museum', password: 'totallynottherussiangovernment', email: 'hermit@example.com', permission: 2},
+      {username: 'Salivation Mountain', password: 'totallynotsalvationmountain', email: 'salmountain@example.com', permission: 2},
+      {username: "Noah", password: 'totallynotnoah', email: 'noah@example.com', permission: 2}
+
+=======
       {
         username: 'albert',
         password: 'bertie99',
@@ -212,6 +228,7 @@ async function createInitialUsers() {
         email: 'noah@example.com',
         permission: 2
       }
+>>>>>>> 845f163f2bcff5c29cb712d689529c39f165df95
     ]
     const users = await Promise.all(usersToCreate.map(createUser));
 
@@ -312,6 +329,20 @@ async function createInitialProducts() {
         creatorName: 'Salivation Mountain'
       },
       {
+<<<<<<< HEAD
+        name: "The House of Eventual Comeback",
+        description: "A mind-bending, interactive, explorable art exhibit for all ages",
+        price: "$9.99",
+        location: "Santa Fe, NM",
+        creatorName: "Howl Cat"
+      },
+      {
+        name: "Omicron Mart",
+        description: "A mind-bending interactive art exhibit",
+        price: "$9.99",
+        location: "Las Vegas, NV",
+        creatorName: "Howl Cat"
+=======
         name: 'The House of Eventual Comeback',
         description:
           'A mind-bending, interactive, explorable art exhibit for all ages',
@@ -325,6 +356,7 @@ async function createInitialProducts() {
         price: '$9.99',
         location: 'Las Vegas, NV',
         creatorName: 'HowlCat'
+>>>>>>> 845f163f2bcff5c29cb712d689529c39f165df95
       }
     ]
 

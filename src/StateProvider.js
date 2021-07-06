@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from 'react'
+import React, { createContext, useContext, useReducer } from "react";
 // setup data layer
 // We need this to track the basket count
 
@@ -7,9 +7,9 @@ export const StateContext = createContext();
 
 // Build a Provider
 export const StateProvider = ({ reducer, initialState, children }) => (
-    <StateContext.Provider value={useReducer(reducer, initialState)}>
+  <StateContext.Provider value={useReducer(reducer, initialState)}>
     {children}
-    </StateContext.Provider>
+  </StateContext.Provider>
 );
 
 export const useStateValue = () => useContext(StateContext);

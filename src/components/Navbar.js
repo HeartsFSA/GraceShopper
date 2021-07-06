@@ -11,8 +11,9 @@ import RegisterModal from './RegisterModal';
 
 function Navbar(props) {
   // Props
-  const {user, setUser, query, setQuery, products} = props;
-  // console.log(props.user.username);
+
+  const {user, setUser, query, setQuery, products, setCart, setOrders} = props;
+
 
   // UseState
   const [loginModalVisible, setLoginModalVisible] = useState(false);
@@ -143,6 +144,8 @@ function Navbar(props) {
       <LoginModal
         loginModalVisible={loginModalVisible}
         setUser={setUser}
+        setCart={setCart}
+        setOrders={setOrders}
         setLoginModalVisible={setLoginModalVisible}
       />
 

@@ -5,12 +5,22 @@ import Navbar from './components/Navbar';
 import Cart from './components/Cart';
 
 import Routes from './Routes';
-import {checkLogin, getAllProducts, getShoppingCart} from './utils';
+
+
 import {PinDropSharp} from '@material-ui/icons';
+
+import {
+  checkLogin,
+  getAllProducts,
+  getShoppingCart,
+  getOrderHistory
+} from './utils';
+
 
 function App() {
   const [user, setUser] = useState({});
   const [cart, setCart] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [query, setQuery] = useState('');
   const [getProduct, setGetProducts] = useState([]);
@@ -27,22 +37,24 @@ function App() {
 
       setGetProducts(prods);
       setProducts(prods);
+      console.log('from the useEffec in app.js:\n', prods);
     };
+
     // invocation
     await setAllProducts();
+    console.log('Products from app.js:\n', products);
 
     const setLogIn = async () => {
       let checkedUser = await checkLogin();
-
       if (checkedUser.id) {
         setUser(checkedUser);
         setCart(await getShoppingCart());
+        setOrders(await getOrderHistory());
       }
     };
 
+    // setAllProducts()
     await setLogIn();
-
-    setHasLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -61,6 +73,13 @@ function App() {
 
   return (
     <div className="App">
+      <Navbar
+        user={user}
+        setUser={setUser}
+        setCart={setCart}
+        setOrders={setOrders}
+      />
+      <Routes user={user} setUser={setUser} products={products} />
       {hasLoaded ? (
         <>
           <Navbar

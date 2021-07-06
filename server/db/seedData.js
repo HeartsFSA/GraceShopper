@@ -63,7 +63,8 @@ async function createTables() {
         datesOpen VARCHAR(255),
         location VARCHAR(255) NOT NULL,
         category VARCHAR(255),
-        creatorName VARCHAR(255) REFERENCES users(username) NOT NULL
+        creatorName VARCHAR(255) REFERENCES users(username) NOT NULL,
+        isActive BOOLEAN DEFAULT true
       );
       `);
 
@@ -81,8 +82,8 @@ async function createTables() {
     await client.query(`
       CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
-        "userId" INTEGER,
-        status INTEGER DEFAULT 0,
+        "userId" INTEGER NOT NULL,
+        status INTEGER NOT NULL DEFAULT 0,
         datePurchased DATE DEFAULT NULL,
         FOREIGN KEY ("userId") REFERENCES users(id)
       );
@@ -92,10 +93,10 @@ async function createTables() {
     await client.query(`
       CREATE TABLE order_products (
         id SERIAL PRIMARY KEY,
-        "productId" INTEGER,
-        "orderId" INTEGER,
-        quantity INTEGER DEFAULT 1,
-        totalPrice MONEY,
+        "productId" INTEGER NOT NULL,
+        "orderId" INTEGER NOT NULL,
+        quantity INTEGER NOT NULL DEFAULT 1,
+        totalPrice MONEY NOT NULL DEFAULT 0,
         dateAdded DATE,
         FOREIGN KEY ("productId") REFERENCES products(id),
         FOREIGN KEY ("orderId") REFERENCES orders(id),

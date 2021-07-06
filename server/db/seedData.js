@@ -63,7 +63,8 @@ async function createTables() {
         datesOpen VARCHAR(255),
         location VARCHAR(255) NOT NULL,
         category VARCHAR(255),
-        creatorName VARCHAR(255) REFERENCES users(username) NOT NULL
+        creatorName VARCHAR(255) REFERENCES users(username) NOT NULL,
+        isActive BOOLEAN DEFAULT true
       );
       `)
 
@@ -425,18 +426,20 @@ async function createInitialOrders() {
     console.log('Orders created: ')
     console.log(orders)
 
-    const orderProductsToCreate = await Promise.all(orders.map(async (order) => {
-      const prodId = Math.floor(Math.random() * prods.length) + 1
-      const quantity = Math.floor(Math.random() * 10) + 1
-      const product = await getProductBy('id', prodId)
-      const totalPrice = product.price
-      return {
-        orderId: order.id,
-        productId: prodId,
-        quantity: quantity,
-        totalPrice: totalPrice
-      }
-    }))
+    const orderProductsToCreate = await Promise.all(
+      orders.map(async (order) => {
+        const prodId = Math.floor(Math.random() * prods.length) + 1
+        const quantity = Math.floor(Math.random() * 10) + 1
+        const product = await getProductBy('id', prodId)
+        const totalPrice = product.price
+        return {
+          orderId: order.id,
+          productId: prodId,
+          quantity: quantity,
+          totalPrice: totalPrice
+        }
+      })
+    )
 
     console.log('Order products to create: ')
     console.log(orderProductsToCreate)

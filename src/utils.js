@@ -5,8 +5,8 @@ function setHeaders() {
   let config = token
     ? {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     : {}
   return config
@@ -30,8 +30,8 @@ function setToken(token) {
  */
 export async function checkLogin() {
   try {
-    console.log("in checkLogin")
-    let { data } = await axios.get('/api/users/me', setHeaders())
+    console.log('in checkLogin')
+    let {data} = await axios.get('/api/users/me', setHeaders())
     // if data has an id and user the user is logged on
     return data
   } catch (err) {
@@ -56,9 +56,9 @@ export async function checkLogin() {
  */
 export async function login(username, password) {
   try {
-    const { data } = await axios.post('/api/users/login', {
+    const {data} = await axios.post('/api/users/login', {
       username,
-      password,
+      password
     })
     if (data.token) {
       setToken(data.token)
@@ -87,9 +87,9 @@ export async function login(username, password) {
  */
 export async function register(username, password) {
   try {
-    const { data } = await axios.post('/api/users/register', {
+    const {data} = await axios.post('/api/users/register', {
       username,
-      password,
+      password
     })
     if (data.token) {
       setToken(data.token)
@@ -108,7 +108,10 @@ export async function getAllProducts() {
     const {data} = await axios.get('/api/products/all')
     return data
   } catch (err) {
-    console.error('utils.js: getAllProducts(): Unable to get all products.\n', err)
+    console.error(
+      'utils.js: getAllProducts(): Unable to get all products.\n',
+      err
+    )
     return err
   }
 }
@@ -116,44 +119,40 @@ export async function getAllProducts() {
 export async function getProductBy(col, val) {
   try {
     const {data} = await axios.get(`/api/products/${col}/${val}`)
-    return data;
+    return data
   } catch (error) {
-    console.error("getProductBy(): Unable to get product.\n", error);
-    return error;
+    console.error('getProductBy(): Unable to get product.\n', error)
+    return error
   }
 }
 
 export async function createProduct(product) {
   try {
-    const {data} = await axios.post('/api/products',
-      product
-    );
-    return data;
+    const {data} = await axios.post('/api/products', product)
+    return data
   } catch (error) {
-    console.error("createProduct(): Unable to create product.\n", error);
-    return error;
+    console.error('createProduct(): Unable to create product.\n', error)
+    return error
   }
 }
 
 export async function updateProduct(id, productInfo) {
   try {
-    const {data} = await axios.patch(`/${id}`,
-      productInfo
-    );
-    return data;
+    const {data} = await axios.patch(`/${id}`, productInfo)
+    return data
   } catch (error) {
-    console.error("updateProduct(): Unable to update product.\n", error);
-    return error;
+    console.error('updateProduct(): Unable to update product.\n', error)
+    return error
   }
 }
 
 export async function deleteProduct(id) {
   try {
-    const {data} = await axios.delete(`/${id}`);
-    return data;
+    const {data} = await axios.delete(`/${id}`)
+    return data
   } catch (error) {
-    console.error("deleteProduct(): Unable to delete product.\n", error);
-    return error;
+    console.error('deleteProduct(): Unable to delete product.\n', error)
+    return error
   }
 }
 
@@ -162,6 +161,7 @@ export async function deleteProduct(id) {
 export async function getShoppingCart() {
   try {
     const {data} = await axios.get('/api/carts/me', setHeaders())
+    console.log('Cart: ', data)
     return data
   } catch (error) {
     return error
@@ -171,24 +171,24 @@ export async function getShoppingCart() {
 export async function addCartItem(productId, userId, quantity) {
   let config = setHeaders()
   config.body = {
-    "productId": productId,
-    "userId": userId,
-    "quantity": quantity
+    productId: productId,
+    userId: userId,
+    quantity: quantity
   }
   try {
     const {data} = await axios.post('/api/carts/item', config)
     return data
   } catch (error) {
-    return error 
+    return error
   }
 }
 
 export async function updateCartItemQuantity(itemId, quantity, method) {
   let config = setHeaders()
   config.body = {
-    "itemId": itemId,
-    "inputQuantity": quantity,
-    "method": method
+    itemId: itemId,
+    inputQuantity: quantity,
+    method: method
   }
   try {
     const {data} = await axios.patch('/api/carts/item', config)
@@ -210,11 +210,11 @@ export async function deleteShoppingCart() {
 export async function deleteShoppingCartItem(itemId) {
   let config = setHeaders()
   config.body = {
-    "itemId": itemId
+    itemId: itemId
   }
   try {
     const {data} = await axios.delete('/api/carts/item', config)
-    return data 
+    return data
   } catch (error) {
     return error
   }

@@ -11,7 +11,12 @@ import RegisterModal from './RegisterModal';
 
 function Navbar(props) {
   // Props
+<<<<<<< HEAD
   const {user, setUser, setCart, setOrders} = props;
+=======
+  const {user, setUser} = props;
+  console.log(props.user.username);
+>>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
 
   // UseState
   const [loginModalVisible, setLoginModalVisible] = useState(false);
@@ -26,6 +31,13 @@ function Navbar(props) {
           className="header__logo"
           src="https://images.vexels.com/media/users/3/156708/isolated/lists/6f332cc60f7c82059eeeed0a5730aa7d-flight-ticket-icon.png"
           alt=""
+<<<<<<< HEAD
+=======
+          onClick={(e) => {
+            setLoginModalVisible(false);
+            setRegisterModalVisible(false);
+          }}
+>>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
         />
       </Link>
 
@@ -39,6 +51,7 @@ function Navbar(props) {
         <SearchIcon className="header__searchIcon" />
       </div>
 
+<<<<<<< HEAD
       {/* 3 Links */}
       <div className="header__nav">
         <button
@@ -55,6 +68,36 @@ function Navbar(props) {
         </button>
       </div>
       {/* <div className="header__nav">
+=======
+      {props.user.username ? (
+        <h3
+          className={'authfunc'}
+          onClick={(e) => {
+            setUser({});
+          }}
+        >
+          Logout
+        </h3>
+      ) : (
+        <>
+          {' '}
+          {/* 3 Links */}
+          <div className="header__nav">
+            <button
+              className="header__link"
+              onClick={() => {
+                setRegisterModalVisible(false);
+                setLoginModalVisible(!loginModalVisible);
+              }}
+            >
+              <div className="header__option">
+                <span className="header__optionLineOne"></span>
+                <span className="header__optionLineTwo"> Sign In</span>
+              </div>
+            </button>
+          </div>
+          {/* <div className="header__nav">
+>>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
           {/* 1st Link 
           <Link to="/login" className="header__link">
             <div className="header__option">
@@ -63,6 +106,7 @@ function Navbar(props) {
             </div>
           </Link>
         </div> */}
+<<<<<<< HEAD
 
       {/* 2nd Link */}
       <div className="header__nav">
@@ -80,6 +124,26 @@ function Navbar(props) {
         </button>
       </div>
 
+=======
+          {/* 2nd Link */}
+          <div className="header__nav">
+            <button
+              className="header__link"
+              onClick={() => {
+                setLoginModalVisible(false);
+                setRegisterModalVisible(!registerModalVisible);
+              }}
+            >
+              <div className="header__option">
+                <span className="header__optionLineOne"> </span>
+                <span className="header__optionLineTwo"> Register</span>
+              </div>
+            </button>
+          </div>
+        </>
+      )}
+
+>>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
       {/* <Link to="/signup" className="header__link">
           <div className="header__option">
             <span className="header__optionLineOne"> Hello Guest</span>
@@ -102,13 +166,21 @@ function Navbar(props) {
       <LoginModal
         loginModalVisible={loginModalVisible}
         setUser={setUser}
+<<<<<<< HEAD
         setCart={setCart}
         setOrders={setOrders}
+=======
+        setLoginModalVisible={setLoginModalVisible}
+>>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
       />
 
       <RegisterModal
         registerModalVisible={registerModalVisible}
         setUser={setUser}
+<<<<<<< HEAD
+=======
+        setRegisterModalVisible={setRegisterModalVisible}
+>>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
       />
     </nav>
   );

@@ -24,8 +24,7 @@ function Home(props) {
       }
     }
 
-    console.log('products in home.js:', products);
-    // setUserData() //invoke
+    setUserData(); //invoke
   }, []);
 
   return (

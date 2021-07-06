@@ -1,15 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 
 import Card from './Card';
 
 import './css/ProductCard.css';
-import { useStateValue } from '../StateProvider';
+import {useStateValue} from '../StateProvider';
 
-function ProductCard({ product }) {
-  const [{ cart }, dispatch] = useStateValue();
+function ProductCard({product}) {
+  const [{cart}, dispatch] = useStateValue();
 
   // function to addToBasket
   const addToBasket = () => {

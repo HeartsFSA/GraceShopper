@@ -1,23 +1,23 @@
-import React from "react";
-import { useState } from "react";
-import "./css/Navbar.css";
-import { Link, NavLink, withRouter } from "react-router-dom";
-import SearchIcon from "@material-ui/icons/Search";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import { useStateValue } from "../StateProvider";
+import React from 'react';
+import {useState} from 'react';
+import './css/Navbar.css';
+import {Link, NavLink, withRouter} from 'react-router-dom';
+import SearchIcon from '@material-ui/icons/Search';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import {useStateValue} from '../StateProvider';
 
-import LoginModal from "./LoginModal";
-import RegisterModal from "./RegisterModal";
+import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
 
 function Navbar(props) {
   // Props
-  const { user, setUser } = props;
+  const {user, setUser} = props;
   console.log(props.user.username);
 
   // UseState
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
-  const [{ cart }] = useStateValue();
+  const [{cart}] = useStateValue();
 
   return (
     <nav className="header">
@@ -46,7 +46,7 @@ function Navbar(props) {
 
       {props.user.username ? (
         <h3
-          className={"authfunc"}
+          className={'authfunc'}
           onClick={(e) => {
             setUser({});
           }}
@@ -55,7 +55,7 @@ function Navbar(props) {
         </h3>
       ) : (
         <>
-          {" "}
+          {' '}
           {/* 3 Links */}
           <div className="header__nav">
             <button

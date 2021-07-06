@@ -1,13 +1,13 @@
-import React from "react";
-import "./css/Cart.css";
-import { useStateValue } from "../StateProvider";
-import Card from "./Card";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
-import OpenWithIcon from "@material-ui/icons/OpenWith";
-import { Switch, Route, withRouter, Link } from "react-router-dom";
+import React from 'react';
+import './css/Cart.css';
+import {useStateValue} from '../StateProvider';
+import Card from './Card';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import OpenWithIcon from '@material-ui/icons/OpenWith';
+import {Switch, Route, withRouter, Link} from 'react-router-dom';
 
 function Cart(props) {
-  const [{ cart }] = useStateValue();
+  const [{cart}] = useStateValue();
 
   return (
     <div className="block col-1">

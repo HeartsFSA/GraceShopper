@@ -1,5 +1,5 @@
 // require in the database adapter functions as you write them (createUser, createActivity...)
-const {createUser} = require('./')
+const {createUser} = require('./');
 const {
   getAllUsers,
   createOrder,
@@ -14,11 +14,11 @@ const {
   getProductBy,
   getAllProducts,
   createPhotos
-} = require('./')
-const client = require('./client')
+} = require('./');
+const client = require('./client');
 
 async function dropTables() {
-  console.log('Dropping All Tables...')
+  console.log('Dropping All Tables...');
   // drop all tables, in the correct order
 
   //  Add more tables as you need them
@@ -29,18 +29,18 @@ async function dropTables() {
     DROP TABLE IF EXISTS orders CASCADE;
     DROP TABLE IF EXISTS products CASCADE;
     DROP TABLE IF EXISTS users;
-  `)
+  `);
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
 async function createTables() {
   try {
-    console.log('Starting to build tables...')
+    console.log('Starting to build tables...');
     // create all tables, in the correct order
 
-    console.log('Creating users table...')
+    console.log('Creating users table...');
     await client.query(`
       CREATE TABLE users(
         id  SERIAL PRIMARY KEY, 
@@ -50,9 +50,9 @@ async function createTables() {
         permission INT DEFAULT 1
         
       );
-      `)
+      `);
 
-    console.log('Creating products table...')
+    console.log('Creating products table...');
     await client.query(`
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
@@ -65,9 +65,9 @@ async function createTables() {
         category VARCHAR(255),
         creatorName VARCHAR(255) REFERENCES users(username) NOT NULL
       );
-      `)
+      `);
 
-    console.log('Creating photos table...')
+    console.log('Creating photos table...');
     await client.query(`
       CREATE TABLE photos (
         photo_id SERIAL PRIMARY KEY,
@@ -75,9 +75,9 @@ async function createTables() {
         photo_url VARCHAR(255),
         rel_path VARCHAR(51)
       );
-      `)
+      `);
 
-    console.log('Creating orders table...')
+    console.log('Creating orders table...');
     await client.query(`
       CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
@@ -86,9 +86,9 @@ async function createTables() {
         datePurchased DATE DEFAULT NULL,
         FOREIGN KEY ("userId") REFERENCES users(id)
       );
-      `)
+      `);
 
-    console.log('Creating order_products table...')
+    console.log('Creating order_products table...');
     await client.query(`
       CREATE TABLE order_products (
         id SERIAL PRIMARY KEY,
@@ -101,7 +101,7 @@ async function createTables() {
         FOREIGN KEY ("orderId") REFERENCES orders(id),
         CONSTRAINT po_id UNIQUE ("productId", "orderId")
       );
-      `)
+      `);
 
     /* Account Permission
          0  Guest User (Extra parameter, in case need to use)
@@ -119,10 +119,10 @@ async function createTables() {
     // Add tables as you need them (A good place to start is Products and Orders
     // You may also need an extra table that links products and orders together (HINT* Many-To-Many)
 
-    console.log('Finished building tables!')
+    console.log('Finished building tables!');
   } catch (error) {
-    console.error('Error building tables!')
-    throw error
+    console.error('Error building tables!');
+    throw error;
   }
 }
 
@@ -131,25 +131,9 @@ ADD DATA BELOW AS NEEDED. This is default seed data, and will help you start tes
 */
 
 async function createInitialUsers() {
-  console.log('Starting to create users...')
+  console.log('Starting to create users...');
   try {
     const usersToCreate = [
-<<<<<<< HEAD
-      {username: 'albert', password: 'bertie99', email: 'albert@fullstack.com', permission: 1},
-      {username: 'sandra', password: 'sandra123', email: 'sandra@fullstack.com', permission: 1},
-      {username: 'glamgal', password: 'glamgal123', email: 'glamgal@fullstack.com', permission: 1},
-      {username: 'viral', password: 'FSAtest99', email: 'bhavsar.viral@outlook.com', permission: 4},
-      {username: "Hisshey's", password: 'totallynothersheys', email: 'hisshey@example.com', permission: 2},
-      {username: "The Johnsonian", password: 'totallynotthesmithsonian', email: 'thejohnsonian@example.com', permission: 2},
-      {username: 'Seven Flags', password: 'totallynotsixflags', email: 'sevenflags@example.com', permission: 2},
-      {username: "Francis Johnson", password: 'totallynotfrancisjohnson', email:'fjohnson@example.com', permission: 2},
-      {username: 'HowlCat', password: 'totallynotmeowwolf', email: 'howlcat@example.com', permission: 2},
-      {username: 'Musee Du Leavre', password: 'totallynotmuseedulouvre', email: 'mdl@example.com', permission: 2},
-      {username: 'State Hermit Museum', password: 'totallynottherussiangovernment', email: 'hermit@example.com', permission: 2},
-      {username: 'Salivation Mountain', password: 'totallynotsalvationmountain', email: 'salmountain@example.com', permission: 2},
-      {username: "Noah", password: 'totallynotnoah', email: 'noah@example.com', permission: 2}
-
-=======
       {
         username: 'albert',
         password: 'bertie99',
@@ -228,21 +212,20 @@ async function createInitialUsers() {
         email: 'noah@example.com',
         permission: 2
       }
->>>>>>> 845f163f2bcff5c29cb712d689529c39f165df95
-    ]
+    ];
     const users = await Promise.all(usersToCreate.map(createUser));
 
-    console.log('Users created:')
-    console.log(users)
-    console.log('Finished creating users!')
+    console.log('Users created:');
+    console.log(users);
+    console.log('Finished creating users!');
   } catch (error) {
-    console.error('Error creating users!')
-    throw error
+    console.error('Error creating users!');
+    throw error;
   }
 }
 
 async function createInitialProducts() {
-  console.log('starting to create products...')
+  console.log('starting to create products...');
   try {
     const productsToCreate = [
       {
@@ -329,20 +312,6 @@ async function createInitialProducts() {
         creatorName: 'Salivation Mountain'
       },
       {
-<<<<<<< HEAD
-        name: "The House of Eventual Comeback",
-        description: "A mind-bending, interactive, explorable art exhibit for all ages",
-        price: "$9.99",
-        location: "Santa Fe, NM",
-        creatorName: "Howl Cat"
-      },
-      {
-        name: "Omicron Mart",
-        description: "A mind-bending interactive art exhibit",
-        price: "$9.99",
-        location: "Las Vegas, NV",
-        creatorName: "Howl Cat"
-=======
         name: 'The House of Eventual Comeback',
         description:
           'A mind-bending, interactive, explorable art exhibit for all ages',
@@ -356,25 +325,24 @@ async function createInitialProducts() {
         price: '$9.99',
         location: 'Las Vegas, NV',
         creatorName: 'HowlCat'
->>>>>>> 845f163f2bcff5c29cb712d689529c39f165df95
       }
-    ]
+    ];
 
-    console.log('products to Create:')
-    console.log(productsToCreate)
+    console.log('products to Create:');
+    console.log(productsToCreate);
 
-    const products = await Promise.all(productsToCreate.map(createProduct))
-    console.log('products created:')
-    console.log(products)
-    console.log('Finished creating products!')
+    const products = await Promise.all(productsToCreate.map(createProduct));
+    console.log('products created:');
+    console.log(products);
+    console.log('Finished creating products!');
   } catch (error) {
-    console.error('Error creating products!')
-    throw error
+    console.error('Error creating products!');
+    throw error;
   }
 }
 
 async function createInitialPhotos() {
-  console.log('starting to create photos table...')
+  console.log('starting to create photos table...');
   try {
     const photosToCreate = [
       {
@@ -421,96 +389,98 @@ async function createInitialPhotos() {
         product_id: '1',
         photo_url: 'https://placeimg.com/480/480/nature'
       }
-    ]
+    ];
 
-    console.log('photos to Create:')
-    console.log(photosToCreate)
+    console.log('photos to Create:');
+    console.log(photosToCreate);
 
-    const photos = await Promise.all(photosToCreate.map(createPhotos))
-    console.log('photos created:')
-    console.log(photos)
-    console.log('Finished creating photos!')
+    const photos = await Promise.all(photosToCreate.map(createPhotos));
+    console.log('photos created:');
+    console.log(photos);
+    console.log('Finished creating photos!');
   } catch (error) {
-    console.error('Error creating photos!')
-    throw error
+    console.error('Error creating photos!');
+    throw error;
   }
 }
 
 async function createInitialOrders() {
-  console.log('Starting to create initial carts...')
+  console.log('Starting to create initial carts...');
   try {
-    const users = await getAllUsers()
-    const prods = await getAllProducts()
+    const users = await getAllUsers();
+    const prods = await getAllProducts();
 
     // const ordersToCreate = users.map((user) => {
     //   const prodId = Math.floor(Math.random() * prods.length) + 1
     //   const quantity = Math.floor(Math.random() * 5) + 1
     //   return {productId: prodId, userId: user.id, quantity: quantity}
     // })
-    const ordersToCreate = users.map((user) => user.id)
+    const ordersToCreate = users.map((user) => user.id);
 
-    console.log('Users to create orders for: ')
-    console.log(ordersToCreate)
+    console.log('Users to create orders for: ');
+    console.log(ordersToCreate);
 
-    const orders = await Promise.all(ordersToCreate.map(createOrder))
+    const orders = await Promise.all(ordersToCreate.map(createOrder));
 
-    console.log('Orders created: ')
-    console.log(orders)
+    console.log('Orders created: ');
+    console.log(orders);
 
-    const orderProductsToCreate = await Promise.all(orders.map(async (order) => {
-      const prodId = Math.floor(Math.random() * prods.length) + 1
-      const quantity = Math.floor(Math.random() * 10) + 1
-      const product = await getProductBy('id', prodId)
-      const totalPrice = product.price
-      return {
-        orderId: order.id,
-        productId: prodId,
-        quantity: quantity,
-        totalPrice: totalPrice
-      }
-    }))
+    const orderProductsToCreate = await Promise.all(
+      orders.map(async (order) => {
+        const prodId = Math.floor(Math.random() * prods.length) + 1;
+        const quantity = Math.floor(Math.random() * 10) + 1;
+        const product = await getProductBy('id', prodId);
+        const totalPrice = product.price;
+        return {
+          orderId: order.id,
+          productId: prodId,
+          quantity: quantity,
+          totalPrice: totalPrice
+        };
+      })
+    );
 
-    console.log('Order products to create: ')
-    console.log(orderProductsToCreate)
+    console.log('Order products to create: ');
+    console.log(orderProductsToCreate);
 
     const orderProducts = await Promise.all(
       orderProductsToCreate.map(createOrderProduct)
-    )
+    );
 
-    console.log('Order products created: ')
-    console.log(orderProducts)
+    console.log('Order products created: ');
+    console.log(orderProducts);
   } catch (error) {
-    console.error('Error creating carts!')
-    throw error
+    console.error('Error creating carts!');
+    throw error;
   }
 }
 
 async function rebuildDB() {
   try {
-    client.connect()
-    await dropTables()
-    await createTables()
-    await createInitialUsers()
-    await createInitialProducts()
-    await createInitialPhotos()
-    await createInitialOrders()
+    client.connect();
+    await dropTables();
+    await createTables();
+    await createInitialUsers();
+    await createInitialProducts();
+    await createInitialPhotos();
+    await createInitialOrders();
 
     // remove if not testing db calls
-    await testDB()
+    await testDB();
 
     // create other data
   } catch (error) {
-    console.log('Error during rebuildDB')
-    throw error
+    console.log('Error during rebuildDB');
+    throw error;
   }
 }
 
 async function testDB() {
-  console.log('getting product by id:')
-  console.log(await getProductBy('id', 1))
+  console.log('getting product by id:');
+  console.log(await getProductBy('id', 1));
 
-  console.log('getting all products:')
-  console.log(await getAllProducts())
+  console.log('getting all products:');
+  console.log(await getAllProducts());
 
   // console.log('Getting raw carts by user id: ')
   // console.log(await getRawCartByUserId(1))
@@ -521,4 +491,4 @@ async function testDB() {
 
 module.exports = {
   rebuildDB
-}
+};

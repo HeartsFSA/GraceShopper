@@ -82,8 +82,8 @@ async function createTables() {
     await client.query(`
       CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
-        "userId" INTEGER,
-        status INTEGER DEFAULT 0,
+        "userId" INTEGER NOT NULL,
+        status INTEGER NOT NULL DEFAULT 0,
         datePurchased DATE DEFAULT NULL,
         FOREIGN KEY ("userId") REFERENCES users(id)
       );
@@ -93,10 +93,10 @@ async function createTables() {
     await client.query(`
       CREATE TABLE order_products (
         id SERIAL PRIMARY KEY,
-        "productId" INTEGER,
-        "orderId" INTEGER,
-        quantity INTEGER DEFAULT 1,
-        totalPrice MONEY,
+        "productId" INTEGER NOT NULL,
+        "orderId" INTEGER NOT NULL,
+        quantity INTEGER NOT NULL DEFAULT 1,
+        totalPrice MONEY NOT NULL DEFAULT 0,
         dateAdded DATE,
         FOREIGN KEY ("productId") REFERENCES products(id),
         FOREIGN KEY ("orderId") REFERENCES orders(id),
@@ -416,24 +416,6 @@ async function createInitialOrders() {
     //   const quantity = Math.floor(Math.random() * 5) + 1
     //   return {productId: prodId, userId: user.id, quantity: quantity}
     // })
-<<<<<<< HEAD
-    const ordersToCreate = users.map((user) => user.id)
-
-    console.log('Users to create orders for: ')
-    console.log(ordersToCreate)
-
-    const orders = await Promise.all(ordersToCreate.map(createOrder))
-
-    console.log('Orders created: ')
-    console.log(orders)
-
-    const orderProductsToCreate = await Promise.all(
-      orders.map(async (order) => {
-        const prodId = Math.floor(Math.random() * prods.length) + 1
-        const quantity = Math.floor(Math.random() * 10) + 1
-        const product = await getProductBy('id', prodId)
-        const totalPrice = product.price
-=======
     const ordersToCreate = users.map((user) => user.id);
 
     console.log('Users to create orders for: ');
@@ -450,27 +432,17 @@ async function createInitialOrders() {
         const quantity = Math.floor(Math.random() * 10) + 1;
         const product = await getProductBy('id', prodId);
         const totalPrice = product.price;
->>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
         return {
           orderId: order.id,
           productId: prodId,
           quantity: quantity,
           totalPrice: totalPrice
-<<<<<<< HEAD
-        }
-      })
-    )
-
-    console.log('Order products to create: ')
-    console.log(orderProductsToCreate)
-=======
         };
       })
     );
 
     console.log('Order products to create: ');
     console.log(orderProductsToCreate);
->>>>>>> 0aa9e9ab7e027953df8684465fdbd28248ae7d14
 
     const orderProducts = await Promise.all(
       orderProductsToCreate.map(createOrderProduct)

@@ -64,7 +64,7 @@ function AuthForm(props) {
           onChange={(evt) => setPassword(evt.target.value)}
         />
       </div>
-      <button type="submit">{type === "login" ? "Login" : "Register"}</button>
+      <button type="submit">{type === 'login' ? 'Login' : 'Register'}</button>
     </form>
   );
 }

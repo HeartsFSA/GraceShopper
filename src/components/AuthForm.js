@@ -58,11 +58,11 @@ function AuthForm(props) {
   async function onRegister(evt) {
     // console.log('on register was clicked');
     evt.preventDefault();
-    if (!username || !password) {
+    if (!username || !password || !email) {
       return alert('Please enter reg details'); // need to fill out username and password
     }
     try {
-      let data = await register(username, password);
+      let data = await register(username, password, email);
       console.log(data);
 
       if (data.user) {

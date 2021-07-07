@@ -86,11 +86,12 @@ export async function login(username, password) {
  *      token: JSonWebToken
  *  }
  */
-export async function register(username, password) {
+export async function register(username, password, email) {
   try {
     const {data} = await axios.post('/api/users/register', {
       username,
-      password
+      password,
+      email
     });
     if (data.token) {
       setToken(data.token);

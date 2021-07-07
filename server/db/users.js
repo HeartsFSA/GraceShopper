@@ -5,18 +5,18 @@ const SALT_COUNT = 10;
 // database functions
 
 // user functions
-async function createUser({username, password}) {
+async function createUser({username, password, email}) {
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
   try {
     const {
       rows: [user]
     } = await client.query(
       `
-      INSERT INTO users(username, password) VALUES ($1, $2)
+      INSERT INTO users(username, password, email) VALUES ($1, $2, $3)
       ON CONFLICT (username) DO NOTHING 
       RETURNING id, username
     `,
-      [username, hashedPassword]
+      [username, hashedPassword, email]
     );
     return user;
   } catch (error) {

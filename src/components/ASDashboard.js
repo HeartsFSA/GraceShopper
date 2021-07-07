@@ -197,12 +197,12 @@ function ASDashboard(props) {
           </button>
         </form>
 
-        {/* <ProductCard product={editorFeature} /> */}
+        <ProductCard product={editorFeature} />
       </div>
       <div className="dashboard-list">
         <table>
           <thead>
-            <tr>
+            <tr className="table-header">
               <th></th>
               <th>ID</th>
               <th>Title</th>
@@ -215,7 +215,10 @@ function ASDashboard(props) {
           <tbody>
             {dashboardProducts.map((product) => {
               return (
-                <tr key={product.id}>
+                <tr
+                  key={product.id}
+                  className={product.is_active ? 'active' : 'inactive'}
+                >
                   <td>
                     <span>
                       <button

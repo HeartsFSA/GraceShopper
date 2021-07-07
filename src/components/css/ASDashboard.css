@@ -61,6 +61,10 @@ table {
   border-collapse: collapse;
 }
 
+/* tr.table-header th {
+  background-color: white;
+} */
+
 tr {
   /* background-color: white; */
   margin-bottom: 10px;
@@ -68,11 +72,21 @@ tr {
   height: 75px;
 }
 
-tr:nth-child(even) {
-  background-color: lightblue;
+.active {
+  background-color: white;
 }
 
+.inactive {
+  background-color: lightcoral;
+}
+
+/* tr:nth-child(even) {
+  background-color: lightblue;
+} */
+
 th {
+  /* position: sticky;
+  top: 0; */
   font-size: 2rem;
   min-width: 75px;
 }

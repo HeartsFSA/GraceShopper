@@ -8,6 +8,7 @@ import {useStateValue} from '../StateProvider';
 
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
+import {DomainDisabled} from '@material-ui/icons';
 
 function Navbar(props) {
   // Props
@@ -35,6 +36,10 @@ function Navbar(props) {
     );
   }, [query]);
 
+  function backHome() {
+    return <Redirect to="/" />;
+  }
+
   return (
     <nav className="header">
       {/* logo on the left */}
@@ -58,14 +63,25 @@ function Navbar(props) {
           className="header__searchInput"
           placeholder={searchPlaceholder}
           value={query}
+          // onKeyPress={(event) => {
+          //   if (event.key === 'Enter') {
+          //     return <backHome />;
+          //   }
+          // }}
           onChange={(e) => {
             setQuery(e.target.value);
           }}
+
           // onClick={(e) => {
           //   props.history.push('/');
           // }}
         />
-        <SearchIcon className="header__searchIcon" />
+        <SearchIcon
+          className="header__searchIcon"
+          // onClick={(e) => {
+          //   props.history.push('/');
+          // }}
+        />
       </div>
 
       {props.user.username ? (

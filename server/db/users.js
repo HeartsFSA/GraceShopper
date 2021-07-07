@@ -5,18 +5,18 @@ const SALT_COUNT = 10;
 // database functions
 
 // user functions
-async function createUser({username, password, permission}) {
+async function createUser({username, password, email, permission}) {
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
   try {
     const {
       rows: [user]
     } = await client.query(
       `
-      INSERT INTO users(username, password, permission) VALUES ($1, $2, $3)
+      INSERT INTO users(username, password, email, permission) VALUES ($1, $2, $3, $4)
       ON CONFLICT (username) DO NOTHING 
       RETURNING id, username
     `,
-      [username, hashedPassword, permission]
+      [username, hashedPassword, email, permission]
     );
     return user;
   } catch (error) {
@@ -79,6 +79,7 @@ async function getUserByUsername(userName) {
     );
     // if it doesn't exist, return null
     if (!user) return null;
+    console.log('getting user', user, 'from db/users.js');
     // if it does:
     // delete the 'password' key from the returned object
     delete user.password;
@@ -97,7 +98,7 @@ async function getUserById(userId) {
       FROM users
       WHERE id = $1;
     `,
-      [userName]
+      [userId]
     );
     // if it doesn't exist, return null
     if (!rows || !rows.length) return null;

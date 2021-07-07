@@ -4,34 +4,46 @@ import ProductCard from './ProductCard';
 import './css/UserDetails.css';
 
 function UserDetails(props) {
-  const [hasLoaded, setHasLoaded] = useState(false);
   const [user, setUser] = useState({});
   const [productsToShow, setProductsToShow] = useState([]);
   const {products} = props;
 
+  // useEffect for getting the user
   useEffect(async function () {
-    console.log('input username:', props.match.params.username);
     setUser(await getUserByUsername(props.match.params.username));
-    console.log('email:', user.email);
-
-    setHasLoaded(true);
   }, []);
+
+  // separate useEffect for finding the user's products
+  useEffect(() => {
+    setProductsToShow(
+      products.filter((prod) => {
+        return prod.creator_name === user.username;
+      })
+    );
+  }, [user]);
 
   return (
     <div id="user-details-container">
-      {hasLoaded && user.username ? (
+      {user.username ? (
         <div id="user-details-card">
           <div id="user-info">
             <h1>{user.username}</h1>
+            <br></br>
             <h3>Contact: {user.email}</h3>
           </div>
-          {products
-            .filter((prod) => {
-              return prod.creator_name === user.username;
-            })
-            .map((prod, i) => {
-              return <ProductCard product={prod} key={i} />;
-            })}
+          <br></br>
+          {productsToShow.length > 0 ? (
+            <>
+              <h3>Products:</h3>
+              <div id="user-products-display">
+                {productsToShow.map((prod, i) => {
+                  return <ProductCard product={prod} key={i} />;
+                })}
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       ) : (
         <h1>Loading, please wait...</h1>

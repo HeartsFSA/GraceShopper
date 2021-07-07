@@ -9,7 +9,7 @@ import ProductDetails from './components/ProductDetails';
 import ASDashboard from './components/ASDashboard';
 
 function Routes(props) {
-  const {user, setUser, products} = props;
+  const {user, setUser, products, setProducts} = props;
   return (
     <Switch>
       <Route path="/checkout" component={Checkout} />
@@ -23,6 +23,7 @@ function Routes(props) {
             type="admin"
             {...props}
             products={products}
+            setProducts={setProducts}
             user={user}
           />
         )}
@@ -35,6 +36,7 @@ function Routes(props) {
             type="seller"
             {...props}
             products={products}
+            setProducts={setProducts}
             user={user}
           />
         )}

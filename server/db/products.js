@@ -18,7 +18,7 @@ async function createProduct(inputProduct) {
     throw new Error('Error: no product price given');
   }
 
-  if (!inputProduct.creatorName) {
+  if (!inputProduct.creator_name) {
     throw new Error('Error: no creator name given');
   }
 

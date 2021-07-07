@@ -4,36 +4,44 @@ import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 
 import ProductCard from './ProductCard';
-import {createProduct, updateProduct} from '../utils';
+import {createProduct, updateProduct, getAllProducts} from '../utils';
 
 import './css/ASDashboard.css';
 import {Save} from '@material-ui/icons';
 
 function ASDashboard(props) {
-  const {type, user, products} = props;
+  const {type, user, products, setProducts} = props;
   const [dashboardProducts, setDashboardProducts] = useState([]);
-  const [editorFeature, setEditorFeature] = useState({
-    category: null,
-    creatorname: user.username ? user.username : '',
-    datesopen: 'M-F',
-    description: 'Description',
-    hours: '8AM - 5PM',
-    isactive: true,
-    location: 'Location',
-    name: 'Name',
-    price: 'Price',
-    photos: []
-  });
+  const [editorFeature, setEditorFeature] = useState(initializeProductObject());
 
   useEffect(async () => {
     if (type === 'admin') {
-      setDashboardProducts(products);
+      setDashboardProducts(
+        products.sort((a, b) => {
+          return a.id - b.id;
+        })
+      );
     } else {
       setDashboardProducts(
-        products.filter((product) => product.creatorName === user.username)
+        products.filter((product) => product.creator_name === user.username)
       );
     }
-  }, []);
+  }, [products]);
+
+  function initializeProductObject() {
+    return {
+      category: '',
+      creator_name: user.username ? user.username : '',
+      dates_open: '',
+      description: '',
+      hours: '',
+      is_active: true,
+      location: '',
+      name: '',
+      price: '',
+      photos: []
+    };
+  }
 
   async function handleSubmit() {
     if (editorFeature.id) {
@@ -42,11 +50,15 @@ function ASDashboard(props) {
       delete updatedFeature.photos;
       const product = await updateProduct(id, updatedFeature);
       console.log('UPDATED PRODUCT: ', product);
+      setProducts(await getAllProducts());
+      setEditorFeature(initializeProductObject());
     } else {
       let updatedFeature = {...editorFeature};
       delete updatedFeature.photos;
       const product = await createProduct(updatedFeature);
       console.log('CREATED PRODUCT: ', product);
+      setProducts(await getAllProducts());
+      setEditorFeature(initializeProductObject());
     }
   }
 
@@ -66,6 +78,7 @@ function ASDashboard(props) {
           <input
             id="product-name-input"
             value={editorFeature.name}
+            placeholder="Name..."
             onChange={(event) => {
               let updatedFeature = {...editorFeature};
               updatedFeature.name = event.target.value;
@@ -77,10 +90,11 @@ function ASDashboard(props) {
           <label htmlFor="product-creator-name-input">Creator Name</label>
           <input
             id="product-creator-name-input"
-            value={editorFeature.creatorname}
+            value={editorFeature.creator_name}
+            placeholder="Creator Name..."
             onChange={(event) => {
               let updatedFeature = {...editorFeature};
-              updatedFeature.creatorname = event.target.value;
+              updatedFeature.creator_name = event.target.value;
               console.log('UPDATED: ', updatedFeature);
               setEditorFeature(updatedFeature);
             }}
@@ -90,6 +104,7 @@ function ASDashboard(props) {
           <input
             id="product-category-input"
             value={editorFeature.category}
+            placeholder="Category..."
             onChange={(event) => {
               let updatedFeature = {...editorFeature};
               updatedFeature.category = event.target.value;
@@ -103,6 +118,7 @@ function ASDashboard(props) {
             rows="5"
             id="product-description-input"
             value={editorFeature.description}
+            placeholder="Description..."
             onChange={(event) => {
               let updatedFeature = {...editorFeature};
               updatedFeature.description = event.target.value;
@@ -115,6 +131,7 @@ function ASDashboard(props) {
           <input
             id="product-price-input"
             value={editorFeature.price}
+            placeholder="Price..."
             onChange={(event) => {
               let updatedFeature = {...editorFeature};
               updatedFeature.price = event.target.value;
@@ -127,6 +144,7 @@ function ASDashboard(props) {
           <input
             id="product-location-input"
             value={editorFeature.location}
+            placeholder="Location..."
             onChange={(event) => {
               let updatedFeature = {...editorFeature};
               updatedFeature.location = event.target.value;
@@ -138,10 +156,11 @@ function ASDashboard(props) {
           <label htmlFor="product-dates-input">Dates Open</label>
           <input
             id="product-dates-input"
-            value={editorFeature.datesopen}
+            value={editorFeature.dates_open}
+            placeholder="Dates Open..."
             onChange={(event) => {
               let updatedFeature = {...editorFeature};
-              updatedFeature.datesopen = event.target.value;
+              updatedFeature.dates_open = event.target.value;
               console.log('UPDATED: ', updatedFeature);
               setEditorFeature(updatedFeature);
             }}
@@ -151,6 +170,7 @@ function ASDashboard(props) {
           <input
             id="product-hours-input"
             value={editorFeature.hours}
+            placeholder="Hours Open..."
             onChange={(event) => {
               let updatedFeature = {...editorFeature};
               updatedFeature.hours = event.target.value;
@@ -163,10 +183,10 @@ function ASDashboard(props) {
           <input
             id="product-active-input"
             type="checkbox"
-            checked={editorFeature.isactive}
+            checked={editorFeature.is_active}
             onChange={(event) => {
               let updatedFeature = {...editorFeature};
-              updatedFeature.isactive = event.target.checked;
+              updatedFeature.is_active = event.target.checked;
               console.log('UPDATED: ', updatedFeature);
               setEditorFeature(updatedFeature);
             }}
@@ -187,6 +207,7 @@ function ASDashboard(props) {
               <th>ID</th>
               <th>Title</th>
               <th>Description</th>
+              <th>Category</th>
               <th>Price</th>
               <th>Location</th>
             </tr>
@@ -198,8 +219,8 @@ function ASDashboard(props) {
                   <td>
                     <span>
                       <button
-                        onClick={() => {
-                          console.log(product);
+                        onClick={async () => {
+                          setEditorFeature(await initializeProductObject());
                           setEditorFeature(product);
                         }}
                       >
@@ -210,6 +231,7 @@ function ASDashboard(props) {
                   <td>{product.id}</td>
                   <td>{product.name}</td>
                   <td>{product.description}</td>
+                  <td>{product.category}</td>
                   <td>{product.price}</td>
                   <td>{product.location}</td>
                 </tr>

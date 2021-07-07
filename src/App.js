@@ -60,7 +60,12 @@ function App() {
       {hasLoaded ? (
         <>
           <Navbar user={user} setUser={setUser} />
-          <Routes user={user} setUser={setUser} products={products} />
+          <Routes
+            user={user}
+            setUser={setUser}
+            products={products}
+            setProducts={setProducts}
+          />
         </>
       ) : (
         <h1>Loading, please wait...</h1>

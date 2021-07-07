@@ -6,7 +6,8 @@ import {
   register,
   getShoppingCart,
   getOrderHistory,
-  checkUser
+  checkUser,
+  validateEmail
 } from '../utils';
 
 import './css/AuthForm.css';
@@ -61,6 +62,9 @@ function AuthForm(props) {
     evt.preventDefault();
     if (!username || !password || !email) {
       return alert('Please enter reg details'); // need to fill out username and password
+    }
+    if (!validateEmail(email)) {
+      return alert('Please enter proper email');
     }
     try {
       let data = await register(username, password, email);
@@ -170,24 +174,27 @@ function AuthForm(props) {
         >
           Login
         </button>
-        <button
-          onClick={(evt) => {
-            evt.preventDefault();
-            setShowEmail(!showEmail);
-          }}
-        >
-          Activate Register
-        </button>
+        {showEmail ? (
+          <button
+            onClick={(evt) => {
+              onRegister(evt);
+              setShowEmail(!showEmail);
+            }}
+          >
+            Register
+          </button>
+        ) : (
+          <button
+            onClick={(evt) => {
+              evt.preventDefault();
+              setShowEmail(!showEmail);
+            }}
+          >
+            Register
+          </button>
+        )}
       </div>
-      <div id="login_register">
-        <button
-          onClick={(evt) => {
-            onRegister(evt);
-          }}
-        >
-          Register
-        </button>
-      </div>
+      <div id="login_register"></div>
     </form>
   );
 }

@@ -1,7 +1,13 @@
 const express = require('express');
 const usersRouter = express.Router();
 const jwt = require('jsonwebtoken');
-const {createUser, getUser, getUserByUsername, getUserById} = require('../db');
+const {
+  createUser,
+  getUser,
+  getUserByUsername,
+  getUserById,
+  checkUser
+} = require('../db');
 const SALT_COUNT = 10;
 const {JWT_SECRET = 'neverTell'} = process.env;
 
@@ -90,6 +96,17 @@ usersRouter.get('/me', (req, res, next) => {
     next(error);
   }
 });
+
+// ** Disabled for security **
+// usersRouter.get('/check', async (req, res, next) => {
+//   const {username} = req.body;
+//   try {
+//     const check = await checkUser(username);
+//     res.send(check);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 // --------- ADD ADDITONAL USER ROUTES AS NEEDED ---------
 module.exports = usersRouter;

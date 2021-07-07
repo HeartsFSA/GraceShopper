@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
 import {useStateValue} from '../StateProvider';
 import axios from 'axios';
-import {login, register, getShoppingCart, getOrderHistory} from '../utils';
+import {
+  login,
+  register,
+  getShoppingCart,
+  getOrderHistory,
+  checkUser
+} from '../utils';
 
 import './css/AuthForm.css';
 
@@ -12,11 +18,20 @@ function AuthForm(props) {
     setCart,
     setOrders,
     setLoginModalVisible,
-    setRegisterModalVisible
+    setRegisterModalVisible,
+    user
   } = props; // type of auth form (login or signup) and isLoggedIn Function
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+
+  async function onLogin(evt) {
+    evt.preventDefault();
+    if (!username || !password) {
+      return alert('Please enter details'); // need to fill out username and password
+    }
+  }
 
   async function handleSubmit(evt) {
     evt.preventDefault();
@@ -25,10 +40,13 @@ function AuthForm(props) {
       return alert('Please enter details'); // need to fill out username and password
     } else {
       try {
-        let data =
-          type === 'login'
-            ? await login(username, password)
-            : await register(username, password);
+        let data = await checkUser(username);
+        console.log(data);
+
+        if (data.status === 409) {
+          data = await login(username, password);
+        }
+
         if (data.user) {
           await setUsername('');
           await setPassword('');
@@ -53,28 +71,42 @@ function AuthForm(props) {
   }
 
   return (
-    <form className="auth-form" onSubmit={handleSubmit}>
+    <form className="auth-form">
       <div>
-        <label htmlFor="username">Username:</label>
+        <label htmlFor="username"></label>
         <input
           id="username"
           value={username}
           type="text"
-          placeholder="Type your username"
+          placeholder="Enter Username"
           onChange={(evt) => setUsername(evt.target.value)}
         />
       </div>
       <div>
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="password"></label>
         <input
           id="password"
           value={password}
-          type="text"
-          placeholder="Type your password"
+          type="password"
+          placeholder="Enter Password"
           onChange={(evt) => setPassword(evt.target.value)}
         />
+      </div>{' '}
+      <div>
+        <label htmlFor="email"></label>
+        <input
+          id="email"
+          value={email}
+          type="email"
+          placeholder="Enter Email"
+          onChange={(evt) => setEmail(evt.target.value)}
+        />{' '}
       </div>
-      <button type="submit">{type === 'login' ? 'Login' : 'Register'}</button>
+      <div id="login_register">
+        {' '}
+        <button>Login</button>
+        <button>Register</button>
+      </div>
     </form>
   );
 }

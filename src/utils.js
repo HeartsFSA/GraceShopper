@@ -60,12 +60,14 @@ export async function login(username, password) {
       username,
       password
     });
+    console.log('utlis', data);
     if (data.token) {
       setToken(data.token);
     }
     return data;
   } catch (err) {
-    console.error('login(): Unable to login.\n', err);
+    console.error('login(): Unable to login.\n', err.message);
+
     // returns error to be handled.
     return err;
   }

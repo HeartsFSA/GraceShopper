@@ -50,7 +50,7 @@ async function getUser({username, password}) {
       FROM users
       WHERE username = $1;
     `,
-      [userName]
+      [username]
     );
 
     if (!user) return;
@@ -133,11 +133,51 @@ async function checkUser(userName) {
   }
 }
 
+async function updatePassword({username, password}) {
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+
+  try {
+    const {
+      rows: [user]
+    } = await client.query(
+      `
+      INSERT INTO users(username, password) VALUES ($1, $2)
+      ON CONFLICT (username) DO NOTHING 
+      RETURNING id, username
+    `,
+      [username, hashedPassword]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateEmail({username, email}) {
+  try {
+    const {
+      rows: [user]
+    } = await client.query(
+      `
+      INSERT INTO users(username, email) VALUES ($1, $2)
+      ON CONFLICT (username) DO NOTHING 
+      RETURNING id, username
+    `,
+      [username, email]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   createUser,
   getAllUsers,
   getUser,
   getUserById,
   getUserByUsername,
-  checkUser
+  checkUser,
+  updatePassword,
+  updateEmail
 };

@@ -127,8 +127,9 @@ export async function getProductBy(col, val) {
 }
 
 export async function createProduct(product) {
+  console.log('UTILS Product: ', product);
   try {
-    const {data} = await axios.post('/api/products', product);
+    const {data} = await axios.post('/api/products/', product);
     return data;
   } catch (error) {
     console.error('createProduct(): Unable to create product.\n', error);
@@ -137,8 +138,10 @@ export async function createProduct(product) {
 }
 
 export async function updateProduct(id, productInfo) {
+  console.log('Product ID: ', id);
+  console.log('Product: ', productInfo);
   try {
-    const {data} = await axios.patch(`/${id}`, productInfo);
+    const {data} = await axios.patch(`/api/products/${id}`, productInfo);
     return data;
   } catch (error) {
     console.error('updateProduct(): Unable to update product.\n', error);

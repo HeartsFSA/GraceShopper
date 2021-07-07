@@ -1,3 +1,28 @@
+input,
+label,
+textarea {
+  display: block;
+  width: 100%;
+}
+
+input[type='checkbox'] {
+  width: 50px;
+}
+
+.dashboard label {
+  font-size: 1.25rem;
+}
+
+.dashboard .card {
+  height: 90%;
+}
+
+.dashboard input,
+.dashboard textarea {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
 .dashboard {
   display: grid;
   grid-template-columns: 1fr 8fr;
@@ -22,6 +47,8 @@
 }
 
 .dashboard-editor {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
   border-bottom: 1px solid black;
 }
 
@@ -31,19 +58,31 @@
 
 table {
   width: 100%;
+  border-collapse: collapse;
 }
 
 tr {
+  /* background-color: white; */
+  margin-bottom: 10px;
   text-align: left;
-  height: 100px;
+  height: 75px;
+}
+
+tr:nth-child(even) {
+  background-color: lightblue;
 }
 
 th {
   font-size: 2rem;
-  min-width: 150px;
-  border-bottom: 1px solid black;
+  min-width: 75px;
 }
 
 td {
   font-size: 1.5rem;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid black;
 }

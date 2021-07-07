@@ -66,7 +66,7 @@ productsRouter.patch('/:productID', async (req, res, next) => {
     let productToBeUpdated = await getProductBy('id', req.params.productID);
     if (
       productToBeUpdated.creator_name !== req.user.username &&
-      parseInt(req.user.permission) < 3
+      req.user.permission < 3
     ) {
       console.log(
         'user',

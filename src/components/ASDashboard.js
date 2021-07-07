@@ -181,7 +181,7 @@ function ASDashboard(props) {
 
           <label htmlFor="product-active-input">Active</label>
           <input
-            id="product-active-input"
+            className="product-active-input"
             type="checkbox"
             checked={editorFeature.is_active}
             onChange={(event) => {
@@ -229,6 +229,21 @@ function ASDashboard(props) {
                       >
                         <EditIcon />
                       </button>
+                      {/* <input
+                        className="product-active-input"
+                        type="checkbox"
+                        checked={product.is_active}
+                        onChange={async (event) => {
+                          let updatedFeature = {...product};
+                          updatedFeature.is_active = event.target.checked;
+                          console.log('UPDATED: ', updatedFeature);
+                          const product = await updateProduct(
+                            product.id,
+                            updatedFeature
+                          );
+                          setProducts(await getAllProducts());
+                        }}
+                      ></input> */}
                     </span>
                   </td>
                   <td>{product.id}</td>

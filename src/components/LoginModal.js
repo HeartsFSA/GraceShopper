@@ -10,7 +10,8 @@ function LoginModal(props) {
     setUser,
     setCart,
     setOrders,
-    setLoginModalVisible
+    setLoginModalVisible,
+    messenger
   } = props;
 
   return (
@@ -23,6 +24,7 @@ function LoginModal(props) {
         setOrders={setOrders}
         setLoginModalVisible={setLoginModalVisible}
         user={user}
+        messenger={messenger}
       />
     </Modal>
   );

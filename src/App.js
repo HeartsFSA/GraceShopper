@@ -24,7 +24,7 @@ function App() {
   const [products, setProducts] = useState([]);
   const [query, setQuery] = useState('');
   const [getProduct, setGetProducts] = useState([]);
-  const [message, setMessage] = useState('TEST MESSAGE');
+  const [message, setMessage] = useState('This message should not show');
 
   // used for a loading page.
   // This displays while the async functions are still loading.
@@ -78,6 +78,17 @@ function App() {
     // }
   }, [query]);
 
+  function messenger(incmoingMessage) {
+    setMessage(incmoingMessage);
+    setTimeout(() => {
+      setMessage('');
+    }, 10000);
+  }
+
+  useEffect(() => {
+    messenger('Welcome to Wonder World of Banana Land');
+  }, []);
+
   return (
     <div className="App">
       {hasLoaded ? (
@@ -88,8 +99,9 @@ function App() {
             query={query}
             setQuery={setQuery}
             products={products}
+            messenger={message}
           />
-          <MessageBar message={message} setMessage={setMessage} />
+          <MessageBar message={message} />
 
           <Routes
             user={user}

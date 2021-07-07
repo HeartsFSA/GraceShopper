@@ -13,14 +13,15 @@ import {
 import './css/AuthForm.css';
 
 function AuthForm(props) {
-  let {
+  const {
     type,
     setUser,
     setCart,
     setOrders,
     setLoginModalVisible,
     setRegisterModalVisible,
-    user
+    user,
+    messenger
   } = props; // type of auth form (login or signup) and isLoggedIn Function
 
   const [username, setUsername] = useState('');
@@ -37,6 +38,11 @@ function AuthForm(props) {
     try {
       const data = await login(username, password);
       console.log('auth form 39', data);
+
+      if (data.error) {
+        messenger('login error');
+      }
+
       if (data.user) {
         await setUsername('');
         await setPassword('');

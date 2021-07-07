@@ -89,5 +89,12 @@ body {
 }
 
 #message {
-  display: flex;
+  text-align: center;
+  background-color: #bbcea8ff;
+  width: 100vw;
+  height: 5vh;
+  min-height: 10px;
+
+  padding-top: 1.5vh;
+  margin-right: auto;
 }

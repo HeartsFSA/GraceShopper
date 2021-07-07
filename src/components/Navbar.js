@@ -13,7 +13,16 @@ import {DomainDisabled} from '@material-ui/icons';
 function Navbar(props) {
   // Props
 
-  const {user, setUser, query, setQuery, products, setCart, setOrders} = props;
+  const {
+    user,
+    setUser,
+    query,
+    setQuery,
+    products,
+    setCart,
+    setOrders,
+    messenger
+  } = props;
 
   console.log(products);
 
@@ -168,6 +177,7 @@ function Navbar(props) {
         setOrders={setOrders}
         setLoginModalVisible={setLoginModalVisible}
         user={user}
+        messenger={messenger}
       />
 
       {/* <RegisterModal

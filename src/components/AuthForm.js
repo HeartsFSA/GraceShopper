@@ -25,6 +25,7 @@ function AuthForm(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [showEmail, setShowEmail] = useState(false);
 
   async function onLogin(evt) {
     // alert('onLogin clicked');
@@ -146,16 +147,20 @@ function AuthForm(props) {
           onChange={(evt) => setPassword(evt.target.value)}
         />
       </div>{' '}
-      <div>
-        <label htmlFor="email"></label>
-        <input
-          id="email"
-          value={email}
-          type="email"
-          placeholder="Enter Email"
-          onChange={(evt) => setEmail(evt.target.value)}
-        />{' '}
-      </div>
+      {showEmail ? (
+        <div>
+          <label htmlFor="email"></label>
+          <input
+            id="email"
+            value={email}
+            type="email"
+            placeholder="Enter Email"
+            onChange={(evt) => setEmail(evt.target.value)}
+          />{' '}
+        </div>
+      ) : (
+        <></>
+      )}
       <div id="login_register">
         {' '}
         <button
@@ -165,6 +170,16 @@ function AuthForm(props) {
         >
           Login
         </button>
+        <button
+          onClick={(evt) => {
+            evt.preventDefault();
+            setShowEmail(!showEmail);
+          }}
+        >
+          Activate Register
+        </button>
+      </div>
+      <div id="login_register">
         <button
           onClick={(evt) => {
             onRegister(evt);

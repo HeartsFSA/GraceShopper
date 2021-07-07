@@ -28,62 +28,73 @@ function ProductDetails(props) {
   return (
     <div id="product-info-display">
       <div id="product-info-card">
-        <h1>{product.name}</h1>
-        {/* image slideshow container */}
-        <div id="product-image-display">
-          <div
-            id="prev-btn"
-            onClick={() =>
-              setCurrentImg(
-                currentImg === 0 ? product.photos.length - 1 : currentImg - 1
-              )
-            }
-          >
-            <span>&#10094;</span>
-          </div>
-          {product.photos.map((img, i) => (
-            <div id={`photo${i}`} className="display-photos">
-              <img src={img.photo_url}></img>
-            </div>
-          ))}
-          {/* next and prev arrows */}
-          <div
-            id="next-btn"
-            onClick={() =>
-              setCurrentImg(
-                currentImg === product.photos.length - 1 ? 0 : currentImg + 1
-              )
-            }
-          >
-            <span>&#10095;</span>
-          </div>
-        </div>
-        <div id="dots-div">
-          {product.photos.map((_, i) => (
-            <span
-              className="nav-dot"
-              // code for hovering over dots; I couldn't get this to work in the css file
-              onMouseOver={() =>
-                (document.getElementsByClassName('nav-dot')[
-                  i
-                ].style.backgroundColor = 'var(--black)')
-              }
-              onMouseOut={() => {
-                if (currentImg !== i) {
-                  document.getElementsByClassName('nav-dot')[
-                    i
-                  ].style.backgroundColor = 'var(--dot-default)';
+        {product ? (
+          <>
+            {' '}
+            <h1>{product.name}</h1>
+            {/* image slideshow container */}
+            <div id="product-image-display">
+              <div
+                id="prev-btn"
+                onClick={() =>
+                  setCurrentImg(
+                    currentImg === 0
+                      ? product.photos.length - 1
+                      : currentImg - 1
+                  )
                 }
-              }}
-              onClick={() => setCurrentImg(i)}
-            ></span>
-          ))}
-        </div>
-        <p>{product.description}</p>
-        <p>Price: {product.price}</p>
-        <p>Location: {product.location}</p>
-        <p>{product.datesOpen ? `Open ${product.datesOpen}` : ''}</p>
-        <p>{product.hours ? `Hours of Operation: ${product.hours}` : ''}</p>
+              >
+                <span>&#10094;</span>
+              </div>
+              {product.photos.map((img, i) => (
+                <div id={`photo${i}`} className="display-photos">
+                  <img src={img.photo_url}></img>
+                </div>
+              ))}
+              {/* next and prev arrows */}
+              <div
+                id="next-btn"
+                onClick={() =>
+                  setCurrentImg(
+                    currentImg === product.photos.length - 1
+                      ? 0
+                      : currentImg + 1
+                  )
+                }
+              >
+                <span>&#10095;</span>
+              </div>
+            </div>
+            <div id="dots-div">
+              {product.photos.map((_, i) => (
+                <span
+                  className="nav-dot"
+                  // code for hovering over dots; I couldn't get this to work in the css file
+                  onMouseOver={() =>
+                    (document.getElementsByClassName('nav-dot')[
+                      i
+                    ].style.backgroundColor = 'var(--black)')
+                  }
+                  onMouseOut={() => {
+                    if (currentImg !== i) {
+                      document.getElementsByClassName('nav-dot')[
+                        i
+                      ].style.backgroundColor = 'var(--dot-default)';
+                    }
+                  }}
+                  onClick={() => setCurrentImg(i)}
+                ></span>
+              ))}
+            </div>
+            <p>{product.description}</p>
+            <p>Price: {product.price}</p>
+            <p>Location: {product.location}</p>
+            <p>{product.datesOpen ? `Open ${product.datesOpen}` : ''}</p>
+            <p>{product.hours ? `Hours of Operation: ${product.hours}` : ''}</p>
+          </>
+        ) : (
+          <h1>Please update search criteria</h1>
+        )}
       </div>
     </div>
   );

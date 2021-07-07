@@ -1,7 +1,17 @@
 const express = require('express');
 const usersRouter = express.Router();
 const jwt = require('jsonwebtoken');
+<<<<<<< HEAD
 const {createUser, getUser, getUserByUsername, getUserById} = require('../db');
+=======
+const {
+  createUser,
+  getUser,
+  getUserByUsername,
+  getUserById,
+  checkUser
+} = require('../db');
+>>>>>>> acb7372dd1da913f143d5e362abf4354779deeea
 const SALT_COUNT = 10;
 const {JWT_SECRET = 'neverTell'} = process.env;
 
@@ -17,7 +27,12 @@ usersRouter.post('/login', async (req, res, next) => {
   if (!username || !password) {
     next({
       name: 'MissingCredentialsError',
+<<<<<<< HEAD
       message: 'Please supply both a username and password'
+=======
+      message: 'Please supply both a username and password',
+      status: 400
+>>>>>>> acb7372dd1da913f143d5e362abf4354779deeea
     });
   }
 
@@ -27,7 +42,12 @@ usersRouter.post('/login', async (req, res, next) => {
     if (!user) {
       next({
         name: 'IncorrectCredentialsError',
+<<<<<<< HEAD
         message: 'Username or password is incorrect'
+=======
+        message: 'Username or password is incorrect',
+        status: 400
+>>>>>>> acb7372dd1da913f143d5e362abf4354779deeea
       });
     } else {
       const token = jwt.sign(
@@ -46,19 +66,33 @@ usersRouter.post('/login', async (req, res, next) => {
 // POST /api/users/register
 usersRouter.post('/register', async (req, res, next) => {
   try {
+<<<<<<< HEAD
     const {username, password} = req.body;
+=======
+    const {username, password, email} = req.body;
+>>>>>>> acb7372dd1da913f143d5e362abf4354779deeea
     const queriedUser = await getUserByUsername(username);
     if (queriedUser) {
       res.status(401);
       next({
         name: 'UserExistsError',
+<<<<<<< HEAD
         message: 'A user by that username already exists'
+=======
+        message: 'A user by that username already exists',
+        status: 409
+>>>>>>> acb7372dd1da913f143d5e362abf4354779deeea
       });
     } else {
       // Add email and permission later
       const user = await createUser({
         username,
+<<<<<<< HEAD
         password
+=======
+        password,
+        email
+>>>>>>> acb7372dd1da913f143d5e362abf4354779deeea
       });
       if (!user) {
         next({
@@ -88,6 +122,7 @@ usersRouter.get('/me', (req, res, next) => {
   }
 });
 
+<<<<<<< HEAD
 // GET /api/users/:username
 usersRouter.get('/:username', async (req, res, next) => {
   try {
@@ -109,6 +144,18 @@ usersRouter.get('/:username', async (req, res, next) => {
     });
   }
 });
+=======
+// ** Disabled for security **
+// usersRouter.get('/check', async (req, res, next) => {
+//   const {username} = req.body;
+//   try {
+//     const check = await checkUser(username);
+//     res.send(check);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+>>>>>>> acb7372dd1da913f143d5e362abf4354779deeea
 
 // --------- ADD ADDITONAL USER ROUTES AS NEEDED ---------
 module.exports = usersRouter;

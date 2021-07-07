@@ -1,4 +1,4 @@
-const client = require('./client')
+const client = require('./client');
 
 async function createOrder(userId) {
   try {
@@ -11,16 +11,16 @@ async function createOrder(userId) {
             RETURNING *
         `,
       [userId]
-    )
-    return order
+    );
+    return order;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
 /**
- * 
- * @param {number} userId 
+ *
+ * @param {number} userId
  * @returns {Array.<{
  * id: number,
  * userId: number,
@@ -28,9 +28,11 @@ async function createOrder(userId) {
  * datePurchased: Date}>}
  */
 async function _getOrdersBy(valueObject) {
-  const valueString = Object.keys(valueObject).map((key, idx) => {
-    return `${key}=$${idx + 1}`
-  }).join(' AND ')
+  const valueString = Object.keys(valueObject)
+    .map((key, idx) => {
+      return `${key}=$${idx + 1}`;
+    })
+    .join(' AND ');
 
   try {
     const {rows: orders} = await client.query(
@@ -40,16 +42,16 @@ async function _getOrdersBy(valueObject) {
             WHERE ${valueString}
         `,
       Object.values(valueObject)
-    )
-    return orders 
+    );
+    return orders;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
 /**
- * 
- * @param {number} userId 
+ *
+ * @param {number} userId
  * @returns {Array.<{
  * id: number,
  * userId: number,
@@ -58,16 +60,16 @@ async function _getOrdersBy(valueObject) {
  */
 async function getOrdersByUserId(userId) {
   try {
-    const orders = await _getOrdersBy({'"userId"': userId, 'status': 1})
-    return orders
+    const orders = await _getOrdersBy({'"userId"': userId, status: 1});
+    return orders;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
 /**
- * 
- * @param {number} userId 
+ *
+ * @param {number} userId
  * @returns {Array.<{
  * id: number,
  * userId: number,
@@ -76,26 +78,29 @@ async function getOrdersByUserId(userId) {
  */
 async function getCartsByUserId(userId) {
   try {
-    const carts = await _getOrdersBy({'"userId"': userId, 'status': 0})
-    return carts
+    const carts = await _getOrdersBy({'"userId"': userId, status: 0});
+    return carts;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
 async function updateCartToOrderByOrderId(orderId) {
   try {
-    const today = new Date()
+    const today = new Date();
     const {
       rows: [order]
-    } = await client.query(`
+    } = await client.query(
+      `
       UPDATE orders
       SET status=1, datePurchased=$1
       WHERE id=$2
-    `, [today, orderId])
-    return order
+    `,
+      [today, orderId]
+    );
+    return order;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
@@ -104,4 +109,4 @@ module.exports = {
   getOrdersByUserId,
   getCartsByUserId,
   updateCartToOrderByOrderId
-}
+};

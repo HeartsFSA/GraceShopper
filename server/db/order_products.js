@@ -1,8 +1,8 @@
-const client = require('./client')
+const client = require('./client');
 
 /**
- * 
- * @param {object} param0 
+ *
+ * @param {object} param0
  * @returns {<{
  * id: number,
  * productId: number,
@@ -12,7 +12,7 @@ const client = require('./client')
  * dateAdded: Date}>}
  */
 async function createOrderProduct({orderId, productId, quantity, totalPrice}) {
-  const today = new Date()
+  const today = new Date();
   try {
     const {
       rows: [product]
@@ -23,10 +23,11 @@ async function createOrderProduct({orderId, productId, quantity, totalPrice}) {
             RETURNING *
         `,
       [orderId, productId, quantity, totalPrice, today]
-    )
-    return product
+    );
+    console.log('PRODUCT: ', product);
+    return product;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
@@ -39,19 +40,19 @@ async function _getOrderProductsBy(column, value) {
             WHERE ${column}=$1
         `,
       [value]
-    )
-    return rows
+    );
+    return rows;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
 async function getOrderProductsByOrderId(orderId) {
   try {
-    const products = await _getOrderProductsBy('"orderId"', orderId)
-    return products
+    const products = await _getOrderProductsBy('"orderId"', orderId);
+    return products;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
@@ -59,15 +60,18 @@ async function updateOrderProductsById({orderProductId, quantity, totalPrice}) {
   try {
     const {
       rows: [orderProduct]
-    } = await client.query(`
+    } = await client.query(
+      `
       UPDATE order_products
       SET quantity=$1, totalPrice=$2
       WHERE id=$3
       RETURNING *
-    `, [quantity, totalPrice, orderProductId])
-    return orderProduct
+    `,
+      [quantity, totalPrice, orderProductId]
+    );
+    return orderProduct;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
@@ -75,4 +79,4 @@ module.exports = {
   createOrderProduct,
   getOrderProductsByOrderId,
   updateOrderProductsById
-}
+};

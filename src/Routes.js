@@ -7,9 +7,10 @@ import Cart from './components/Cart';
 import Checkout from './components/Checkout.js';
 import ProductDetails from './components/ProductDetails';
 import UserDetails from './components/UserDetails';
+import ASDashboard from './components/ASDashboard';
 
 function Routes(props) {
-  const {user, setUser, products} = props;
+  const {user, setUser, products, setProducts} = props;
   return (
     <Switch>
       <Route path="/checkout" component={Checkout} />
@@ -17,11 +18,38 @@ function Routes(props) {
       <Route path="/cart" component={Cart} />
 
       <Route
+        path="/admin"
+        render={(props) => (
+          <ASDashboard
+            type="admin"
+            {...props}
+            products={products}
+            setProducts={setProducts}
+            user={user}
+          />
+        )}
+      />
+
+      <Route
+        path="/seller"
+        render={(props) => (
+          <ASDashboard
+            type="seller"
+            {...props}
+            products={products}
+            setProducts={setProducts}
+            user={user}
+          />
+        )}
+      />
+
+      <Route
         path="/login"
         render={(props) => (
           <AuthForm type="login" {...props} setUser={setUser} />
         )}
       />
+
       <Route
         path="/signup"
         render={(props) => (

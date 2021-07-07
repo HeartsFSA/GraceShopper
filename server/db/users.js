@@ -5,18 +5,18 @@ const SALT_COUNT = 10;
 // database functions
 
 // user functions
-async function createUser({username, password}) {
+async function createUser({username, password, permission}) {
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
   try {
     const {
       rows: [user]
     } = await client.query(
       `
-      INSERT INTO users(username, password) VALUES ($1, $2)
+      INSERT INTO users(username, password, permission) VALUES ($1, $2, $3)
       ON CONFLICT (username) DO NOTHING 
       RETURNING id, username
     `,
-      [username, hashedPassword]
+      [username, hashedPassword, permission]
     );
     return user;
   } catch (error) {
@@ -67,7 +67,9 @@ async function getUser({username, password}) {
 async function getUserByUsername(userName) {
   // first get the user
   try {
-    const {rows} = await client.query(
+    const {
+      rows: [user]
+    } = await client.query(
       `
       SELECT *
       FROM users
@@ -76,10 +78,9 @@ async function getUserByUsername(userName) {
       [userName]
     );
     // if it doesn't exist, return null
-    if (!rows || !rows.length) return null;
+    if (!user) return null;
     // if it does:
     // delete the 'password' key from the returned object
-    const [user] = rows;
     delete user.password;
     return user;
   } catch (error) {
@@ -90,24 +91,45 @@ async function getUserByUsername(userName) {
 async function getUserById(userId) {
   // first get the user
   try {
-    const {
-      rows: [user]
-    } = await client.query(
+    const {rows} = await client.query(
       `
       SELECT *
       FROM users
       WHERE id = $1;
     `,
-      [userId]
+      [userName]
     );
     // if it doesn't exist, return null
-    if (!user) return null;
+    if (!rows || !rows.length) return null;
     // if it does:
     // delete the 'password' key from the returned object
-    delete user.password;
+    const [user] = rows;
+    // delete user.password;
     return user;
   } catch (error) {
-    throw error;
+    console.error(error);
+  }
+}
+
+async function checkUser(userName) {
+  // first get the user
+  try {
+    const {rows} = await client.query(
+      `
+      SELECT username, id
+      FROM users
+      WHERE username = $1;
+    `,
+      [userName]
+    );
+    // if it doesn't exist, return null
+    if (!rows || !rows.length) {
+      return false;
+    } else {
+      return true;
+    }
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -116,5 +138,6 @@ module.exports = {
   getAllUsers,
   getUser,
   getUserById,
-  getUserByUsername
+  getUserByUsername,
+  checkUser
 };

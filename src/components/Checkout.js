@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import StripeCheckout from "react-stripe-checkout";
-import "./css/Checkout.css";
-import axios from "axios";
+import React, {useState} from 'react';
+import StripeCheckout from 'react-stripe-checkout';
+import './css/Checkout.css';
+import axios from 'axios';
 
 function Checkout() {
   // test product information, will use actual database products later
   const [product] = React.useState({
-    name: "Banana Land",
-    price: "56.99",
-    description: "Banana fun!",
-    location: "the moon",
-    quantity: "1", // can be changed once we start inputting actual data from the database
+    name: 'Banana Land',
+    price: '56.99',
+    description: 'Banana fun!',
+    location: 'the moon',
+    quantity: '1' // can be changed once we start inputting actual data from the database
   });
 
   // handleToken function used to display object in console
   function handleToken(token, addresses) {
-    console.log("handleToken: ", { token, addresses });
+    console.log('handleToken: ', {token, addresses});
     // Need to make a axios.post request to the server
     // Work in Progress
   }

@@ -1,70 +1,178 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { login, register } from "../utils";
+import React, {useState} from 'react';
+import {useStateValue} from '../StateProvider';
+import axios from 'axios';
+import {
+  login,
+  register,
+  getShoppingCart,
+  getOrderHistory,
+  checkUser
+} from '../utils';
 
-import "./css/AuthForm.css";
+import './css/AuthForm.css';
 
 function AuthForm(props) {
-  let { type, setUser, setLoginModalVisible, setRegisterModalVisible } = props; // type of auth form (login or signup) and isLoggedIn Function
+  let {
+    type,
+    setUser,
+    setCart,
+    setOrders,
+    setLoginModalVisible,
+    setRegisterModalVisible,
+    user
+  } = props; // type of auth form (login or signup) and isLoggedIn Function
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
 
-  async function handleSubmit(evt) {
+  async function onLogin(evt) {
+    // alert('onLogin clicked');
     evt.preventDefault();
-
     if (!username || !password) {
-      return alert("Please enter details"); // need to fill out username and password
-    } else {
-      try {
-        let data =
-          type === "login"
-            ? await login(username, password)
-            : await register(username, password);
-        if (data.user) {
-          await setUsername("");
-          await setPassword("");
-          await setUser(data.user);
+      return alert('Please enter details'); // need to fill out username and password
+    }
+    try {
+      const data = await login(username, password);
 
-          console.log(data.user);
-          // console.log(type);
+      if (data.user) {
+        await setUsername('');
+        await setPassword('');
+        await setUser(data.user);
+        setCart(await getShoppingCart());
+        setOrders(await getOrderHistory());
 
-          type === "login"
-            ? setLoginModalVisible(false)
-            : setRegisterModalVisible(false);
-          // ? setLoginModalVisible(false);
-          // : setRegisterModalVisible(false);
-        }
-        console.log(data)
-      } catch (error) {
-        console.log(error);
+        // console.log(type);
+
+        setLoginModalVisible(false);
+
+        // ? setLoginModalVisible(false);
+        // : setRegisterModalVisible(false);
+        console.log(data.user);
       }
+    } catch (error) {
+      console.log(error);
     }
   }
 
+  async function onRegister(evt) {
+    // console.log('on register was clicked');
+    evt.preventDefault();
+    if (!username || !password || !email) {
+      return alert('Please enter reg details'); // need to fill out username and password
+    }
+    try {
+      let data = await register(username, password, email);
+      console.log(data);
+
+      if (data.user) {
+        await setUsername('');
+        await setPassword('');
+        await setUser(data.user);
+
+        // ** Set Cart needs to be updated to fetch it from local or state variable ** //
+        // setCart(await getShoppingCart());
+        // setOrders(await getOrderHistory());
+
+        // console.log(type);
+
+        setLoginModalVisible(false);
+
+        // ? setLoginModalVisible(false);
+        // : setRegisterModalVisible(false);
+        console.log(data.user);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // async function handleSubmit(evt) {
+  //   evt.preventDefault();
+
+  //   if (!username || !password) {
+  //     return alert('Please enter details'); // need to fill out username and password
+  //   } else {
+  //     try {
+  //       let data = await checkUser(username);
+  //       console.log(data);
+
+  //       if (data.status === 409) {
+  //         data = await login(username, password);
+  //       }
+
+  //       if (data.user) {
+  //         await setUsername('');
+  //         await setPassword('');
+  //         await setUser(data.user);
+  //         setCart(await getShoppingCart());
+  //         setOrders(await getOrderHistory());
+
+  //         console.log(data.user);
+  //         // console.log(type);
+
+  //         type === 'login'
+  //           ? setLoginModalVisible(false)
+  //           : setRegisterModalVisible(false);
+  //         // ? setLoginModalVisible(false);
+  //         // : setRegisterModalVisible(false);
+  //       }
+  //       console.log(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // }
+
   return (
-    <form className="auth-form" onSubmit={handleSubmit}>
+    <form className="auth-form">
       <div>
-        <label htmlFor="username">Username:</label>
+        <label htmlFor="username"></label>
         <input
           id="username"
           value={username}
           type="text"
-          placeholder="Type your username"
+          placeholder="Enter Username"
           onChange={(evt) => setUsername(evt.target.value)}
         />
       </div>
       <div>
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="password"></label>
         <input
           id="password"
           value={password}
-          type="text"
-          placeholder="Type your password"
+          type="password"
+          placeholder="Enter Password"
           onChange={(evt) => setPassword(evt.target.value)}
         />
+      </div>{' '}
+      <div>
+        <label htmlFor="email"></label>
+        <input
+          id="email"
+          value={email}
+          type="email"
+          placeholder="Enter Email"
+          onChange={(evt) => setEmail(evt.target.value)}
+        />{' '}
       </div>
-      <button type="submit">{type === 'login' ? 'Login' : 'Register'}</button>
+      <div id="login_register">
+        {' '}
+        <button
+          onClick={(evt) => {
+            onLogin(evt);
+          }}
+        >
+          Login
+        </button>
+        <button
+          onClick={(evt) => {
+            onRegister(evt);
+          }}
+        >
+          Register
+        </button>
+      </div>
     </form>
   );
 }

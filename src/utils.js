@@ -1,4 +1,3 @@
-import {NextWeek} from '@material-ui/icons';
 import axios from 'axios';
 
 function setHeaders() {
@@ -86,11 +85,12 @@ export async function login(username, password) {
  *      token: JSonWebToken
  *  }
  */
-export async function register(username, password) {
+export async function register(username, password, email) {
   try {
     const {data} = await axios.post('/api/users/register', {
       username,
-      password
+      password,
+      email
     });
     if (data.token) {
       setToken(data.token);
@@ -138,8 +138,9 @@ export async function getProductBy(col, val) {
 }
 
 export async function createProduct(product) {
+  console.log('UTILS Product: ', product);
   try {
-    const {data} = await axios.post('/api/products', product);
+    const {data} = await axios.post('/api/products/', product);
     return data;
   } catch (error) {
     console.error('createProduct(): Unable to create product.\n', error);
@@ -148,8 +149,14 @@ export async function createProduct(product) {
 }
 
 export async function updateProduct(id, productInfo) {
+  console.log('Product ID: ', id);
+  console.log('Product: ', productInfo);
   try {
-    const {data} = await axios.patch(`/${id}`, productInfo);
+    const {data} = await axios.patch(
+      `/api/products/${id}`,
+      productInfo,
+      setHeaders()
+    );
     return data;
   } catch (error) {
     console.error('updateProduct(): Unable to update product.\n', error);
@@ -171,7 +178,8 @@ export async function deleteProduct(id) {
 
 export async function getShoppingCart() {
   try {
-    const {data} = await axios.get('/api/carts/me', setHeaders());
+    const {data} = await axios.get('/api/orders/carts', setHeaders());
+    console.log('Cart: ', data);
     return data;
   } catch (error) {
     return error;
@@ -179,14 +187,13 @@ export async function getShoppingCart() {
 }
 
 export async function addCartItem(productId, userId, quantity) {
-  let config = setHeaders();
-  config.body = {
+  const config = {
     productId: productId,
     userId: userId,
     quantity: quantity
   };
   try {
-    const {data} = await axios.post('/api/carts/item', config);
+    const {data} = await axios.post('/api/carts/item', config, setHeaders());
     return data;
   } catch (error) {
     return error;
@@ -194,14 +201,13 @@ export async function addCartItem(productId, userId, quantity) {
 }
 
 export async function updateCartItemQuantity(itemId, quantity, method) {
-  let config = setHeaders();
-  config.body = {
+  const config = {
     itemId: itemId,
     inputQuantity: quantity,
     method: method
   };
   try {
-    const {data} = await axios.patch('/api/carts/item', config);
+    const {data} = await axios.patch('/api/carts/item', config, setHeaders());
     return data;
   } catch (error) {
     return error;
@@ -218,12 +224,39 @@ export async function deleteShoppingCart() {
 }
 
 export async function deleteShoppingCartItem(itemId) {
-  let config = setHeaders();
-  config.body = {
+  const config = {
     itemId: itemId
   };
   try {
-    const {data} = await axios.delete('/api/carts/item', config);
+    const {data} = await axios.delete('/api/carts/item', config, setHeaders());
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+/* ORDER HISTORY FUNCTIONS */
+
+export async function getOrderHistory() {
+  try {
+    const {data} = await axios.get('/api/orders/history', setHeaders());
+    console.log('Orders: ', data);
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+/* Check user function */
+
+export async function checkUser(username) {
+  try {
+    const data = await axios.get('/api/users/check', {
+      body: {
+        username: username
+      }
+    });
+    console.log('check users utitls ', data);
     return data;
   } catch (error) {
     return error;

@@ -99,10 +99,34 @@ async function getUserByUsername(userName) {
     console.error(error);
   }
 }
+
+async function checkUser(userName) {
+  // first get the user
+  try {
+    const {rows} = await client.query(
+      `
+      SELECT username, id
+      FROM users
+      WHERE username = $1;
+    `,
+      [userName]
+    );
+    // if it doesn't exist, return null
+    if (!rows || !rows.length) {
+      return false;
+    } else {
+      return true;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 module.exports = {
   createUser,
   getAllUsers,
   getUser,
   getUserById,
-  getUserByUsername
+  getUserByUsername,
+  checkUser
 };

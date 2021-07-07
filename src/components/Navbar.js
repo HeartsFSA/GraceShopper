@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useState} from 'react';
 import './css/Navbar.css';
 import {Link, NavLink, withRouter} from 'react-router-dom';
@@ -11,12 +11,29 @@ import RegisterModal from './RegisterModal';
 
 function Navbar(props) {
   // Props
-  const {user, setUser, setCart, setOrders} = props;
+
+  const {user, setUser, query, setQuery, products, setCart, setOrders} = props;
+
+  console.log(products);
 
   // UseState
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
   const [{cart}] = useStateValue();
+  const [searchPlaceholder, setSearchPlaceholder] = useState('');
+
+  useEffect(() => {
+    let searchPlaceholder = [];
+
+    products.forEach((product) => {
+      searchPlaceholder.push(product.name);
+    });
+
+    setSearchPlaceholder(
+      "Let's go to " +
+        searchPlaceholder[Math.floor(Math.random() * searchPlaceholder.length)]
+    );
+  }, [query]);
 
   return (
     <nav className="header">
@@ -29,6 +46,7 @@ function Navbar(props) {
           onClick={(e) => {
             setLoginModalVisible(false);
             setRegisterModalVisible(false);
+            setQuery('');
           }}
         />
       </Link>
@@ -38,7 +56,14 @@ function Navbar(props) {
         <input
           type="text"
           className="header__searchInput"
-          placeholder="Search"
+          placeholder={searchPlaceholder}
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+          }}
+          // onClick={(e) => {
+          //   props.history.push('/');
+          // }}
         />
         <SearchIcon className="header__searchIcon" />
       </div>
@@ -47,6 +72,7 @@ function Navbar(props) {
         <h3
           className={'authfunc'}
           onClick={(e) => {
+            localStorage.setItem('token', '');
             setUser({});
           }}
         >
@@ -60,13 +86,16 @@ function Navbar(props) {
             <button
               className="header__link"
               onClick={() => {
-                setRegisterModalVisible(false);
+                // setRegisterModalVisible(false);
                 setLoginModalVisible(!loginModalVisible);
               }}
             >
               <div className="header__option">
-                <span className="header__optionLineOne"></span>
-                <span className="header__optionLineTwo"> Sign In</span>
+                {/* <span className="header__optionLineOne"></span> */}
+                <span className="header__optionLineTwo">
+                  {' '}
+                  Sign In / Register
+                </span>
               </div>
             </button>
           </div>
@@ -80,7 +109,7 @@ function Navbar(props) {
           </Link>
         </div> */}
           {/* 2nd Link */}
-          <div className="header__nav">
+          {/* <div className="header__nav">
             <button
               className="header__link"
               onClick={() => {
@@ -93,7 +122,7 @@ function Navbar(props) {
                 <span className="header__optionLineTwo"> Register</span>
               </div>
             </button>
-          </div>
+          </div> */}
         </>
       )}
 
@@ -122,13 +151,14 @@ function Navbar(props) {
         setCart={setCart}
         setOrders={setOrders}
         setLoginModalVisible={setLoginModalVisible}
+        user={user}
       />
 
-      <RegisterModal
+      {/* <RegisterModal
         registerModalVisible={registerModalVisible}
         setUser={setUser}
         setRegisterModalVisible={setRegisterModalVisible}
-      />
+      /> */}
     </nav>
   );
 }

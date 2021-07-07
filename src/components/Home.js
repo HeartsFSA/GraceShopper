@@ -5,7 +5,7 @@ import ProductCard from './ProductCard';
 import './css/Home.css';
 
 function Home(props) {
-  const {products} = props;
+  const {products, primaryCart, setCart, setPrimaryCart} = props;
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -30,7 +30,13 @@ function Home(props) {
   return (
     <div className="home">
       {products.map((product, idx) => (
-        <ProductCard product={product} key={idx} />
+        <ProductCard
+          key={idx}
+          product={product}
+          primaryCart={primaryCart}
+          setCart={setCart}
+          setPrimaryCart={setPrimaryCart}
+        />
       ))}
     </div>
   );

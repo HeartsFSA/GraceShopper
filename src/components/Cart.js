@@ -1,4 +1,5 @@
 import React from 'react';
+import {useState, useEffect} from 'react';
 import './css/Cart.css';
 import {useStateValue} from '../StateProvider';
 import Card from './Card';
@@ -7,11 +8,14 @@ import OpenWithIcon from '@material-ui/icons/OpenWith';
 import {Switch, Route, withRouter, Link} from 'react-router-dom';
 
 function Cart(props) {
-  const [{cart}] = useStateValue();
+  // Change this in the future for multiple carts
+  const {cart, primaryCart, setPrimaryCart} = props;
+  console.log('CART IN CART.JS: ', primaryCart);
 
   return (
+    // This is if the user does not have anything in their cart
     <div className="block col-1">
-      {cart?.length === 0 ? (
+      {primaryCart.length === 0 ? (
         <div>
           <br></br>
           <h1> Your Shopping Cart is empty</h1>
@@ -21,45 +25,76 @@ function Cart(props) {
           </p>
         </div>
       ) : (
-        <div>
-          <h2 className="checkout_title"> Your Shopping Basket </h2>
-
-          {/* List all of the Checkout Products */}
-          <br></br>
-          <Card>
-            <div className="card-content">
-              <div className="card-header">
-                <img src="https://www.history.com/.image/ar_4:3%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTU3ODc5MDg3NTA5MDg3NTYx/taj-mahal-2.jpg" />
-                <div>
-                  <h1>Product Name</h1>
-                  <h3>Product Price</h3>
-                </div>
-              </div>
-              <div className="card-body">
-                <p>Product Body</p>
-              </div>
-            </div>
-          </Card>
-        </div>
-      )}
-      {cart.length > 0 && (
-        <div className="checkout__right">
-          <h4> Subtotal: $50.00</h4>
-          <h5> Tax: $1.99 </h5>
-          <h1> Total: $51.99 </h1>
-        </div>
-      )}
-      <div className="continueShop">
-        <button> Continue Shopping </button>
-      </div>
-
-      <Switch>
-        <Link to="/checkout">
-          <div className="checkout">
-            <button> Checkout </button>
+        <>
+          {/* This is if the user has something in their shopping cart */}
+          <div>
+            <h2 className="checkout_title"> Your Shopping Basket </h2>
           </div>
-        </Link>
-      </Switch>
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {primaryCart.orderProducts.map((orderProduct, idx) => {
+                primaryCart.orderProducts[idx].totalprice = (
+                  orderProduct.quantity *
+                  parseFloat(
+                    orderProduct.product.price.slice(
+                      1,
+                      orderProduct.product.price.length
+                    )
+                  )
+                ).toFixed(2); // rounds to two decimal places
+                return (
+                  <tr key={idx}>
+                    <td>{orderProduct.product.name}</td>
+                    <td>
+                      <input
+                        type="number"
+                        value={orderProduct.quantity}
+                        min="1" // limits to 1 as lowest value
+                        onChange={(event) => {
+                          console.log(event.target.value);
+                          let updatedCart = {...primaryCart};
+                          console.log('UPDATED CART: ', updatedCart);
+                          updatedCart.orderProducts[idx].quantity =
+                            event.target.value;
+                          setPrimaryCart(updatedCart);
+                        }}
+                      ></input>
+                    </td>
+                    <td>{orderProduct.product.price}</td>
+                    <td>{orderProduct.totalprice}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <div className="checkout__right">
+            <br></br>
+            <h4> Subtotal: $</h4>
+            <h5> Tax: $ </h5>
+            <h1> Total: $ </h1>
+          </div>
+
+          <div className="continueShop">
+            <button> Continue Shopping </button>
+          </div>
+          <Switch>
+            <Link to="/checkout">
+              <div className="checkout">
+                <button> Checkout </button>
+              </div>
+            </Link>
+          </Switch>
+        </>
+      )}
+      ;
     </div>
   );
 }

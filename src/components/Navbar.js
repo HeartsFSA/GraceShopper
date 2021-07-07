@@ -11,8 +11,16 @@ import RegisterModal from './RegisterModal';
 
 function Navbar(props) {
   // Props
-
-  const {user, setUser, query, setQuery, products, setCart, setOrders} = props;
+  const {
+    user,
+    setUser,
+    query,
+    setQuery,
+    products,
+    setCart,
+    setOrders,
+    primaryCart
+  } = props;
 
   console.log(products);
 
@@ -21,6 +29,18 @@ function Navbar(props) {
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
   const [{cart}] = useStateValue();
   const [searchPlaceholder, setSearchPlaceholder] = useState('');
+  // const [primaryCartLength, setPrimaryCartLength] = useState(0);
+
+  // useEffect(() => {
+  //   console.log('ORDER PRODUCTS: ', primaryCart.orderProducts);
+  //   const pcLength = primaryCart.orderProducts.reduce((acc, cv) =>
+  //     console.log(acc, cv)
+  //   );
+  //   console.log('Length of Cart: ', pcLength);
+  //   // setPrimaryCartLength(
+  //   //   primaryCart.orderProducts.reduce((acc, cv) => acc + cv.quantity)
+  //   // );
+  // }, []);
 
   useEffect(() => {
     let searchPlaceholder = [];
@@ -140,7 +160,7 @@ function Navbar(props) {
           <ShoppingCartIcon />
           {/* Number of items in the cart */}
           <span className="header__optionLineTwo header__cartCount">
-            {cart?.length}
+            {primaryCart.orderProducts.length}
           </span>
         </div>
       </Link>

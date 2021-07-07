@@ -177,14 +177,15 @@ export async function getShoppingCart() {
   }
 }
 
-export async function addCartItem(productId, userId, quantity) {
+export async function addCartItem(orderId, productId, quantity, totalPrice) {
   const config = {
+    orderId: orderId,
     productId: productId,
-    userId: userId,
-    quantity: quantity
+    quantity: quantity,
+    totalPrice: totalPrice
   };
   try {
-    const {data} = await axios.post('/api/carts/item', config, setHeaders());
+    const {data} = await axios.post('/api/orders/item', config, setHeaders());
     return data;
   } catch (error) {
     return error;

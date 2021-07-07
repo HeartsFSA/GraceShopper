@@ -74,6 +74,7 @@ router.get('/carts', async (req, res, next) => {
 // Adds item to current users cart
 router.post('/item', async (req, res, next) => {
   const orderProductData = req.body;
+  const {productId} = req.body;
   const {id: userId} = req.user;
   try {
     await createOrderProduct(orderProductData);

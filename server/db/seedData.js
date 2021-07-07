@@ -113,8 +113,9 @@ async function createTables() {
          */
 
     /* Orders Table Status Codes
-         0 Cart
-         1 Ordered
+         0 Primary Cart
+         1 Cart
+         2 Purchased Order
          */
 
     // Add tables as you need them (A good place to start is Products and Orders

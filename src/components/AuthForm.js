@@ -27,9 +27,63 @@ function AuthForm(props) {
   const [email, setEmail] = useState('');
 
   async function onLogin(evt) {
+    // alert('onLogin clicked');
     evt.preventDefault();
     if (!username || !password) {
       return alert('Please enter details'); // need to fill out username and password
+    }
+    try {
+      const data = await login(username, password);
+
+      if (data.user) {
+        await setUsername('');
+        await setPassword('');
+        await setUser(data.user);
+        setCart(await getShoppingCart());
+        setOrders(await getOrderHistory());
+
+        // console.log(type);
+
+        setLoginModalVisible(false);
+
+        // ? setLoginModalVisible(false);
+        // : setRegisterModalVisible(false);
+        console.log(data.user);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function onRegister(evt) {
+    // console.log('on register was clicked');
+    evt.preventDefault();
+    if (!username || !password) {
+      return alert('Please enter reg details'); // need to fill out username and password
+    }
+    try {
+      let data = await register(username, password);
+      console.log(data);
+
+      if (data.user) {
+        await setUsername('');
+        await setPassword('');
+        await setUser(data.user);
+
+        // ** Set Cart needs to be updated to fetch it from local or state variable ** //
+        // setCart(await getShoppingCart());
+        // setOrders(await getOrderHistory());
+
+        // console.log(type);
+
+        setLoginModalVisible(false);
+
+        // ? setLoginModalVisible(false);
+        // : setRegisterModalVisible(false);
+        console.log(data.user);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -104,8 +158,20 @@ function AuthForm(props) {
       </div>
       <div id="login_register">
         {' '}
-        <button>Login</button>
-        <button>Register</button>
+        <button
+          onClick={(evt) => {
+            onLogin(evt);
+          }}
+        >
+          Login
+        </button>
+        <button
+          onClick={(evt) => {
+            onRegister(evt);
+          }}
+        >
+          Register
+        </button>
       </div>
     </form>
   );

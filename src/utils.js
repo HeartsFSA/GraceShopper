@@ -192,14 +192,14 @@ export async function addCartItem(orderId, productId, quantity, totalPrice) {
   }
 }
 
-export async function updateCartItemQuantity(itemId, quantity, method) {
+export async function updateCartItemQuantity(itemId, quantity, totalPrice) {
   const config = {
-    itemId: itemId,
-    inputQuantity: quantity,
-    method: method
+    orderProductId: itemId,
+    quantity: quantity,
+    totalPrice: totalPrice
   };
   try {
-    const {data} = await axios.patch('/api/carts/item', config, setHeaders());
+    const {data} = await axios.patch('/api/orders/item', config, setHeaders());
     return data;
   } catch (error) {
     return error;

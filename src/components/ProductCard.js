@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 import Card from './Card';
-import {addCartItem} from '../utils';
+import {addCartItem, updateCartItemQuantity} from '../utils';
 import './css/ProductCard.css';
 
 function ProductCard(props) {
@@ -19,6 +19,22 @@ function ProductCard(props) {
       product.id,
       1,
       product.price
+    );
+    setPrimaryCart(carts[0]);
+    setCart(carts);
+  }
+
+  async function updateCart(orderProduct) {
+    const newQuantity = parseInt(orderProduct.quantity) + 1;
+    const totalPrice =
+      orderProduct.product.price.slice(1, orderProduct.product.price.length) *
+      newQuantity;
+    console.log('Quantity: ', newQuantity);
+    console.log('Total Price: ', totalPrice);
+    const carts = await updateCartItemQuantity(
+      orderProduct.id,
+      newQuantity,
+      totalPrice
     );
     setPrimaryCart(carts[0]);
     setCart(carts);
@@ -53,11 +69,13 @@ function ProductCard(props) {
           <h4>{product.creatorname}</h4>
           <button
             onClick={() => {
-              if (
-                primaryCart.orderProducts.find(
-                  (orderProduct) => orderProduct.productId === product.id
-                )
-              ) {
+              const orderProduct = primaryCart.orderProducts.find(
+                (orderProduct) => orderProduct.productId === product.id
+              );
+              if (orderProduct) {
+                updateCart(orderProduct);
+              } else {
+                addToCart();
               }
             }}
           >

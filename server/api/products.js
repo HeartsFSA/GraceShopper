@@ -50,6 +50,7 @@ const photosRouter = require('./photos');
 productsRouter.use('/photos', photosRouter);
 
 productsRouter.post('/', async (req, res, next) => {
+  console.log('API Body: ', req.body);
   try {
     res.send(await createProduct(req.body));
   } catch (error) {
@@ -63,7 +64,10 @@ productsRouter.post('/', async (req, res, next) => {
 productsRouter.patch('/:productID', async (req, res, next) => {
   try {
     let productToBeUpdated = await getProductBy('id', req.params.productID);
-    if (productToBeUpdated.creatorname !== req.user.username) {
+    if (
+      productToBeUpdated.creator_name !== req.user.username &&
+      req.user.permission < 3
+    ) {
       console.log(
         'user',
         req.user.username,

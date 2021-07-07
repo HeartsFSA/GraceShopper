@@ -60,11 +60,11 @@ async function createTables() {
         description VARCHAR(1023) UNIQUE NOT NULL,
         price MONEY NOT NULL,
         hours VARCHAR(255),
-        datesOpen VARCHAR(255),
+        dates_open VARCHAR(255),
         location VARCHAR(255) NOT NULL,
         category VARCHAR(255),
-        creatorName VARCHAR(255) REFERENCES users(username) NOT NULL,
-        isActive BOOLEAN DEFAULT true
+        creator_name VARCHAR(255) REFERENCES users(username) NOT NULL,
+        is_active BOOLEAN DEFAULT true
       );
       `);
 
@@ -160,6 +160,12 @@ async function createInitialUsers() {
         permission: 4
       },
       {
+        username: 'mladouceur',
+        password: 'testpass',
+        email: 'michaelladouceurdev@gmail.com',
+        permission: 4
+      },
+      {
         username: "Hisshey's",
         password: 'totallynothersheys',
         email: 'hisshey@example.com',
@@ -234,14 +240,14 @@ async function createInitialProducts() {
         description: 'Banana fun!',
         price: '$56.99',
         location: 'the moon',
-        creatorName: "Hisshey's"
+        creator_name: "Hisshey's"
       },
       {
         name: 'The Smallest Ball of Twine in Minnesota',
         description: 'Come see the world-famous ball of twine!',
         price: '$2.99',
         location: 'Darwin, MN',
-        creatorName: 'Francis Johnson'
+        creator_name: 'Francis Johnson'
       },
       {
         name: 'The Leavre',
@@ -249,7 +255,7 @@ async function createInitialProducts() {
           'The world-famous art museum will absolutely, 100%, definitely make you want to stay!',
         price: '$59.99',
         location: 'Paris, WI',
-        creatorName: 'Musee Du Leavre'
+        creator_name: 'Musee Du Leavre'
       },
       {
         name: 'National Space and Air Museum',
@@ -257,14 +263,14 @@ async function createInitialProducts() {
           'Come see fabulous space and air, with none of those pesky rockets and stuff in the way!',
         price: '$0.00',
         location: 'Washington, DC',
-        creatorName: 'The Johnsonian'
+        creator_name: 'The Johnsonian'
       },
       {
         name: 'The Even Freer Gallery of Art',
         description: 'This one is even more free than that other one!',
         price: '$5.99',
         location: 'Washington, DC',
-        creatorName: 'The Johnsonian'
+        creator_name: 'The Johnsonian'
       },
       {
         name: 'The National Going Postal Museum',
@@ -272,21 +278,21 @@ async function createInitialProducts() {
           'The museum of all things relating to violent outbursts of uncontrolled rage!  Fun for whole family!',
         price: '$0.00',
         location: 'Washington, DC',
-        creatorName: 'The Johnsonian'
+        creator_name: 'The Johnsonian'
       },
       {
         name: 'Seven Flags Mediocre America',
         description: 'There will be more here later',
         price: '$69.99',
         location: 'Chicago, IL',
-        creatorName: 'Seven Flags'
+        creator_name: 'Seven Flags'
       },
       {
         name: 'Seven Flags over Oklahoma',
         description: 'The original Seven Flags park!',
         price: '$59.99',
         location: 'Oklahoma City, OK',
-        creatorName: 'Seven Flags'
+        creator_name: 'Seven Flags'
       },
       {
         name: 'The State Hermit Museum',
@@ -294,7 +300,7 @@ async function createInitialProducts() {
           'The world-famous museum of hermits and everything hermit-related',
         price: '$0.75',
         location: 'St Petersburg, FL',
-        creatorName: 'State Hermit Museum'
+        creator_name: 'State Hermit Museum'
       },
       {
         name: "Noah's Ark",
@@ -302,7 +308,7 @@ async function createInitialProducts() {
           'No, not the waterpark, this is the real thing, so I suggest you get on real soon',
         price: '$0.00',
         location: 'Lake Delton, WI',
-        creatorName: 'Noah'
+        creator_name: 'Noah'
       },
       {
         name: 'Salivation Mountain',
@@ -310,7 +316,7 @@ async function createInitialProducts() {
           "A mouth-watering pile of every kind of food imaginable! We promise it hasn't spoiled in the desert sun!",
         price: '$9.99',
         location: 'Niland, CA',
-        creatorName: 'Salivation Mountain'
+        creator_name: 'Salivation Mountain'
       },
       {
         name: 'The House of Eventual Comeback',
@@ -318,14 +324,14 @@ async function createInitialProducts() {
           'A mind-bending, interactive, explorable art exhibit for all ages',
         price: '$9.99',
         location: 'Santa Fe, NM',
-        creatorName: 'HowlCat'
+        creator_name: 'HowlCat'
       },
       {
         name: 'Omicron Mart',
         description: 'A mind-bending interactive art exhibit',
         price: '$9.99',
         location: 'Las Vegas, NV',
-        creatorName: 'HowlCat'
+        creator_name: 'HowlCat'
       }
     ];
 

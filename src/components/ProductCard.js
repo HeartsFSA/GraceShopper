@@ -23,7 +23,7 @@ function ProductCard({product}) {
   //   }, []);
 
   return (
-    <Card>
+    <Card className="product-card">
       <Link to={`/products/${product.name}`}>
         <div className="card-content">
           <div className="card-header">

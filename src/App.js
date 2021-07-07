@@ -55,6 +55,7 @@ function App() {
 
     // setAllProducts()
     await setLogIn();
+    setHasLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -73,7 +74,7 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar
+      {/* <Navbar
         user={user}
         setUser={setUser}
         setCart={setCart}
@@ -82,7 +83,7 @@ function App() {
         setQuery={setQuery}
         products={products}
       />
-      <Routes user={user} setUser={setUser} products={products} />
+      <Routes user={user} setUser={setUser} products={products} /> */}
       {hasLoaded ? (
         <>
           <Navbar
@@ -92,7 +93,12 @@ function App() {
             setQuery={setQuery}
             products={products}
           />
-          <Routes user={user} setUser={setUser} products={products} />
+          <Routes
+            user={user}
+            setUser={setUser}
+            products={products}
+            setProducts={setProducts}
+          />
         </>
       ) : (
         <h1>Loading, please wait...</h1>

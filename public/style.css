@@ -56,12 +56,21 @@ nav {
 body {
   margin: 0;
   padding: 0;
+  height: calc(100vh - 75px);
 }
 .landing,
 .home {
   font-size: 24px;
   font-weight: bold;
   padding: 30px;
+}
+
+.App {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
 }
 
 .AuthForm {

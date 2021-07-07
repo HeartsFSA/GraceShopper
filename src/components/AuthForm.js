@@ -36,7 +36,7 @@ function AuthForm(props) {
     }
     try {
       const data = await login(username, password);
-      console.log(data);
+      console.log('auth form 39', data);
       if (data.user) {
         await setUsername('');
         await setPassword('');

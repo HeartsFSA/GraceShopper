@@ -8,6 +8,8 @@ import Routes from './Routes';
 
 import {PinDropSharp} from '@material-ui/icons';
 
+import MessageBar from './components/MessageBar';
+
 import {
   checkLogin,
   getAllProducts,
@@ -22,6 +24,7 @@ function App() {
   const [products, setProducts] = useState([]);
   const [query, setQuery] = useState('');
   const [getProduct, setGetProducts] = useState([]);
+  const [message, setMessage] = useState('TEST MESSAGE');
 
   // used for a loading page.
   // This displays while the async functions are still loading.
@@ -86,6 +89,8 @@ function App() {
             setQuery={setQuery}
             products={products}
           />
+          <MessageBar message={message} setMessage={setMessage} />
+
           <Routes
             user={user}
             setUser={setUser}

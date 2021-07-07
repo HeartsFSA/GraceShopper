@@ -87,42 +87,42 @@ function AuthForm(props) {
     }
   }
 
-  async function handleSubmit(evt) {
-    evt.preventDefault();
+  // async function handleSubmit(evt) {
+  //   evt.preventDefault();
 
-    if (!username || !password) {
-      return alert('Please enter details'); // need to fill out username and password
-    } else {
-      try {
-        let data = await checkUser(username);
-        console.log(data);
+  //   if (!username || !password) {
+  //     return alert('Please enter details'); // need to fill out username and password
+  //   } else {
+  //     try {
+  //       let data = await checkUser(username);
+  //       console.log(data);
 
-        if (data.status === 409) {
-          data = await login(username, password);
-        }
+  //       if (data.status === 409) {
+  //         data = await login(username, password);
+  //       }
 
-        if (data.user) {
-          await setUsername('');
-          await setPassword('');
-          await setUser(data.user);
-          setCart(await getShoppingCart());
-          setOrders(await getOrderHistory());
+  //       if (data.user) {
+  //         await setUsername('');
+  //         await setPassword('');
+  //         await setUser(data.user);
+  //         setCart(await getShoppingCart());
+  //         setOrders(await getOrderHistory());
 
-          console.log(data.user);
-          // console.log(type);
+  //         console.log(data.user);
+  //         // console.log(type);
 
-          type === 'login'
-            ? setLoginModalVisible(false)
-            : setRegisterModalVisible(false);
-          // ? setLoginModalVisible(false);
-          // : setRegisterModalVisible(false);
-        }
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
+  //         type === 'login'
+  //           ? setLoginModalVisible(false)
+  //           : setRegisterModalVisible(false);
+  //         // ? setLoginModalVisible(false);
+  //         // : setRegisterModalVisible(false);
+  //       }
+  //       console.log(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // }
 
   return (
     <form className="auth-form">

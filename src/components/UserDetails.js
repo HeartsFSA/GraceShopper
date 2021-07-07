@@ -12,6 +12,7 @@ function UserDetails(props) {
   useEffect(async function () {
     console.log('input username:', props.match.params.username);
     setUser(await getUserByUsername(props.match.params.username));
+    console.log('email:', user.email);
 
     setHasLoaded(true);
   }, []);
@@ -22,11 +23,11 @@ function UserDetails(props) {
         <div id="user-details-card">
           <div id="user-info">
             <h1>{user.username}</h1>
-            <h3>Contact: {user.id}</h3>
+            <h3>Contact: {user.email}</h3>
           </div>
           {products
             .filter((prod) => {
-              return prod.creatorname === user.username;
+              return prod.creator_name === user.username;
             })
             .map((prod, i) => {
               return <ProductCard product={prod} key={i} />;

@@ -23,7 +23,6 @@ function ProductCard({product}) {
   //   }, []);
 
   return (
-<<<<<<< HEAD
     <Card>
       <div className="card-content">
         <div className="card-header">
@@ -36,19 +35,6 @@ function ProductCard({product}) {
           {/* <p>{product.description}</p> */}
 
           <Link to={`/products/${product.name}`}>
-=======
-    <Card className="product-card">
-      <Link to={`/products/${product.name}`}>
-        <div className="card-content">
-          <div className="card-header">
-            <div>
-              <h1>{product.name}</h1>
-              <h3>{product.price}</h3>
-            </div>
-          </div>
-          <div className="card-body">
-            {/* <p>{product.description}</p> */}
->>>>>>> acb7372dd1da913f143d5e362abf4354779deeea
             <img
               src={
                 product.photos.length > 0

@@ -6,7 +6,7 @@
   "proxy": "http://localhost:4000",
   "scripts": {
     "start:react": "react-scripts start",
-    "start:server": "nodemon ./server/index.js",
+    "start:server": "nodemon --ignore ./src/ ./server/index.js",
     "start:dev": "npm run start:react & npm run start:server",
     "seed": "node ./server/db/seed.js",
     "seed:dev": "nodemon ./server/db/seed.js",

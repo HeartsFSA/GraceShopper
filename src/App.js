@@ -27,33 +27,38 @@ function App() {
   // This displays while the async functions are still loading.
   const [hasLoaded, setHasLoaded] = useState(false);
 
-  // initializes products and login status.
-  useEffect(async () => {
+  // initializes products
+  useEffect(() => {
     const setAllProducts = async () => {
       let prods = await getAllProducts();
       // console.log(prods);
 
-      setGetProducts(prods);
-      setProducts(prods);
+      await setGetProducts(prods);
+      await setProducts(prods);
+      await setHasLoaded(true);
     };
-    // invocation
-    await setAllProducts();
 
+    // invocation
+    setAllProducts();
+  }, []);
+
+  // initialize login status
+  useEffect(() => {
     const setLogIn = async () => {
       let checkedUser = await checkLogin();
 
       if (checkedUser.id) {
         setUser(checkedUser);
-
         setCart(await getShoppingCart());
         setOrders(await getOrderHistory());
       }
     };
 
     // setAllProducts()
-    await setLogIn();
-    setHasLoaded(true);
+    setLogIn();
   }, []);
+
+  console.log('products', products);
 
   useEffect(() => {
     if (query) {

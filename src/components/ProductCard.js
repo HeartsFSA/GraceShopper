@@ -50,8 +50,8 @@ function ProductCard({product}) {
               <OpenWithIcon fontSize="large" />
             </button>
           </Link>
-          <Link to={`/users/${product.creatorname}`}>
-            <h4>{product.creatorname}</h4>
+          <Link to={`/users/${product.creator_name}`}>
+            <h4>{product.creator_name}</h4>
           </Link>
           <button onClick={addToBasket}>
             <AddShoppingCartIcon fontSize="large" />

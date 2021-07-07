@@ -5,8 +5,8 @@
 }
 
 #user-details-card {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* display: grid;
+  grid-template-columns: repeat(4, 1fr); */
   height: 90%;
   width: 90%;
   padding: 1em;
@@ -14,7 +14,12 @@
   border-radius: 5px;
 }
 
-/* #user-products {
+#user-info {
+  margin: 1em;
+}
+
+#user-products-display {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-} */
+  margin: 1em;
+}

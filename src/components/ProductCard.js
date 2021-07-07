@@ -1,15 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 
 import Card from './Card';
 
 import './css/ProductCard.css';
-import { useStateValue } from '../StateProvider';
+import {useStateValue} from '../StateProvider';
 
-function ProductCard({ product }) {
-  const [{ cart }, dispatch] = useStateValue();
+function ProductCard({product}) {
+  const [{cart}, dispatch] = useStateValue();
 
   // function to addToBasket
   const addToBasket = () => {
@@ -24,16 +24,17 @@ function ProductCard({ product }) {
 
   return (
     <Card>
-      <Link to={`/products/${product.name}`}>
-        <div className="card-content">
-          <div className="card-header">
-            <div>
-              <h1>{product.name}</h1>
-              <h3>{product.price}</h3>
-            </div>
-          </div>
-          <div className="card-body">
-            {/* <p>{product.description}</p> */}
+      <div className="card-content">
+        <div className="card-header">
+          <Link to={`/products/${product.name}`}>
+            <h1>{product.name}</h1>
+            <h3>{product.price}</h3>
+          </Link>
+        </div>
+        <div className="card-body">
+          {/* <p>{product.description}</p> */}
+
+          <Link to={`/products/${product.name}`}>
             <img
               src={
                 product.photos.length > 0
@@ -41,18 +42,22 @@ function ProductCard({ product }) {
                   : 'https://www.history.com/.image/ar_4:3%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTU3ODc5MDg3NTA5MDg3NTYx/taj-mahal-2.jpg'
               }
             />
-          </div>
-          <div className="card-footer">
+          </Link>
+        </div>
+        <div className="card-footer">
+          <Link to={`/products/${product.name}`}>
             <button>
               <OpenWithIcon fontSize="large" />
             </button>
+          </Link>
+          <Link to={`/users/${product.creatorname}`}>
             <h4>{product.creatorname}</h4>
-            <button onClick={addToBasket}>
-              <AddShoppingCartIcon fontSize="large" />
-            </button>
-          </div>
+          </Link>
+          <button onClick={addToBasket}>
+            <AddShoppingCartIcon fontSize="large" />
+          </button>
         </div>
-      </Link>
+      </div>
     </Card>
   );
 }

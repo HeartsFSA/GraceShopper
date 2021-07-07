@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 import './css/ProductDisplay.css';
 
 function ProductDetails(props) {
-  const { products } = props;
+  const {products} = props;
 
   let product = products.find((p) => p.name === props.match.params.name);
 
@@ -11,16 +11,14 @@ function ProductDetails(props) {
 
   useEffect(() => {
     for (let i = 0; i < product.photos.length; i++) {
+      let imgToChange = document.getElementsByClassName('display-photos')[i];
+      let dotToChange = document.getElementsByClassName('nav-dot')[i];
       if (i === currentImg) {
-        document.getElementsByClassName('display-photos')[i].style.display =
-          'block';
-        document.getElementsByClassName('nav-dot')[i].style.backgroundColor =
-          'var(--black)';
+        imgToChange.style.display = 'block';
+        dotToChange.style.backgroundColor = 'var(--black)';
       } else {
-        document.getElementsByClassName('display-photos')[i].style.display =
-          'none';
-        document.getElementsByClassName('nav-dot')[i].style.backgroundColor =
-          'var(--dot-default)';
+        imgToChange.style.display = 'none';
+        dotToChange.style.backgroundColor = 'var(--dot-default)';
       }
     }
 

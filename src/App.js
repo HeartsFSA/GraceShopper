@@ -62,16 +62,17 @@ function App() {
 
   useEffect(() => {
     if (query) {
-      let filtered = getProduct.filter((obj) =>
+      let filtered = products.filter((obj) =>
         JSON.stringify(obj).toLowerCase().includes(query.toLowerCase())
       );
-      setProducts(filtered);
+      setGetProducts(filtered);
       console.log(query);
       console.log(filtered);
       // props.history.push('/');
-    } else {
-      setProducts(getProduct);
     }
+    // else {
+    //   setProducts(getProduct);
+    // }
   }, [query]);
 
   return (
@@ -90,6 +91,7 @@ function App() {
             setUser={setUser}
             products={products}
             setProducts={setProducts}
+            getProduct={getProduct}
           />
         </>
       ) : (

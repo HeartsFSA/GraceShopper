@@ -31,7 +31,7 @@ function App() {
   useEffect(async () => {
     const setAllProducts = async () => {
       let prods = await getAllProducts();
-      console.log(prods);
+      // console.log(prods);
 
       setGetProducts(prods);
       setProducts(prods);
@@ -44,8 +44,10 @@ function App() {
 
     const setLogIn = async () => {
       let checkedUser = await checkLogin();
+
       if (checkedUser.id) {
         setUser(checkedUser);
+
         setCart(await getShoppingCart());
         setOrders(await getOrderHistory());
       }

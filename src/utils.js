@@ -32,6 +32,7 @@ export async function checkLogin() {
   try {
     console.log('in checkLogin');
     let {data} = await axios.get('/api/users/me', setHeaders());
+    console.log('in utils ', data);
     // if data has an id and user the user is logged on
     return data;
   } catch (err) {
@@ -85,11 +86,12 @@ export async function login(username, password) {
  *      token: JSonWebToken
  *  }
  */
-export async function register(username, password) {
+export async function register(username, password, email) {
   try {
     const {data} = await axios.post('/api/users/register', {
       username,
-      password
+      password,
+      email
     });
     if (data.token) {
       setToken(data.token);
@@ -226,6 +228,22 @@ export async function getOrderHistory() {
   try {
     const {data} = await axios.get('/api/orders/history', setHeaders());
     console.log('Orders: ', data);
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+/* Check user function */
+
+export async function checkUser(username) {
+  try {
+    const data = await axios.get('/api/users/check', {
+      body: {
+        username: username
+      }
+    });
+    console.log('check users utitls ', data);
     return data;
   } catch (error) {
     return error;

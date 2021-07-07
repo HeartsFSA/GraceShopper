@@ -4,8 +4,14 @@ import Modal from './Modal';
 import AuthForm from './AuthForm';
 
 function LoginModal(props) {
-  const {loginModalVisible, setUser, setCart, setOrders, setLoginModalVisible} =
-    props;
+  const {
+    loginModalVisible,
+    user,
+    setUser,
+    setCart,
+    setOrders,
+    setLoginModalVisible
+  } = props;
 
   return (
     <Modal visible={loginModalVisible}>
@@ -16,6 +22,7 @@ function LoginModal(props) {
         setCart={setCart}
         setOrders={setOrders}
         setLoginModalVisible={setLoginModalVisible}
+        user={user}
       />
     </Modal>
   );

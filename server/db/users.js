@@ -142,7 +142,6 @@ async function checkUser(userName) {
   }
 }
 
-
 async function updatePassword({username, password}) {
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
 
@@ -196,6 +195,9 @@ async function createSeller({username, password, email, permission}) {
     );
     return user;
   } catch (error) {
+    throw error;
+  }
+}
 
 async function updateUser(id, userInfo) {
   try {
@@ -245,5 +247,4 @@ module.exports = {
   createSeller,
 
   updateUser
-
 };

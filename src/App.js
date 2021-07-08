@@ -34,7 +34,7 @@ function App() {
   useEffect(() => {
     const setAllProducts = async () => {
       let prods = await getAllProducts();
-      // console.log(prods);
+      console.log(prods);
 
       await setGetProducts(prods);
       await setProducts(prods);

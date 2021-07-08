@@ -35,7 +35,6 @@ function AuthForm(props) {
 
   const [showDisplayname, setShowDisplayname] = useState(false);
 
-
   async function onLogin(evt) {
     // alert('onLogin clicked');
     evt.preventDefault();
@@ -44,7 +43,6 @@ function AuthForm(props) {
       messenger('Please enter username to login');
       // setAuthFormMessage('Please enter username to login');
       return;
-
     }
     if (!password) {
       messenger('we are missing the magic word... ');
@@ -112,7 +110,9 @@ function AuthForm(props) {
       messenger("that email doesn't feel right... can you please check...");
       return;
     }
-    if (!displayname) displayname = username;
+    if (!displayname) {
+      displayname = username;
+    }
     try {
       let data = await register(username, password, email, displayname);
       console.log(data);
@@ -134,7 +134,7 @@ function AuthForm(props) {
       if (data.user) {
         setUsername('');
         setPassword('');
-        let txt = 'Hi, ' + data.user.username;
+        let txt = 'Hi, ' + displayname;
         messenger(txt);
         await setUser(data.user);
 
@@ -272,7 +272,6 @@ function AuthForm(props) {
           Login
         </button>
         {showEmail ? (
-
           <>
             <button
               id="register_reg"
@@ -292,18 +291,17 @@ function AuthForm(props) {
             >
               Seller
             </button>
+
+            {/* <button
+              onClick={(evt) => {
+                onRegister(evt);
+                setShowEmail(!showEmail);
+                setShowDisplayname(!showDisplayname);
+              }}
+            >
+              Register
+            </button> */}
           </>
-
-          <button
-            onClick={(evt) => {
-              onRegister(evt);
-              setShowEmail(!showEmail);
-              setShowDisplayname(!showDisplayname);
-            }}
-          >
-            Register
-          </button>
-
         ) : (
           <button
             id="register_show"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import Home from './components/Home';
 import AuthForm from './components/AuthForm';
@@ -11,6 +11,7 @@ import ASDashboard from './components/ASDashboard';
 
 function Routes(props) {
   const {user, setUser, products, setProducts, getProduct} = props;
+
   return (
     <Switch>
       <Route path="/checkout" component={Checkout} />
@@ -65,7 +66,12 @@ function Routes(props) {
       <Route
         path="/users/:username"
         render={(props) => (
-          <UserDetails {...props} user={user} products={products} />
+          <UserDetails
+            {...props}
+            user={user}
+            products={products}
+            setProducts={setProducts}
+          />
         )}
       />
 

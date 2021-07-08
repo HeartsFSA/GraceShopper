@@ -34,7 +34,7 @@ function App() {
   useEffect(() => {
     const setAllProducts = async () => {
       let prods = await getAllProducts();
-      // console.log(prods);
+      console.log(prods);
 
       await setGetProducts(prods);
       await setProducts(prods);
@@ -86,7 +86,7 @@ function App() {
   }
 
   useEffect(() => {
-    messenger('Welcome to Wonder World of Banana Land');
+    messenger('Welcome to Wonderful World of Banana Land');
   }, []);
 
   return (

@@ -68,13 +68,10 @@ productsRouter.patch('/:productID', async (req, res, next) => {
       productToBeUpdated.creator_name !== req.user.username &&
       req.user.permission < 3
     ) {
-      console.log(
-        'user',
-        req.user.username,
-        'tried to edit',
-        productToBeUpdated
-      );
-      res.send('Error: you are not logged as the creator of this item');
+      next({
+        name: 'Authentication Error',
+        message: 'You do you have permission to update this item'
+      });
     } else {
       res.send(await updateProduct(req.params.productID, req.body));
     }
@@ -94,13 +91,10 @@ productsRouter.delete('/', async (req, res, next) => {
     let productToBeDeleted = await getProductBy('id', req.body.id);
 
     if (productToBeDeleted.creatorname !== req.user.username) {
-      console.log(
-        'user',
-        req.user.username,
-        'tried to edit',
-        productToBeDeleted
-      );
-      res.send('Error: you are not logged as the creator of this item');
+      next({
+        name: 'Authentication Error',
+        message: 'You do you have permission to delete this item'
+      });
     } else {
       await deleteCartByProductId(req.body.id);
       res.send(await deleteProduct(req.body.id));

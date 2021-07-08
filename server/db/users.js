@@ -5,19 +5,25 @@ const SALT_COUNT = 10;
 // database functions
 
 // user functions
-async function createUser({username, password, email, permission}) {
-  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+async function createUser(newUser) {
+  const hashedPassword = await bcrypt.hash(newUser.password, SALT_COUNT);
+  newUser.password = hashedPassword;
   try {
     const {
       rows: [user]
     } = await client.query(
       `
-      INSERT INTO users(username, password, email, permission) VALUES ($1, $2, $3, $4)
+      INSERT INTO users(${Object.keys(newUser).join()}) VALUES (${Object.keys(
+        newUser
+      )
+        .map((_, idx) => `$${idx + 1}`)
+        .join()})
       ON CONFLICT (username) DO NOTHING 
-      RETURNING id, username
+      RETURNING *;
     `,
-      [username, hashedPassword, email, permission]
+      [...Object.values(newUser)]
     );
+    delete user.password;
     return user;
   } catch (error) {
     throw error;
@@ -56,6 +62,8 @@ async function getUser({username, password}) {
     if (!user) return;
     const hashedPassword = user.password;
     const passwordsMatch = await bcrypt.compare(password, hashedPassword);
+    console.log('password:', password, 'hashedPassword:', hashedPassword);
+    console.log('passwords match?:', passwordsMatch);
     if (!passwordsMatch) return;
     delete user.password;
     return user;
@@ -172,6 +180,60 @@ async function updateEmail({username, email}) {
   }
 }
 
+async function createSeller({username, password, email, permission}) {
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  try {
+    const {
+      rows: [user]
+    } = await client.query(
+      `
+      INSERT INTO users(username, password, email, permission) VALUES ($1, $2, $3, $4)
+      ON CONFLICT (username) DO NOTHING 
+      RETURNING id, username
+    `,
+      [username, hashedPassword, email, '2']
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateUser(id, userInfo) {
+  try {
+    // if (userInfo.username) {
+    //   await client.query(
+    //     `
+    //     UPDATE products
+    //     SET creator_name=$1
+    //     WHERE creator_name=$2
+    //   `,
+    //     [userInfo.username, oldUsername]
+    //   );
+    // }
+
+    const {
+      rows: [updatedUser]
+    } = await client.query(
+      `
+      UPDATE users
+      SET ${Object.keys(userInfo)
+        .map((val, idx) => `${val}=$${idx + 1}`)
+        .join()}
+      WHERE id=${id}
+      RETURNING *;
+    `,
+      Object.values(userInfo)
+    );
+
+    return updatedUser;
+  } catch (error) {
+    console.error('thrown from db/updateUser:');
+
+    throw error;
+  }
+}
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -179,6 +241,10 @@ module.exports = {
   getUserById,
   getUserByUsername,
   checkUser,
+
   updatePassword,
-  updateEmail
+  updateEmail,
+  createSeller,
+
+  updateUser
 };

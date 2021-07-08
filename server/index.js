@@ -20,9 +20,9 @@ server.use('/', express.static(path.join(__dirname, 'build')));
 server.use('/api', apiRouter);
 
 // Error Handler
-server.use((err, req, res, next) => {
+server.use('/', (err, req, res, next) => {
   console.log(`ERROR: ${err.name} (${err.message})`);
-  let status = err.status || 500;
+  // let status = err.status || 500;
 
   res.send({error: err});
 });

@@ -7,7 +7,8 @@ import {
   getShoppingCart,
   getOrderHistory,
   checkUser,
-  validateEmail
+  validateEmail,
+  regSeller
 } from '../utils';
 
 import './css/AuthForm.css';
@@ -27,12 +28,17 @@ function AuthForm(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [displayname, setDisplayname] = useState('');
   const [showEmail, setShowEmail] = useState(false);
+
   const [authFormMessage, setAuthFormMessage] = useState('');
+
+  const [showDisplayname, setShowDisplayname] = useState(false);
 
   async function onLogin(evt) {
     // alert('onLogin clicked');
     evt.preventDefault();
+
     if (!username) {
       messenger('Please enter username to login');
       // setAuthFormMessage('Please enter username to login');
@@ -50,6 +56,7 @@ function AuthForm(props) {
 
       if (data.error) {
         messenger(data.error.message);
+        setPassword('');
       }
 
       if (data.user) {
@@ -85,39 +92,57 @@ function AuthForm(props) {
       messenger(
         'we are excited to have you here... but will still need name...'
       );
+      return;
     }
 
     if (!password) {
-      messenger(
-        'ssshhhhh.... please enter a password... 8 charecters atlease..'
-      );
+      messenger('ssshhhhh.... please enter a password....');
+      return;
     }
 
-    // if (!username || !password || !email) {
-    //   return alert('Please enter reg details'); // need to fill out username and password
-    // }
+    if (password.length < 8) {
+      messenger('password needs to be 8 charecters for your security...');
+      setPassword('');
+      return;
+    }
+
     if (!validateEmail(email)) {
       messenger("that email doesn't feel right... can you please check...");
+      return;
+    }
+    if (!displayname) {
+      displayname = username;
     }
     try {
-      let data = await register(username, password, email);
+      let data = await register(username, password, email, displayname);
       console.log(data);
 
+      if (data.error) {
+        setUsername('');
+        setPassword('');
+        setEmail('');
+        messenger('that didnt go right, please try again...');
+        if (data.error.constraint === 'users_email_key') {
+          messenger(
+            'that email is already taken, please choose a different email...'
+          );
+
+          return;
+        }
+      }
+
       if (data.user) {
-        await setUsername('');
-        await setPassword('');
+        setUsername('');
+        setPassword('');
+        let txt = 'Hi, ' + displayname;
+        messenger(txt);
         await setUser(data.user);
 
         // ** Set Cart needs to be updated to fetch it from local or state variable ** //
         // setCart(await getShoppingCart());
         // setOrders(await getOrderHistory());
 
-        // console.log(type);
-
         setLoginModalVisible(false);
-
-        // ? setLoginModalVisible(false);
-        // : setRegisterModalVisible(false);
         console.log(data.user);
       }
     } catch (error) {
@@ -125,42 +150,67 @@ function AuthForm(props) {
     }
   }
 
-  // async function handleSubmit(evt) {
-  //   evt.preventDefault();
+  async function onSeller(evt) {
+    // console.log('on register was clicked');
+    evt.preventDefault();
+    if (!username) {
+      messenger(
+        'we are excited to have you here... but will still need name...'
+      );
+      return;
+    }
 
-  //   if (!username || !password) {
-  //     return alert('Please enter details'); // need to fill out username and password
-  //   } else {
-  //     try {
-  //       let data = await checkUser(username);
-  //       console.log(data);
+    if (!password) {
+      messenger('ssshhhhh.... please enter a password....');
+      return;
+    }
 
-  //       if (data.status === 409) {
-  //         data = await login(username, password);
-  //       }
+    if (password.length < 8) {
+      messenger('password needs to be 8 charecters for your security...');
+      setPassword('');
+      return;
+    }
 
-  //       if (data.user) {
-  //         await setUsername('');
-  //         await setPassword('');
-  //         await setUser(data.user);
-  //         setCart(await getShoppingCart());
-  //         setOrders(await getOrderHistory());
+    if (!validateEmail(email)) {
+      messenger("that email doesn't feel right... can you please check...");
+      return;
+    }
+    try {
+      let data = await regSeller(username, password, email);
+      console.log(data);
 
-  //         console.log(data.user);
-  //         // console.log(type);
+      if (data.error) {
+        setUsername('');
+        setPassword('');
+        setEmail('');
+        messenger('that didnt go right, please try again...');
+        if (data.error.constraint === 'users_email_key') {
+          messenger(
+            'that email is already taken, please choose a different email...'
+          );
 
-  //         type === 'login'
-  //           ? setLoginModalVisible(false)
-  //           : setRegisterModalVisible(false);
-  //         // ? setLoginModalVisible(false);
-  //         // : setRegisterModalVisible(false);
-  //       }
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // }
+          return;
+        }
+      }
+
+      if (data.user) {
+        setUsername('');
+        setPassword('');
+        let txt = 'Hi, ' + data.user.username;
+        messenger(txt);
+        await setUser(data.user);
+
+        // ** Set Cart needs to be updated to fetch it from local or state variable ** //
+        // setCart(await getShoppingCart());
+        // setOrders(await getOrderHistory());
+
+        setLoginModalVisible(false);
+        console.log(data.user);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <form className="auth-form">
@@ -198,6 +248,20 @@ function AuthForm(props) {
       ) : (
         <></>
       )}
+      {showDisplayname ? (
+        <div>
+          <label htmlFor="displayname"></label>
+          <input
+            id="displayname"
+            value={displayname}
+            type="text"
+            placeholder="Enter Display Name"
+            onChange={(evt) => setDisplayname(evt.target.value)}
+          />{' '}
+        </div>
+      ) : (
+        <></>
+      )}
       <div id="login_register">
         {' '}
         <button
@@ -208,19 +272,43 @@ function AuthForm(props) {
           Login
         </button>
         {showEmail ? (
-          <button
-            onClick={(evt) => {
-              onRegister(evt);
-              setShowEmail(!showEmail);
-            }}
-          >
-            Register
-          </button>
+          <>
+            <button
+              id="register_reg"
+              onClick={(evt) => {
+                onRegister(evt);
+                // setShowEmail(!showEmail);
+              }}
+            >
+              Register
+            </button>
+            <button
+              id="seller"
+              onClick={(evt) => {
+                evt.preventDefault();
+                onSeller(evt);
+              }}
+            >
+              Seller
+            </button>
+
+            {/* <button
+              onClick={(evt) => {
+                onRegister(evt);
+                setShowEmail(!showEmail);
+                setShowDisplayname(!showDisplayname);
+              }}
+            >
+              Register
+            </button> */}
+          </>
         ) : (
           <button
+            id="register_show"
             onClick={(evt) => {
               evt.preventDefault();
               setShowEmail(!showEmail);
+              setShowDisplayname(!showDisplayname);
             }}
           >
             Register

@@ -90,11 +90,24 @@ body {
 
 #message {
   text-align: center;
-  background-color: #bbcea8ff;
-  width: 100vw;
   height: 5vh;
   min-height: 10px;
-
   padding-top: 1.5vh;
-  margin-right: auto;
+  width: 100vw;
+  margin: auto;
+  background: #bbcea8ff;
+
+  position: relative;
+  animation-name: m1;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes m1 {
+  0% {
+    top: -100px;
+  }
+  100% {
+    top: 0;
+  }
 }

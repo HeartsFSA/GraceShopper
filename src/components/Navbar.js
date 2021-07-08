@@ -40,7 +40,8 @@ function Navbar(props) {
     });
 
     setSearchPlaceholder(
-      "Let's go to " +
+      '    🔍  ' +
+        "   Let's go to " +
         searchPlaceholder[Math.floor(Math.random() * searchPlaceholder.length)]
     );
   }, [query]);
@@ -85,12 +86,12 @@ function Navbar(props) {
           //   props.history.push('/');
           // }}
         />
-        <SearchIcon
+        {/* <SearchIcon
           className="header__searchIcon"
           // onClick={(e) => {
           //   props.history.push('/');
           // }}
-        />
+        /> */}
       </div>
 
       {props.user.username ? (

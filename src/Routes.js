@@ -65,7 +65,12 @@ function Routes(props) {
       <Route
         path="/users/:username"
         render={(props) => (
-          <UserDetails {...props} user={user} products={products} />
+          <UserDetails
+            {...props}
+            user={user}
+            products={products}
+            setProducts={setProducts}
+          />
         )}
       />
 

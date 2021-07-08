@@ -28,16 +28,23 @@ function AuthForm(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [displayname, setDisplayname] = useState('');
   const [showEmail, setShowEmail] = useState(false);
+
   const [authFormMessage, setAuthFormMessage] = useState('');
+
+  const [showDisplayname, setShowDisplayname] = useState(false);
+
 
   async function onLogin(evt) {
     // alert('onLogin clicked');
     evt.preventDefault();
+
     if (!username) {
       messenger('Please enter username to login');
       // setAuthFormMessage('Please enter username to login');
       return;
+
     }
     if (!password) {
       messenger('we are missing the magic word... ');
@@ -105,8 +112,9 @@ function AuthForm(props) {
       messenger("that email doesn't feel right... can you please check...");
       return;
     }
+    if (!displayname) displayname = username;
     try {
-      let data = await register(username, password, email);
+      let data = await register(username, password, email, displayname);
       console.log(data);
 
       if (data.error) {
@@ -240,6 +248,20 @@ function AuthForm(props) {
       ) : (
         <></>
       )}
+      {showDisplayname ? (
+        <div>
+          <label htmlFor="displayname"></label>
+          <input
+            id="displayname"
+            value={displayname}
+            type="text"
+            placeholder="Enter Display Name"
+            onChange={(evt) => setDisplayname(evt.target.value)}
+          />{' '}
+        </div>
+      ) : (
+        <></>
+      )}
       <div id="login_register">
         {' '}
         <button
@@ -250,6 +272,7 @@ function AuthForm(props) {
           Login
         </button>
         {showEmail ? (
+
           <>
             <button
               id="register_reg"
@@ -270,12 +293,24 @@ function AuthForm(props) {
               Seller
             </button>
           </>
+
+          <button
+            onClick={(evt) => {
+              onRegister(evt);
+              setShowEmail(!showEmail);
+              setShowDisplayname(!showDisplayname);
+            }}
+          >
+            Register
+          </button>
+
         ) : (
           <button
             id="register_show"
             onClick={(evt) => {
               evt.preventDefault();
               setShowEmail(!showEmail);
+              setShowDisplayname(!showDisplayname);
             }}
           >
             Register

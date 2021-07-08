@@ -110,10 +110,10 @@ function AuthForm(props) {
       console.log(data);
 
       if (data.error) {
-        setUser('');
+        setUsername('');
         setPassword('');
         setEmail('');
-
+        messenger('that didnt go right, please try again...');
         if (data.error.constraint === 'users_email_key') {
           messenger(
             'that email is already taken, please choose a different email...'
@@ -126,6 +126,8 @@ function AuthForm(props) {
       if (data.user) {
         setUsername('');
         setPassword('');
+        let txt = 'Hi, ' + data.user.username;
+        messenger(txt);
         await setUser(data.user);
 
         // ** Set Cart needs to be updated to fetch it from local or state variable ** //
@@ -145,7 +147,7 @@ function AuthForm(props) {
     evt.preventDefault();
     if (!username) {
       messenger(
-        'you got the goods... we got the place ... lets start with a name...'
+        'we are excited to have you here... but will still need name...'
       );
       return;
     }
@@ -170,35 +172,31 @@ function AuthForm(props) {
       console.log(data);
 
       if (data.error) {
-        messenger(data.error.message);
         setUsername('');
         setPassword('');
-      }
-
-      if (data.error.constraint) {
+        setEmail('');
+        messenger('that didnt go right, please try again...');
         if (data.error.constraint === 'users_email_key') {
           messenger(
             'that email is already taken, please choose a different email...'
           );
-          setEmail('');
+
+          return;
         }
       }
 
       if (data.user) {
-        await setUsername('');
-        await setPassword('');
+        setUsername('');
+        setPassword('');
+        let txt = 'Hi, ' + data.user.username;
+        messenger(txt);
         await setUser(data.user);
 
         // ** Set Cart needs to be updated to fetch it from local or state variable ** //
         // setCart(await getShoppingCart());
         // setOrders(await getOrderHistory());
 
-        // console.log(type);
-
         setLoginModalVisible(false);
-
-        // ? setLoginModalVisible(false);
-        // : setRegisterModalVisible(false);
         console.log(data.user);
       }
     } catch (error) {

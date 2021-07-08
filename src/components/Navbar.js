@@ -21,7 +21,9 @@ function Navbar(props) {
     products,
     setCart,
     setOrders,
-    messenger
+    messenger,
+    showMessage,
+    setShowMessage
   } = props;
 
   console.log(products);

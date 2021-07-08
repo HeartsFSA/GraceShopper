@@ -121,6 +121,7 @@ function AuthForm(props) {
         setUsername('');
         setPassword('');
         setEmail('');
+        setDisplayname('');
         messenger('that didnt go right, please try again...');
         if (data.error.constraint === 'users_email_key') {
           messenger(

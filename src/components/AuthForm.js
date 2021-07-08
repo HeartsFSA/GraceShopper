@@ -28,31 +28,50 @@ function AuthForm(props) {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [showEmail, setShowEmail] = useState(false);
+  const [authFormMessage, setAuthFormMessage] = useState('test');
 
   async function onLogin(evt) {
     // alert('onLogin clicked');
     evt.preventDefault();
+    if (!username) {
+      messenger('Please enter username to login');
+      setAuthFormMessage('Please enter username to login');
+      return;
+    }
+    if (!password) {
+      messenger('Please enter password to continue');
+      setAuthFormMessage('Please enter password to continue');
+      return;
+    }
+
     if (!username || !password) {
+      messenger('Please enter ');
       return alert('Please enter details'); // need to fill out username and password
     }
     try {
       const data = await login(username, password);
-      console.log('auth form 39', data);
+      console.log('auth form 39 data.user', data.user);
 
       if (data.error) {
-        messenger('login error');
+        setAuthFormMessage(data.error.message);
       }
 
       if (data.user) {
         await setUsername('');
         await setPassword('');
         await setUser(data.user);
-        setCart(await getShoppingCart());
-        setOrders(await getOrderHistory());
+        // setCart(await getShoppingCart());
+        // setOrders(await getOrderHistory());
+
+        /* SET CART AND SET ORDER NEEDS TO BE ACTIVARED */
 
         // console.log(type);
+        setAuthFormMessage(data.user.message);
 
         setLoginModalVisible(false);
+        // messenger('NamohArihantanam');
+        const txt = 'Hi, ' + data.user.username;
+        messenger(txt);
 
         // ? setLoginModalVisible(false);
         // : setRegisterModalVisible(false);
@@ -200,6 +219,11 @@ function AuthForm(props) {
           </button>
         )}
       </div>
+      {authFormMessage ? (
+        <div id="authFormMessage">{authFormMessage}</div>
+      ) : (
+        <></>
+      )}
       <div id="login_register"></div>
     </form>
   );

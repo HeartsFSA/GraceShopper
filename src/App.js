@@ -99,7 +99,7 @@ function App() {
             query={query}
             setQuery={setQuery}
             products={products}
-            messenger={message}
+            messenger={messenger}
           />
           <MessageBar message={message} />
 

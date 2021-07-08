@@ -142,6 +142,61 @@ async function checkUser(userName) {
   }
 }
 
+
+async function updatePassword({username, password}) {
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+
+  try {
+    const {
+      rows: [user]
+    } = await client.query(
+      `
+      INSERT INTO users(username, password) VALUES ($1, $2)
+      ON CONFLICT (username) DO NOTHING 
+      RETURNING id, username
+    `,
+      [username, hashedPassword]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateEmail({username, email}) {
+  try {
+    const {
+      rows: [user]
+    } = await client.query(
+      `
+      INSERT INTO users(username, email) VALUES ($1, $2)
+      ON CONFLICT (username) DO NOTHING 
+      RETURNING id, username
+    `,
+      [username, email]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function createSeller({username, password, email, permission}) {
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  try {
+    const {
+      rows: [user]
+    } = await client.query(
+      `
+      INSERT INTO users(username, password, email, permission) VALUES ($1, $2, $3, $4)
+      ON CONFLICT (username) DO NOTHING 
+      RETURNING id, username
+    `,
+      [username, hashedPassword, email, '2']
+    );
+    return user;
+  } catch (error) {
+
 async function updateUser(id, userInfo) {
   try {
     // if (userInfo.username) {
@@ -172,6 +227,7 @@ async function updateUser(id, userInfo) {
     return updatedUser;
   } catch (error) {
     console.error('thrown from db/updateUser:');
+
     throw error;
   }
 }
@@ -183,5 +239,11 @@ module.exports = {
   getUserById,
   getUserByUsername,
   checkUser,
+
+  updatePassword,
+  updateEmail,
+  createSeller,
+
   updateUser
+
 };

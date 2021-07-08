@@ -87,3 +87,33 @@ body {
   width: 250px;
   margin: 5px 10px;
 }
+
+#message {
+  text-align: center;
+  height: 3vh;
+  min-height: 10px;
+  padding-top: 1vh;
+  width: 100vw;
+  margin: auto;
+  background: #bbcea8ff;
+
+  position: relative;
+  animation-name: m1;
+  animation-duration: 10s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes m1 {
+  0% {
+    top: -100px;
+  }
+  15% {
+    top: 0;
+  }
+  85% {
+    top: 0;
+  }
+  100% {
+    top: -100px;
+  }
+}

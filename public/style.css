@@ -99,7 +99,7 @@ body {
 
   position: relative;
   animation-name: m1;
-  animation-duration: 1.5s;
+  animation-duration: 10s;
   animation-fill-mode: forwards;
 }
 
@@ -107,7 +107,13 @@ body {
   0% {
     top: -100px;
   }
-  100% {
+  15% {
     top: 0;
+  }
+  85% {
+    top: 0;
+  }
+  100% {
+    top: -100px;
   }
 }

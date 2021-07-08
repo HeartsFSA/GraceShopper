@@ -9,7 +9,7 @@
 }
 
 .auth-form input {
-  width: 250px;
+  width: 280px;
   margin: 5px 10px;
 }
 
@@ -23,6 +23,19 @@
   margin: 5px 10px;
 }
 
-#login_register > button {
-  margin-right: 50px;
+/* #login_register > button {
+  display: flex;
+  
+  
+} */
+
+#login_register {
+  display: flex;
+  flex-direction: row;
+}
+
+#register_show,
+#seller,
+#register_reg {
+  margin-left: 45px;
 }

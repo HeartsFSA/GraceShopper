@@ -60,13 +60,17 @@ export async function login(username, password) {
       username,
       password
     });
+    console.log('utlis', data);
     if (data.token) {
       setToken(data.token);
     }
     return data;
   } catch (err) {
-    console.error('login(): Unable to login.\n', err);
+
+    console.error('login(): Unable to login.\n', err.message);
+
     console.log('error message', err.message);
+
     // returns error to be handled.
     return err;
   }
@@ -283,4 +287,22 @@ export function validateEmail(email) {
   const re =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
+}
+
+export async function regSeller(username, password, email) {
+  try {
+    const {data} = await axios.post('/api/users/seller', {
+      username,
+      password,
+      email
+    });
+    if (data.token) {
+      setToken(data.token);
+    }
+    return data;
+  } catch (err) {
+    console.error('register(): Unable to register user.\n', err);
+    // returns error to be handled
+    return err;
+  }
 }

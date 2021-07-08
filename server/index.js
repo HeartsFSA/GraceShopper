@@ -22,11 +22,9 @@ server.use('/api', apiRouter);
 // Error Handler
 server.use('/', (err, req, res, next) => {
   console.log(`ERROR: ${err.name} (${err.message})`);
-  let status = err.status || 500;
-  res.status(status).json({
-    message: err.message,
-    status
-  });
+  // let status = err.status || 500;
+
+  res.send({error: err});
 });
 
 // For any get routes that are not in /api, rely on ReactRouter to handle

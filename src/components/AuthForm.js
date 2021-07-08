@@ -13,40 +13,61 @@ import {
 import './css/AuthForm.css';
 
 function AuthForm(props) {
-  let {
+  const {
     type,
     setUser,
     setCart,
     setOrders,
     setLoginModalVisible,
     setRegisterModalVisible,
-    user
+    user,
+    messenger
   } = props; // type of auth form (login or signup) and isLoggedIn Function
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [showEmail, setShowEmail] = useState(false);
+  const [authFormMessage, setAuthFormMessage] = useState('');
 
   async function onLogin(evt) {
     // alert('onLogin clicked');
     evt.preventDefault();
-    if (!username || !password) {
-      return alert('Please enter details'); // need to fill out username and password
+    if (!username) {
+      messenger('Please enter username to login');
+      // setAuthFormMessage('Please enter username to login');
+      return;
     }
+    if (!password) {
+      messenger('we are missing the magic word... ');
+      // setAuthFormMessage('Please enter password to continue');
+      return;
+    }
+
     try {
       const data = await login(username, password);
-      console.log('auth form 39', data);
+      console.log('auth form 39 data.user', data.user);
+
+      if (data.error) {
+        messenger(data.error.message);
+      }
+
       if (data.user) {
         await setUsername('');
         await setPassword('');
         await setUser(data.user);
-        setCart(await getShoppingCart());
-        setOrders(await getOrderHistory());
+        // setCart(await getShoppingCart());
+        // setOrders(await getOrderHistory());
+
+        /* SET CART AND SET ORDER NEEDS TO BE ACTIVARED */
 
         // console.log(type);
+        setAuthFormMessage(data.user.message);
 
         setLoginModalVisible(false);
+        // messenger('NamohArihantanam');
+        const txt = 'Hi, ' + data.user.username;
+        messenger(txt);
 
         // ? setLoginModalVisible(false);
         // : setRegisterModalVisible(false);
@@ -60,11 +81,23 @@ function AuthForm(props) {
   async function onRegister(evt) {
     // console.log('on register was clicked');
     evt.preventDefault();
-    if (!username || !password || !email) {
-      return alert('Please enter reg details'); // need to fill out username and password
+    if (!username) {
+      messenger(
+        'we are excited to have you here... but will still need name...'
+      );
     }
+
+    if (!password) {
+      messenger(
+        'ssshhhhh.... please enter a password... 8 charecters atlease..'
+      );
+    }
+
+    // if (!username || !password || !email) {
+    //   return alert('Please enter reg details'); // need to fill out username and password
+    // }
     if (!validateEmail(email)) {
-      return alert('Please enter proper email');
+      messenger("that email doesn't feel right... can you please check...");
     }
     try {
       let data = await register(username, password, email);
@@ -194,7 +227,11 @@ function AuthForm(props) {
           </button>
         )}
       </div>
-      <div id="login_register"></div>
+      {authFormMessage ? (
+        <div id="authFormMessage">{authFormMessage}</div>
+      ) : (
+        <></>
+      )}
     </form>
   );
 }

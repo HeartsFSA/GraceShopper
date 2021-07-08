@@ -13,7 +13,16 @@ import {DomainDisabled} from '@material-ui/icons';
 function Navbar(props) {
   // Props
 
-  const {user, setUser, query, setQuery, products, setCart, setOrders} = props;
+  const {
+    user,
+    setUser,
+    query,
+    setQuery,
+    products,
+    setCart,
+    setOrders,
+    messenger
+  } = props;
 
   console.log(products);
 
@@ -31,7 +40,8 @@ function Navbar(props) {
     });
 
     setSearchPlaceholder(
-      "Let's go to " +
+      '    🔍  ' +
+        "   Let's go to " +
         searchPlaceholder[Math.floor(Math.random() * searchPlaceholder.length)]
     );
   }, [query]);
@@ -76,12 +86,12 @@ function Navbar(props) {
           //   props.history.push('/');
           // }}
         />
-        <SearchIcon
+        {/* <SearchIcon
           className="header__searchIcon"
           // onClick={(e) => {
           //   props.history.push('/');
           // }}
-        />
+        /> */}
       </div>
 
       {props.user.username ? (
@@ -168,6 +178,7 @@ function Navbar(props) {
         setOrders={setOrders}
         setLoginModalVisible={setLoginModalVisible}
         user={user}
+        messenger={messenger}
       />
 
       {/* <RegisterModal

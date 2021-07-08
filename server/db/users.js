@@ -172,6 +172,25 @@ async function updateEmail({username, email}) {
   }
 }
 
+async function createSeller({username, password, email, permission}) {
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  try {
+    const {
+      rows: [user]
+    } = await client.query(
+      `
+      INSERT INTO users(username, password, email, permission) VALUES ($1, $2, $3, $4)
+      ON CONFLICT (username) DO NOTHING 
+      RETURNING id, username
+    `,
+      [username, hashedPassword, email, '2']
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -180,5 +199,6 @@ module.exports = {
   getUserByUsername,
   checkUser,
   updatePassword,
-  updateEmail
+  updateEmail,
+  createSeller
 };

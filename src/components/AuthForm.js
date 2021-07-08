@@ -7,7 +7,8 @@ import {
   getShoppingCart,
   getOrderHistory,
   checkUser,
-  validateEmail
+  validateEmail,
+  regSeller
 } from '../utils';
 
 import './css/AuthForm.css';
@@ -50,6 +51,7 @@ function AuthForm(props) {
 
       if (data.error) {
         messenger(data.error.message);
+        setPassword('');
       }
 
       if (data.user) {
@@ -85,23 +87,43 @@ function AuthForm(props) {
       messenger(
         'we are excited to have you here... but will still need name...'
       );
+      return;
     }
 
     if (!password) {
-      messenger(
-        'ssshhhhh.... please enter a password... 8 charecters atlease..'
-      );
+      messenger('ssshhhhh.... please enter a password....');
+      return;
     }
 
-    // if (!username || !password || !email) {
-    //   return alert('Please enter reg details'); // need to fill out username and password
-    // }
+    if (password.length < 8) {
+      messenger('password needs to be 8 charecters for your security...');
+      setPassword('');
+      return;
+    }
+
     if (!validateEmail(email)) {
       messenger("that email doesn't feel right... can you please check...");
+      return;
     }
     try {
       let data = await register(username, password, email);
       console.log(data);
+
+      console.log(data);
+
+      if (data.error) {
+        setUser('');
+        setPassword('');
+        setEmail('');
+
+        if (data.error.constraint === 'users_email_key') {
+          messenger(
+            'that email is already taken, please choose a different email...'
+          );
+
+          return;
+        }
+      }
 
       if (data.user) {
         await setUsername('');
@@ -162,6 +184,72 @@ function AuthForm(props) {
   //   }
   // }
 
+  async function onSeller(evt) {
+    // console.log('on register was clicked');
+    evt.preventDefault();
+    if (!username) {
+      messenger(
+        'you got the goods... we got the place ... lets start with a name...'
+      );
+      return;
+    }
+
+    if (!password) {
+      messenger('ssshhhhh.... please enter a password....');
+      return;
+    }
+
+    if (password.length < 8) {
+      messenger('password needs to be 8 charecters for your security...');
+      setPassword('');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      messenger("that email doesn't feel right... can you please check...");
+      return;
+    }
+    try {
+      let data = await regSeller(username, password, email);
+      console.log(data);
+
+      if (data.error) {
+        messenger(data.error.message);
+        setUsername('');
+        setPassword('');
+      }
+
+      if (data.error.constraint) {
+        if (data.error.constraint === 'users_email_key') {
+          messenger(
+            'that email is already taken, please choose a different email...'
+          );
+          setEmail('');
+        }
+      }
+
+      if (data.user) {
+        await setUsername('');
+        await setPassword('');
+        await setUser(data.user);
+
+        // ** Set Cart needs to be updated to fetch it from local or state variable ** //
+        // setCart(await getShoppingCart());
+        // setOrders(await getOrderHistory());
+
+        // console.log(type);
+
+        setLoginModalVisible(false);
+
+        // ? setLoginModalVisible(false);
+        // : setRegisterModalVisible(false);
+        console.log(data.user);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <form className="auth-form">
       <div>
@@ -208,22 +296,35 @@ function AuthForm(props) {
           Login
         </button>
         {showEmail ? (
-          <button
-            onClick={(evt) => {
-              onRegister(evt);
-              setShowEmail(!showEmail);
-            }}
-          >
-            Register
-          </button>
+          <>
+            <button
+              id="register_reg"
+              onClick={(evt) => {
+                onRegister(evt);
+                // setShowEmail(!showEmail);
+              }}
+            >
+              Register
+            </button>
+            <button
+              id="seller"
+              onClick={(evt) => {
+                evt.preventDefault();
+                onSeller(evt);
+              }}
+            >
+              Seller
+            </button>
+          </>
         ) : (
           <button
+            id="register_show"
             onClick={(evt) => {
               evt.preventDefault();
               setShowEmail(!showEmail);
             }}
           >
-            Register
+            Register show
           </button>
         )}
       </div>

@@ -17,5 +17,40 @@
 }
 
 .hidden {
+  position: absolute;
+  animation-name: m3;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  /* display: none; */
+}
+
+.visible {
+  position: absolute;
+  animation-name: m2;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes m2 {
+  0% {
+    right: -300px;
+  }
+
+  100% {
+    right: 0;
+  }
+}
+
+@keyframes m3 {
+  0% {
+    right: 0;
+  }
+
+  100% {
+    right: -300px;
+  }
+}
+
+.hidden2 {
   display: none;
 }

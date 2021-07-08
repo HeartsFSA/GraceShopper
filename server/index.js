@@ -22,7 +22,7 @@ server.use('/api', apiRouter);
 // Error Handler
 server.use((err, req, res, next) => {
   console.log(`ERROR: ${err.name} (${err.message})`);
-  let status = err.status || 500;
+  // let status = err.status || 500;
 
   res.send({error: err});
 });

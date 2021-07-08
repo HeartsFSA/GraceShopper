@@ -96,7 +96,7 @@ function Navbar(props) {
 
       {props.user.username ? (
         <h3
-          className={'authfunc'}
+          id="signin_register"
           onClick={(e) => {
             localStorage.setItem('token', '');
             setUser({});

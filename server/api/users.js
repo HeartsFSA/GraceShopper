@@ -6,7 +6,8 @@ const {
   getUser,
   getUserByUsername,
   getUserById,
-  checkUser
+  checkUser,
+  createSeller
 } = require('../db');
 const SALT_COUNT = 10;
 const {JWT_SECRET = 'neverTell'} = process.env;
@@ -57,7 +58,6 @@ usersRouter.post('/register', async (req, res, next) => {
     const {username, password, email} = req.body;
     const queriedUser = await getUserByUsername(username);
     if (queriedUser) {
-      res.status(401);
       next({
         name: 'UserExistsError',
         message: 'A user by that username already exists',
@@ -131,4 +131,40 @@ usersRouter.get('/:username', async (req, res, next) => {
 // });
 
 // --------- ADD ADDITONAL USER ROUTES AS NEEDED ---------
+usersRouter.post('/seller', async (req, res, next) => {
+  try {
+    const {username, password, email} = req.body;
+    const queriedUser = await getUserByUsername(username);
+    if (queriedUser) {
+      next({
+        name: 'UserExistsError',
+        message: 'A user by that username already exists',
+        status: 409
+      });
+    } else {
+      // Add email and permission later
+      const user = await createSeller({
+        username,
+        password,
+        email
+      });
+      if (!user) {
+        next({
+          name: 'UserCreationError',
+          message: 'There was a problem registering you. Please try again.'
+        });
+      } else {
+        const token = jwt.sign(
+          {id: user.id, username: user.username},
+          JWT_SECRET,
+          {expiresIn: '1w'}
+        );
+        res.send({user, message: "you're signed up!", token});
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = usersRouter;

@@ -66,6 +66,7 @@ export async function login(username, password) {
     return data;
   } catch (err) {
     console.error('login(): Unable to login.\n', err);
+    console.log('error message', err.message);
     // returns error to be handled.
     return err;
   }
@@ -85,12 +86,13 @@ export async function login(username, password) {
  *      token: JSonWebToken
  *  }
  */
-export async function register(username, password, email) {
+export async function register(username, password, email, displayname) {
   try {
     const {data} = await axios.post('/api/users/register', {
       username,
       password,
-      email
+      email,
+      displayname
     });
     if (data.token) {
       setToken(data.token);
@@ -106,6 +108,20 @@ export async function register(username, password, email) {
 export async function getUserByUsername(username) {
   try {
     const {data} = await axios.get(`/api/users/${username}`);
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function updateUser(id, userInfo) {
+  try {
+    const {data} = await axios.patch(
+      `/api/users/${id}`,
+      userInfo,
+      setHeaders()
+    );
     return data;
   } catch (error) {
     console.error(error);

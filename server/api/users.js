@@ -6,7 +6,8 @@ const {
   getUser,
   getUserByUsername,
   getUserById,
-  checkUser
+  checkUser,
+  updateUser
 } = require('../db');
 const SALT_COUNT = 10;
 const {JWT_SECRET = 'neverTell'} = process.env;
@@ -18,6 +19,8 @@ usersRouter.use((req, res, next) => {
 // POST /api/users/login
 usersRouter.post('/login', async (req, res, next) => {
   const {username, password} = req.body;
+  console.log('username received:', username);
+  console.log('password received:', password);
 
   // request must have both
   if (!username || !password) {
@@ -54,7 +57,7 @@ usersRouter.post('/login', async (req, res, next) => {
 // POST /api/users/register
 usersRouter.post('/register', async (req, res, next) => {
   try {
-    const {username, password, email} = req.body;
+    const {username, password, email, displayname} = req.body;
     const queriedUser = await getUserByUsername(username);
     if (queriedUser) {
       res.status(401);
@@ -68,7 +71,8 @@ usersRouter.post('/register', async (req, res, next) => {
       const user = await createUser({
         username,
         password,
-        email
+        email,
+        displayname
       });
       if (!user) {
         next({
@@ -119,6 +123,32 @@ usersRouter.get('/:username', async (req, res, next) => {
     });
   }
 });
+
+usersRouter.patch('/:id', async (req, res, next) => {
+  try {
+    // if (req.user.id !== req.params.id) {
+    //   next({
+    //     name: 'Authorization error',
+    //     message: 'Error: you do not have authorization to update the user',
+    //     status: 401
+    //   });
+    // }
+
+    let returnUser = await updateUser(req.params.id, req.body);
+    delete returnUser.password;
+
+    res.send(returnUser);
+  } catch (error) {
+    console.error('req.body:', req.body);
+    console.error(error);
+    next({
+      name: 'Error updating user',
+      message: 'Error updating user information',
+      status: 500
+    });
+  }
+});
+
 // ** Disabled for security **
 // usersRouter.get('/check', async (req, res, next) => {
 //   const {username} = req.body;
@@ -130,5 +160,4 @@ usersRouter.get('/:username', async (req, res, next) => {
 //   }
 // });
 
-// --------- ADD ADDITONAL USER ROUTES AS NEEDED ---------
 module.exports = usersRouter;

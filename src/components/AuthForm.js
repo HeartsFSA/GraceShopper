@@ -26,13 +26,15 @@ function AuthForm(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [displayname, setDisplayname] = useState('');
   const [showEmail, setShowEmail] = useState(false);
+  const [showDisplayname, setShowDisplayname] = useState(false);
 
   async function onLogin(evt) {
     // alert('onLogin clicked');
     evt.preventDefault();
     if (!username || !password) {
-      return alert('Please enter details'); // need to fill out username and password
+      return alert('Please enter a username and password'); // need to fill out username and password
     }
     try {
       const data = await login(username, password);
@@ -66,8 +68,9 @@ function AuthForm(props) {
     if (!validateEmail(email)) {
       return alert('Please enter proper email');
     }
+    if (!displayname) displayname = username;
     try {
-      let data = await register(username, password, email);
+      let data = await register(username, password, email, displayname);
       console.log(data);
 
       if (data.user) {
@@ -165,6 +168,20 @@ function AuthForm(props) {
       ) : (
         <></>
       )}
+      {showDisplayname ? (
+        <div>
+          <label htmlFor="displayname"></label>
+          <input
+            id="displayname"
+            value={displayname}
+            type="text"
+            placeholder="Enter Display Name"
+            onChange={(evt) => setDisplayname(evt.target.value)}
+          />{' '}
+        </div>
+      ) : (
+        <></>
+      )}
       <div id="login_register">
         {' '}
         <button
@@ -179,6 +196,7 @@ function AuthForm(props) {
             onClick={(evt) => {
               onRegister(evt);
               setShowEmail(!showEmail);
+              setShowDisplayname(!showDisplayname);
             }}
           >
             Register
@@ -188,6 +206,7 @@ function AuthForm(props) {
             onClick={(evt) => {
               evt.preventDefault();
               setShowEmail(!showEmail);
+              setShowDisplayname(!showDisplayname);
             }}
           >
             Register

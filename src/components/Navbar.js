@@ -93,6 +93,7 @@ function Navbar(props) {
           }}
         >
           Logout
+          <Link to={`/users/${props.user.username}`}>Me</Link>
         </h3>
       ) : (
         <>

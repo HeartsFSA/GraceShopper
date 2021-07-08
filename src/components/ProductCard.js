@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
@@ -17,10 +17,6 @@ function ProductCard({product}) {
       type: 'ADD_TO_BASKET'
     });
   };
-
-  //   useEffect(() => {
-  //     return console.log(product.photos);
-  //   }, []);
 
   return (
     <Card>
@@ -51,7 +47,7 @@ function ProductCard({product}) {
             </button>
           </Link>
           <Link to={`/users/${product.creator_name}`}>
-            <h4>{product.creator_name}</h4>
+            <h4>{product.creator.displayname}</h4>
           </Link>
           <button onClick={addToBasket}>
             <AddShoppingCartIcon fontSize="large" />

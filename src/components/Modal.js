@@ -20,6 +20,10 @@ function Modal(props) {
     }
   }, [visible]);
 
+  useEffect(() => {
+    setVisibleClass('hidden2');
+  }, []);
+
   return <div className={`modal ${visibleClass}`}>{props.children}</div>;
 }
 

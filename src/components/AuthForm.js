@@ -109,8 +109,6 @@ function AuthForm(props) {
       let data = await register(username, password, email);
       console.log(data);
 
-      console.log(data);
-
       if (data.error) {
         setUser('');
         setPassword('');
@@ -126,63 +124,21 @@ function AuthForm(props) {
       }
 
       if (data.user) {
-        await setUsername('');
-        await setPassword('');
+        setUsername('');
+        setPassword('');
         await setUser(data.user);
 
         // ** Set Cart needs to be updated to fetch it from local or state variable ** //
         // setCart(await getShoppingCart());
         // setOrders(await getOrderHistory());
 
-        // console.log(type);
-
         setLoginModalVisible(false);
-
-        // ? setLoginModalVisible(false);
-        // : setRegisterModalVisible(false);
         console.log(data.user);
       }
     } catch (error) {
       console.log(error);
     }
   }
-
-  // async function handleSubmit(evt) {
-  //   evt.preventDefault();
-
-  //   if (!username || !password) {
-  //     return alert('Please enter details'); // need to fill out username and password
-  //   } else {
-  //     try {
-  //       let data = await checkUser(username);
-  //       console.log(data);
-
-  //       if (data.status === 409) {
-  //         data = await login(username, password);
-  //       }
-
-  //       if (data.user) {
-  //         await setUsername('');
-  //         await setPassword('');
-  //         await setUser(data.user);
-  //         setCart(await getShoppingCart());
-  //         setOrders(await getOrderHistory());
-
-  //         console.log(data.user);
-  //         // console.log(type);
-
-  //         type === 'login'
-  //           ? setLoginModalVisible(false)
-  //           : setRegisterModalVisible(false);
-  //         // ? setLoginModalVisible(false);
-  //         // : setRegisterModalVisible(false);
-  //       }
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // }
 
   async function onSeller(evt) {
     // console.log('on register was clicked');
@@ -324,7 +280,7 @@ function AuthForm(props) {
               setShowEmail(!showEmail);
             }}
           >
-            Register show
+            Register
           </button>
         )}
       </div>

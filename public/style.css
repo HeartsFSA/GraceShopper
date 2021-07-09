@@ -155,12 +155,12 @@ body {
 } */
 
 .card {
-  animation-duration: 4s;
+  animation-duration: 2s;
   animation-name: pullUp;
 }
 
 .card-footer {
-  animation-duration: 4s;
+  animation-duration: 2s;
   animation-name: right1;
 }
 

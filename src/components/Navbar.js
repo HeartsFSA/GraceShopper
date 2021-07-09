@@ -9,6 +9,8 @@ import {useStateValue} from '../StateProvider';
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 
+import {getItemCountInOrder} from '../utils';
+
 function Navbar(props) {
   // Props
   const {
@@ -160,7 +162,7 @@ function Navbar(props) {
           <ShoppingCartIcon />
           {/* Number of items in the cart */}
           <span className="header__optionLineTwo header__cartCount">
-            {primaryCart.orderProducts.length}
+            {getItemCountInOrder(primaryCart)}
           </span>
         </div>
       </Link>

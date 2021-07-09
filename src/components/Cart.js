@@ -7,6 +7,8 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 import {Switch, Route, withRouter, Link} from 'react-router-dom';
 
+import {getOrderProductTotalPrice} from '../utils';
+
 function Cart(props) {
   // Change this in the future for multiple carts
   const {cart, primaryCart, setPrimaryCart} = props;
@@ -41,15 +43,8 @@ function Cart(props) {
             </thead>
             <tbody>
               {primaryCart.orderProducts.map((orderProduct, idx) => {
-                primaryCart.orderProducts[idx].totalprice = (
-                  orderProduct.quantity *
-                  parseFloat(
-                    orderProduct.product.price.slice(
-                      1,
-                      orderProduct.product.price.length
-                    )
-                  )
-                ).toFixed(2); // rounds to two decimal places
+                primaryCart.orderProducts[idx].totalprice =
+                  getOrderProductTotalPrice(orderProduct); // rounds to two decimal places
                 return (
                   <tr key={idx}>
                     <td>{orderProduct.product.name}</td>
@@ -61,15 +56,15 @@ function Cart(props) {
                         onChange={(event) => {
                           console.log(event.target.value);
                           let updatedCart = {...primaryCart};
-                          console.log('UPDATED CART: ', updatedCart);
-                          updatedCart.orderProducts[idx].quantity =
-                            event.target.value;
+                          updatedCart.orderProducts[idx].quantity = parseFloat(
+                            event.target.value
+                          );
                           setPrimaryCart(updatedCart);
                         }}
                       ></input>
                     </td>
                     <td>{orderProduct.product.price}</td>
-                    <td>{orderProduct.totalprice}</td>
+                    <td>{`$${orderProduct.totalprice.toFixed(2)}`}</td>
                   </tr>
                 );
               })}

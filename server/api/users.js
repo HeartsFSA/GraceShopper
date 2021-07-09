@@ -5,6 +5,7 @@ const {
   createUser,
   getUser,
   getUserByUsername,
+  getAllUsers,
   getUserById,
   checkUser
 } = require('../db');
@@ -93,6 +94,16 @@ usersRouter.post('/register', async (req, res, next) => {
 usersRouter.get('/me', (req, res, next) => {
   try {
     res.send(req.user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// GET /api/users/
+usersRouter.get('/', async (req, res, next) => {
+  console.log('USER: ', req.user);
+  try {
+    res.send(await getAllUsers());
   } catch (error) {
     next(error);
   }

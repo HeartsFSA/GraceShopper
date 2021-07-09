@@ -117,3 +117,68 @@ body {
     top: -100px;
   }
 }
+
+/* .card-content {
+  position: relative;
+  animation-name: cardAni1;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  overflow: hidden;
+}
+
+@keyframes cardAni1 {
+  0% {
+    top: -400px;
+  }
+  100% {
+    top: 0;
+  }
+} */
+
+/* .card {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.card-content {
+  background-color: #fff;
+  border-radius: 0.5em;
+  box-sizing: border-box;
+  height: 400px;
+  width: 157px;
+
+  position: relative;
+} */
+
+.card {
+  animation-duration: 3s;
+  animation-name: dropDown;
+}
+
+@keyframes dropDown {
+  from {
+    margin-top: 100%;
+  }
+  to {
+    margin-top: 0%;
+  }
+}
+
+.card-footer {
+  /* animation-delay: 3s; */
+  animation-duration: 3s;
+  animation-name: drop2;
+}
+
+@keyframes drop2 {
+  from {
+    margin-left: 100%;
+  }
+  to {
+    margin-left: 0%;
+  }
+}

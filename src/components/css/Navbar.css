@@ -92,7 +92,12 @@
   width: 60px;
 }
 
-#signin_register {
+#me {
+  text-decoration: none;
+}
+
+#signin_register,
+#me {
   color: white;
   background-color: black;
   font-size: 13px;

@@ -1,0 +1,31 @@
+// Cart Object:
+[
+  {
+    "id": 6,
+    "userId": 6,
+    "status": 0,
+    "datepurchased": null,
+    "orderProducts": [
+      {
+        "id": 6,
+        "productId": 5,
+        "orderId": 6,
+        "quantity": 1,
+        "totalprice": "$5.99",
+        "dateadded": "2021-07-07T05:00:00.000Z",
+        "product": {
+          "id": 5,
+          "name": "The Even Freer Gallery of Art",
+          "description": "This one is even more free than that other one!",
+          "price": "$5.99",
+          "hours": null,
+          "dates_open": null,
+          "location": "Washington, DC",
+          "category": "Art",
+          "creator_name": "The Johnsonian",
+          "is_active": true
+        }
+      }
+    ]
+  }
+]

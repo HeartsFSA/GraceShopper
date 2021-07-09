@@ -5,7 +5,7 @@ import ProductCard from './ProductCard';
 import './css/Home.css';
 
 function Home(props) {
-  const {products, getProduct} = props;
+  const {products, primaryCart, setCart, setPrimaryCart, getProduct} = props;
   const [user, setUser] = useState({});
   // products is non fileted array
   // getProduct is filtered array
@@ -32,7 +32,13 @@ function Home(props) {
   return (
     <div className="home">
       {getProduct.map((product, idx) => (
-        <ProductCard product={product} key={idx} />
+        <ProductCard
+          key={idx}
+          product={product}
+          primaryCart={primaryCart}
+          setCart={setCart}
+          setPrimaryCart={setPrimaryCart}
+        />
       ))}
     </div>
   );

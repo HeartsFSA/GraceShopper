@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   createOrder,
+  getAllOrders,
   getOrdersByUserId,
   getCartsByUserId,
   updateCartToOrderByOrderId,
@@ -36,6 +37,22 @@ async function _constructOrdersObjects(orders) {
 
   return ordersWithProducts;
 }
+
+// GET /api/orders/
+// Sends all orders (carts, history, pending, etc.)
+// Check if permission is admin
+router.get('/', async (req, res, next) => {
+  try {
+    req.data = await getAllOrders();
+    console.log('ORDERS: ', req.data);
+    next();
+  } catch (error) {
+    next({
+      name: 'OrderFetchError',
+      message: 'The request to fetch all orders could not be completed'
+    });
+  }
+});
 
 // ***
 // GET /api/orders/history
@@ -74,6 +91,7 @@ router.get('/carts', async (req, res, next) => {
 // Adds item to current users cart
 router.post('/item', async (req, res, next) => {
   const orderProductData = req.body;
+  const {productId} = req.body;
   const {id: userId} = req.user;
   try {
     await createOrderProduct(orderProductData);

@@ -1,5 +1,112 @@
 import axios from 'axios';
 
+/* ---------------------------FRONT-END UTIL FUNCTIONS---------------------------- */
+
+// Returns number of items in an order
+/**
+ * @description
+ * Returns number of items in an order
+ *
+ * @example
+ * getItemCountInOrder(orderObject) => 12
+ *
+ * @param {object} order
+ * @returns {number}
+ */
+export function getItemCountInOrder(order) {
+  if (order) {
+    const count = order.orderProducts
+      .map((orderProduct) => orderProduct.quantity)
+      .reduce((acc, cv) => acc + cv);
+    return count;
+  } else {
+    return 0;
+  }
+}
+
+/**
+ * @description
+ * Returns order status text for corresponding order status code
+ *
+ * @example
+ * getStatusText(0) => 'Primary Cart'
+ *
+ * @param {number} code
+ * @returns {string}
+ */
+export function getStatusText(code) {
+  const orderStatusTable = {
+    0: 'Primary Cart',
+    1: 'Pending Cart',
+    2: 'Pending Order',
+    3: 'Shipped Order'
+  };
+
+  return orderStatusTable[code];
+}
+
+export function getUserTypeText(code) {
+  const userTypeTable = {
+    0: 'Guest',
+    1: 'Member',
+    2: 'Vendor',
+    3: 'Admin',
+    4: 'Super Admin'
+  };
+
+  return userTypeTable[code];
+}
+
+export function getCartsByUser(user, orders) {
+  return orders.filter((order) => order.userId === user.id && order.status < 2);
+}
+
+export function getOrdersByUser(user, orders) {
+  return orders.filter((order) => order.userId === user.id && order.status > 2);
+}
+
+export function getTotalValueByUser(user, orders) {
+  if (orders.length === 0) {
+    return 0;
+  }
+  return orders.map(getOrderTotalPrice).reduce((acc, cv) => acc + cv);
+}
+
+/**
+ * @description
+ * Returns total price for an individual order object
+ *
+ * @example
+ * getOrderTotalPrice(order) => 200.21
+ *
+ * @param {object} order
+ * @returns {number}
+ */
+export function getOrderTotalPrice(order) {
+  const totalPrice = order.orderProducts
+    .map((orderProduct) => parseFloat(getOrderProductTotalPrice(orderProduct)))
+    .reduce((acc, cv) => acc + cv);
+  return totalPrice;
+}
+
+/**
+ * @description
+ * Returns total price for an individual orderProduct object (quantity * product price)
+ *
+ * @example
+ * getOrderProductTotalPrice(orderProduct) => 39.96
+ *
+ * @param {object} orderProduct
+ * @returns number
+ */
+export function getOrderProductTotalPrice(orderProduct) {
+  const productPrice = orderProduct.product.price;
+  const quantity = orderProduct.quantity;
+  return parseFloat(quantity * productPrice.slice(1, productPrice.length));
+}
+
+/* -----------------------------AXIOS/API FUNCTIONS------------------------------- */
+
 function setHeaders() {
   let token = localStorage.getItem('token');
   let config = token
@@ -66,7 +173,6 @@ export async function login(username, password) {
     }
     return data;
   } catch (err) {
-
     console.error('login(): Unable to login.\n', err.message);
 
     console.log('error message', err.message);
@@ -109,6 +215,17 @@ export async function register(username, password, email, displayname) {
   }
 }
 
+/* USERS FUNCTIONS */
+
+export async function getAllUsers() {
+  try {
+    const {data} = await axios.get('/api/users/', setHeaders());
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
 export async function getUserByUsername(username) {
   try {
     const {data} = await axios.get(`/api/users/${username}`);
@@ -135,6 +252,7 @@ export async function updateUser(id, userInfo) {
 
 /* PRODUCT FUNCTIONS */
 export async function getAllProducts() {
+  console.log('getAllProducts()');
   try {
     const {data} = await axios.get('/api/products/all');
     return data;
@@ -194,40 +312,49 @@ export async function deleteProduct(id) {
   }
 }
 
-/* SHOPPING CART FUNCTIONS */
+/* ORDER FUNCTIONS */
+
+export async function getAllOrders() {
+  try {
+    const {data} = await axios.get('/api/orders/');
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
 
 export async function getShoppingCart() {
   try {
     const {data} = await axios.get('/api/orders/carts', setHeaders());
-    console.log('Cart: ', data);
     return data;
   } catch (error) {
     return error;
   }
 }
 
-export async function addCartItem(productId, userId, quantity) {
+export async function addCartItem(orderId, productId, quantity, totalPrice) {
   const config = {
+    orderId: orderId,
     productId: productId,
-    userId: userId,
-    quantity: quantity
+    quantity: quantity,
+    totalPrice: totalPrice
   };
   try {
-    const {data} = await axios.post('/api/carts/item', config, setHeaders());
+    const {data} = await axios.post('/api/orders/item', config, setHeaders());
     return data;
   } catch (error) {
     return error;
   }
 }
 
-export async function updateCartItemQuantity(itemId, quantity, method) {
+export async function updateCartItemQuantity(itemId, quantity, totalPrice) {
   const config = {
-    itemId: itemId,
-    inputQuantity: quantity,
-    method: method
+    orderProductId: itemId,
+    quantity: quantity,
+    totalPrice: totalPrice
   };
   try {
-    const {data} = await axios.patch('/api/carts/item', config, setHeaders());
+    const {data} = await axios.patch('/api/orders/item', config, setHeaders());
     return data;
   } catch (error) {
     return error;
@@ -260,7 +387,6 @@ export async function deleteShoppingCartItem(itemId) {
 export async function getOrderHistory() {
   try {
     const {data} = await axios.get('/api/orders/history', setHeaders());
-    console.log('Orders: ', data);
     return data;
   } catch (error) {
     return error;

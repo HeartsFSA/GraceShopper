@@ -20,6 +20,7 @@ import {
 function App() {
   const [user, setUser] = useState({});
   const [cart, setCart] = useState([]);
+  const [primaryCart, setPrimaryCart] = useState([]);
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [query, setQuery] = useState('');
@@ -61,7 +62,9 @@ function App() {
     setLogIn();
   }, []);
 
-  console.log('products', products);
+  useEffect(async () => {
+    await setPrimaryCart(cart[0]);
+  }, [cart]);
 
   useEffect(() => {
     if (query) {
@@ -99,6 +102,7 @@ function App() {
             query={query}
             setQuery={setQuery}
             products={products}
+            primaryCart={primaryCart}
             messenger={messenger}
           />
           <MessageBar message={message} />
@@ -108,6 +112,10 @@ function App() {
             setUser={setUser}
             products={products}
             setProducts={setProducts}
+            cart={cart}
+            setCart={setCart}
+            primaryCart={primaryCart}
+            setPrimaryCart={setPrimaryCart}
             getProduct={getProduct}
           />
         </>

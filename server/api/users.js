@@ -5,13 +5,13 @@ const {
   createUser,
   getUser,
   getUserByUsername,
+  getAllUsers,
   getUserById,
   checkUser,
 
   createSeller,
 
   updateUser
-
 } = require('../db');
 const SALT_COUNT = 10;
 const {JWT_SECRET = 'neverTell'} = process.env;
@@ -105,6 +105,18 @@ usersRouter.get('/me', (req, res, next) => {
   }
 });
 
+// GET /api/users/
+usersRouter.get('/', async (req, res, next) => {
+  console.log('USER: ', req.user);
+  try {
+    const users = await getAllUsers();
+    console.log('USERS: ', users);
+    res.send(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // GET /api/users/:username
 usersRouter.get('/:username', async (req, res, next) => {
   try {
@@ -163,7 +175,6 @@ usersRouter.patch('/:id', async (req, res, next) => {
 //   }
 // });
 
-
 // --------- ADD ADDITONAL USER ROUTES AS NEEDED ---------
 usersRouter.post('/seller', async (req, res, next) => {
   try {
@@ -200,6 +211,5 @@ usersRouter.post('/seller', async (req, res, next) => {
     next(error);
   }
 });
-
 
 module.exports = usersRouter;

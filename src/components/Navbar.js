@@ -103,30 +103,33 @@ function Navbar(props) {
             //   props.history.push('/');
             // }}
           />
-          <SearchIcon
+          {/* <SearchIcon
             className="header__searchIcon"
             // onClick={(e) => {
             //   props.history.push('/');
             // }}
-          />
+          /> */}
         </div>
       ) : (
         <></>
       )}
 
-
-
       {props.user.username ? (
-        <h3
-          id="signin_register"
-          onClick={(e) => {
-            localStorage.setItem('token', '');
-            setUser({});
-          }}
-        >
-          Logout
-          <Link to={`/users/${props.user.username}`}>Me</Link>
-        </h3>
+        <>
+          {' '}
+          <h3
+            id="signin_register"
+            onClick={(e) => {
+              localStorage.setItem('token', '');
+              setUser({});
+            }}
+          >
+            Logout
+          </h3>
+          <Link to={`/users/${props.user.username}`} id="me">
+            Me
+          </Link>
+        </>
       ) : (
         <>
           {' '}

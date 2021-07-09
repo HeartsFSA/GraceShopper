@@ -85,17 +85,21 @@ function ProductDetails(props) {
                   onClick={() => setCurrentImg(i)}
                 ></span>
               ))}
+            </div>{' '}
+            <div id="product-info-display-description">
+              <p>{product.description}</p>
+              <p>Price: {product.price}</p>
+              <p>Location: {product.location}</p>
+              <p>{product.datesOpen ? `Open ${product.datesOpen}` : ''}</p>
+              <p>
+                {product.hours ? `Hours of Operation: ${product.hours}` : ''}
+              </p>
+              <p>Owned by: {product.creator.displayname}</p>
+              <p>
+                For more information, contact {product.creator.displayname} at{' '}
+                {product.creator.email}
+              </p>
             </div>
-            <p>{product.description}</p>
-            <p>Price: {product.price}</p>
-            <p>Location: {product.location}</p>
-            <p>{product.datesOpen ? `Open ${product.datesOpen}` : ''}</p>
-            <p>{product.hours ? `Hours of Operation: ${product.hours}` : ''}</p>
-            <p>Owned by: {product.creator.displayname}</p>
-            <p>
-              For more information, contact {product.creator.displayname} at{' '}
-              {product.creator.email}
-            </p>
           </>
         ) : (
           <h1>Please update search criteria</h1>

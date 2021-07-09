@@ -155,11 +155,26 @@ body {
 } */
 
 .card {
-  animation-duration: 3s;
-  animation-name: dropDown;
+  animation-duration: 4s;
+  animation-name: pullUp;
 }
 
-@keyframes dropDown {
+.card-footer {
+  animation-duration: 4s;
+  animation-name: right1;
+}
+
+#product-info-display {
+  animation-duration: 2s;
+  animation-name: left1;
+}
+
+#product-info-display-description {
+  animation-duration: 2s;
+  animation-name: pullUp;
+}
+
+@keyframes pullUp {
   from {
     margin-top: 100%;
   }
@@ -168,17 +183,20 @@ body {
   }
 }
 
-.card-footer {
-  /* animation-delay: 3s; */
-  animation-duration: 3s;
-  animation-name: drop2;
-}
-
-@keyframes drop2 {
+@keyframes right1 {
   from {
     margin-left: 100%;
   }
   to {
     margin-left: 0%;
+  }
+}
+
+@keyframes left1 {
+  from {
+    margin-right: 100%;
+  }
+  to {
+    margin-right: 0%;
   }
 }

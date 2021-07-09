@@ -44,6 +44,7 @@ async function _constructOrdersObjects(orders) {
 router.get('/', async (req, res, next) => {
   try {
     req.data = await getAllOrders();
+    console.log('ORDERS: ', req.data);
     next();
   } catch (error) {
     next({

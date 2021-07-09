@@ -401,7 +401,7 @@ function ASDashboard(props) {
           </button>
         </form>
 
-        <ProductCard product={editorFeature} />
+        {/* <ProductCard product={editorFeature} /> */}
       </div>
       {presentList()}
     </div>

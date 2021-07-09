@@ -14,10 +14,14 @@ import axios from 'axios';
  * @returns {number}
  */
 export function getItemCountInOrder(order) {
-  const count = order.orderProducts
-    .map((orderProduct) => orderProduct.quantity)
-    .reduce((acc, cv) => acc + cv);
-  return count;
+  if (order) {
+    const count = order.orderProducts
+      .map((orderProduct) => orderProduct.quantity)
+      .reduce((acc, cv) => acc + cv);
+    return count;
+  } else {
+    return 0;
+  }
 }
 
 /**
@@ -248,6 +252,7 @@ export async function updateUser(id, userInfo) {
 
 /* PRODUCT FUNCTIONS */
 export async function getAllProducts() {
+  console.log('getAllProducts()');
   try {
     const {data} = await axios.get('/api/products/all');
     return data;

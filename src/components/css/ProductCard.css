@@ -21,15 +21,15 @@ button:hover {
   justify-content: center;
 }
 
-.card-header > div > h1,
-h3 {
-  margin: 0;
+.card-header h3 {
+  color: var(--dark-green);
 }
 
-.card-header > div > h3 {
-  color: var(--dark-green);
+.card-header h1 {
+  font-family: var(--body-font2);
 }
 
 .card * {
   text-decoration: none;
+  color: var(--black);
 }

@@ -62,8 +62,20 @@ async function getProductBy(column, value) {
         `,
       [value]
     );
-    console.log('PRODUCT DB: ', product);
+    // console.log('PRODUCT DB: ', product);
 
+    const {
+      rows: [creator]
+    } = await client.query(
+      `
+      SELECT * FROM users
+      WHERE username=$1;
+    `,
+      [product.creator_name]
+    );
+
+    console.log('creator display name:', creator.displayname);
+    product.creator = creator;
     return product;
   } catch (error) {
     console.error('thrown from db/products.js/getProductBy', error);
@@ -80,9 +92,21 @@ async function getAllProducts() {
     const productListWithPhotos = Promise.all(
       productList.map(async (product) => {
         product.photos = await photosByProductId(product.id);
+        product.creator = (
+          await client.query(
+            `
+          SELECT * FROM users
+          WHERE username=$1;
+        `,
+            [product.creator_name]
+          )
+        ).rows[0];
+
+        delete product.creator.password;
         return product;
       })
     );
+
     return productListWithPhotos;
   } catch (error) {
     console.error('thrown from db/products.js/getAllProducts', error);

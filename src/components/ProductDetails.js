@@ -11,16 +11,14 @@ function ProductDetails(props) {
 
   useEffect(() => {
     for (let i = 0; i < product.photos.length; i++) {
+      let imgToChange = document.getElementsByClassName('display-photos')[i];
+      let dotToChange = document.getElementsByClassName('nav-dot')[i];
       if (i === currentImg) {
-        document.getElementsByClassName('display-photos')[i].style.display =
-          'block';
-        document.getElementsByClassName('nav-dot')[i].style.backgroundColor =
-          'var(--black)';
+        imgToChange.style.display = 'block';
+        dotToChange.style.backgroundColor = 'var(--black)';
       } else {
-        document.getElementsByClassName('display-photos')[i].style.display =
-          'none';
-        document.getElementsByClassName('nav-dot')[i].style.backgroundColor =
-          'var(--dot-default)';
+        imgToChange.style.display = 'none';
+        dotToChange.style.backgroundColor = 'var(--dot-default)';
       }
     }
 
@@ -93,6 +91,11 @@ function ProductDetails(props) {
             <p>Location: {product.location}</p>
             <p>{product.datesOpen ? `Open ${product.datesOpen}` : ''}</p>
             <p>{product.hours ? `Hours of Operation: ${product.hours}` : ''}</p>
+            <p>Owned by: {product.creator.displayname}</p>
+            <p>
+              For more information, contact {product.creator.displayname} at{' '}
+              {product.creator.email}
+            </p>
           </>
         ) : (
           <h1>Please update search criteria</h1>

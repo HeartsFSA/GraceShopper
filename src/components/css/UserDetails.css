@@ -1,0 +1,51 @@
+#user-details-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#user-details-card {
+  /* display: grid;
+  grid-template-columns: repeat(4, 1fr); */
+  height: 90%;
+  width: 90%;
+  padding: 1em;
+  margin: 1em;
+  border-radius: 5px;
+}
+
+#user-info {
+  margin: 1em;
+  display: grid;
+  grid-template: 1fr 1fr / 1fr 1fr;
+  grid-gap: 1em;
+}
+
+#user-info input {
+  height: 1.5em;
+  font-size: large;
+}
+
+#user-info button,
+#edit-products-btn {
+  background-color: var(--card-background);
+  padding: 5px;
+  border: solid 1px black;
+  font-size: larger;
+}
+
+#edit-button {
+  display: flex;
+  justify-content: right;
+}
+
+#edit-button button:hover,
+#edit-products-btn:hover {
+  background-color: var(--body-background);
+}
+
+#user-products-display {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 1em;
+}

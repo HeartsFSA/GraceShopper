@@ -7,7 +7,12 @@ const {
   getUserByUsername,
   getAllUsers,
   getUserById,
-  checkUser
+  checkUser,
+
+  createSeller,
+
+  updateUser
+
 } = require('../db');
 const SALT_COUNT = 10;
 const {JWT_SECRET = 'neverTell'} = process.env;
@@ -19,6 +24,8 @@ usersRouter.use((req, res, next) => {
 // POST /api/users/login
 usersRouter.post('/login', async (req, res, next) => {
   const {username, password} = req.body;
+  console.log('username received:', username);
+  console.log('password received:', password);
 
   // request must have both
   if (!username || !password) {
@@ -35,7 +42,7 @@ usersRouter.post('/login', async (req, res, next) => {
     if (!user) {
       next({
         name: 'IncorrectCredentialsError',
-        message: 'Username or password is incorrect',
+        message: "hmmmm.... that didn't feel right... please try again...",
         status: 400
       });
     } else {
@@ -55,10 +62,9 @@ usersRouter.post('/login', async (req, res, next) => {
 // POST /api/users/register
 usersRouter.post('/register', async (req, res, next) => {
   try {
-    const {username, password, email} = req.body;
+    const {username, password, email, displayname} = req.body;
     const queriedUser = await getUserByUsername(username);
     if (queriedUser) {
-      res.status(401);
       next({
         name: 'UserExistsError',
         message: 'A user by that username already exists',
@@ -69,7 +75,8 @@ usersRouter.post('/register', async (req, res, next) => {
       const user = await createUser({
         username,
         password,
-        email
+        email,
+        displayname
       });
       if (!user) {
         next({
@@ -106,6 +113,50 @@ usersRouter.get('/', async (req, res, next) => {
     res.send(await getAllUsers());
   } catch (error) {
     next(error);
+// GET /api/users/:username
+usersRouter.get('/:username', async (req, res, next) => {
+  try {
+    let returnUser = await getUserByUsername(req.params.username);
+    if (!returnUser) {
+      next({
+        name: 'Error retrieving user',
+        message: `Could not find user with the username ${req.params.username}`,
+        status: 404
+      });
+    } else {
+      res.send(returnUser);
+    }
+  } catch (error) {
+    next({
+      name: 'Error getting user',
+      message: 'Internal server error',
+      status: 500
+    });
+  }
+});
+
+usersRouter.patch('/:id', async (req, res, next) => {
+  try {
+    // if (req.user.id !== req.params.id) {
+    //   next({
+    //     name: 'Authorization error',
+    //     message: 'Error: you do not have authorization to update the user',
+    //     status: 401
+    //   });
+    // }
+
+    let returnUser = await updateUser(req.params.id, req.body);
+    delete returnUser.password;
+
+    res.send(returnUser);
+  } catch (error) {
+    console.error('req.body:', req.body);
+    console.error(error);
+    next({
+      name: 'Error updating user',
+      message: 'Error updating user information',
+      status: 500
+    });
   }
 });
 
@@ -120,5 +171,43 @@ usersRouter.get('/', async (req, res, next) => {
 //   }
 // });
 
+
 // --------- ADD ADDITONAL USER ROUTES AS NEEDED ---------
+usersRouter.post('/seller', async (req, res, next) => {
+  try {
+    const {username, password, email} = req.body;
+    const queriedUser = await getUserByUsername(username);
+    if (queriedUser) {
+      next({
+        name: 'UserExistsError',
+        message: 'A user by that username already exists',
+        status: 409
+      });
+    } else {
+      // Add email and permission later
+      const user = await createSeller({
+        username,
+        password,
+        email
+      });
+      if (!user) {
+        next({
+          name: 'UserCreationError',
+          message: 'There was a problem registering you. Please try again.'
+        });
+      } else {
+        const token = jwt.sign(
+          {id: user.id, username: user.username},
+          JWT_SECRET,
+          {expiresIn: '1w'}
+        );
+        res.send({user, message: "you're signed up!", token});
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 module.exports = usersRouter;

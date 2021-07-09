@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import Home from './components/Home';
 import AuthForm from './components/AuthForm';
@@ -6,6 +6,7 @@ import Landing from './components/Landing';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout.js';
 import ProductDetails from './components/ProductDetails';
+import UserDetails from './components/UserDetails';
 import ASDashboard from './components/ASDashboard';
 
 function Routes(props) {
@@ -17,7 +18,8 @@ function Routes(props) {
     cart,
     setCart,
     primaryCart,
-    setPrimaryCart
+    setPrimaryCart,
+    getProduct
   } = props;
   return (
     <Switch>
@@ -81,6 +83,18 @@ function Routes(props) {
       />
 
       <Route
+        path="/users/:username"
+        render={(props) => (
+          <UserDetails
+            {...props}
+            user={user}
+            products={products}
+            setProducts={setProducts}
+          />
+        )}
+      />
+
+      <Route
         path="/"
         render={(props) => (
           <Home
@@ -89,6 +103,7 @@ function Routes(props) {
             primaryCart={primaryCart}
             setCart={setCart}
             setPrimaryCart={setPrimaryCart}
+            getProduct={getProduct}
           />
         )}
       />

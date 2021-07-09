@@ -8,6 +8,8 @@ import Routes from './Routes';
 
 import {PinDropSharp} from '@material-ui/icons';
 
+import MessageBar from './components/MessageBar';
+
 import {
   checkLogin,
   getAllProducts,
@@ -23,40 +25,41 @@ function App() {
   const [products, setProducts] = useState([]);
   const [query, setQuery] = useState('');
   const [getProduct, setGetProducts] = useState([]);
+  const [message, setMessage] = useState('This message should not show');
 
   // used for a loading page.
   // This displays while the async functions are still loading.
   const [hasLoaded, setHasLoaded] = useState(false);
 
-  // initializes products and login status.
-  useEffect(async () => {
+  // initializes products
+  useEffect(() => {
     const setAllProducts = async () => {
       let prods = await getAllProducts();
-      // console.log(prods);
+      console.log(prods);
 
-      setGetProducts(prods);
-      setProducts(prods);
-      console.log('from the useEffec in app.js:\n', prods);
+      await setGetProducts(prods);
+      await setProducts(prods);
+      await setHasLoaded(true);
     };
 
     // invocation
-    await setAllProducts();
-    console.log('Products from app.js:\n', products);
+    setAllProducts();
+  }, []);
 
+  // initialize login status
+  useEffect(() => {
     const setLogIn = async () => {
       let checkedUser = await checkLogin();
 
       if (checkedUser.id) {
         setUser(checkedUser);
-
         setCart(await getShoppingCart());
         setOrders(await getOrderHistory());
       }
     };
 
     // setAllProducts()
-    await setLogIn();
-    setHasLoaded(true);
+    setLogIn();
   }, []);
 
   useEffect(async () => {
@@ -65,30 +68,32 @@ function App() {
 
   useEffect(() => {
     if (query) {
-      let filtered = getProduct.filter((obj) =>
+      let filtered = products.filter((obj) =>
         JSON.stringify(obj).toLowerCase().includes(query.toLowerCase())
       );
-      setProducts(filtered);
+      setGetProducts(filtered);
       console.log(query);
       console.log(filtered);
       // props.history.push('/');
-    } else {
-      setProducts(getProduct);
     }
+    // else {
+    //   setProducts(getProduct);
+    // }
   }, [query]);
+
+  function messenger(incmoingMessage) {
+    setMessage(incmoingMessage);
+    setTimeout(() => {
+      setMessage('');
+    }, 10000);
+  }
+
+  useEffect(() => {
+    messenger('Welcome to Wonderful World of Banana Land');
+  }, []);
 
   return (
     <div className="App">
-      {/* <Navbar
-        user={user}
-        setUser={setUser}
-        setCart={setCart}
-        setOrders={setOrders}
-        query={query}
-        setQuery={setQuery}
-        products={products}
-      />
-      <Routes user={user} setUser={setUser} products={products} /> */}
       {hasLoaded ? (
         <>
           <Navbar
@@ -98,7 +103,10 @@ function App() {
             setQuery={setQuery}
             products={products}
             primaryCart={primaryCart}
+            messenger={messenger}
           />
+          <MessageBar message={message} />
+
           <Routes
             user={user}
             setUser={setUser}
@@ -108,6 +116,7 @@ function App() {
             setCart={setCart}
             primaryCart={primaryCart}
             setPrimaryCart={setPrimaryCart}
+            getProduct={getProduct}
           />
         </>
       ) : (

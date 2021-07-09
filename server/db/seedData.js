@@ -28,7 +28,7 @@ async function dropTables() {
     DROP TABLE IF EXISTS order_products CASCADE;
     DROP TABLE IF EXISTS orders CASCADE;
     DROP TABLE IF EXISTS products CASCADE;
-    DROP TABLE IF EXISTS users;
+    DROP TABLE IF EXISTS users CASCADE;
   `);
   } catch (error) {
     throw error;
@@ -45,6 +45,7 @@ async function createTables() {
       CREATE TABLE users(
         id  SERIAL PRIMARY KEY, 
         username VARCHAR(255) UNIQUE NOT NULL, 
+        displayname VARCHAR(255),
         password VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE,
         permission INT DEFAULT 1
@@ -171,55 +172,64 @@ async function createInitialUsers() {
         permission: 4
       },
       {
-        username: "Hisshey's",
+        username: 'hissheys',
+        displayname: "Hisshey's",
         password: 'totallynothersheys',
         email: 'hisshey@example.com',
         permission: 2
       },
       {
-        username: 'The Johnsonian',
+        username: 'the_johnsonian',
+        displayname: 'The Johnsonian',
         password: 'totallynotthesmithsonian',
         email: 'thejohnsonian@example.com',
         permission: 2
       },
       {
-        username: 'Seven Flags',
+        username: '7flags',
+        displayname: 'Seven Flags',
         password: 'totallynotsixflags',
         email: 'sevenflags@example.com',
         permission: 2
       },
       {
-        username: 'Francis Johnson',
+        username: 'frankj',
+        displayname: 'Frank Johnson',
         password: 'totallynotfrancisjohnson',
         email: 'fjohnson@example.com',
         permission: 2
       },
       {
-        username: 'HowlCat',
+        username: 'howlcat',
+        displayname: 'HowlCat',
         password: 'totallynotmeowwolf',
         email: 'howlcat@example.com',
         permission: 2
       },
       {
-        username: 'Musee Du Leavre',
+        username: 'museeduleavre',
+        displayname: 'Musee Du Leavre',
         password: 'totallynotmuseedulouvre',
         email: 'mdl@example.com',
         permission: 2
       },
       {
-        username: 'State Hermit Museum',
+        username: 'statehermitmuseum',
+        displayname: 'State Hermit Museum',
         password: 'totallynottherussiangovernment',
         email: 'hermit@example.com',
         permission: 2
       },
       {
-        username: 'Salivation Mountain',
+        username: 'saliv_mount',
+        displayname: 'Salivation Mountain',
         password: 'totallynotsalvationmountain',
         email: 'salmountain@example.com',
         permission: 2
       },
       {
-        username: 'Noah',
+        username: 'noah',
+        displayname: 'Noah',
         password: 'totallynotnoah',
         email: 'noah@example.com',
         permission: 2
@@ -245,14 +255,14 @@ async function createInitialProducts() {
         description: 'Banana fun!',
         price: '$56.99',
         location: 'the moon',
-        creator_name: "Hisshey's"
+        creator_name: 'hissheys'
       },
       {
         name: 'The Smallest Ball of Twine in Minnesota',
         description: 'Come see the world-famous ball of twine!',
         price: '$2.99',
         location: 'Darwin, MN',
-        creator_name: 'Francis Johnson'
+        creator_name: 'frankj'
       },
       {
         name: 'The Leavre',
@@ -260,7 +270,7 @@ async function createInitialProducts() {
           'The world-famous art museum will absolutely, 100%, definitely make you want to stay!',
         price: '$59.99',
         location: 'Paris, WI',
-        creator_name: 'Musee Du Leavre'
+        creator_name: 'museeduleavre'
       },
       {
         name: 'National Space and Air Museum',
@@ -268,14 +278,14 @@ async function createInitialProducts() {
           'Come see fabulous space and air, with none of those pesky rockets and stuff in the way!',
         price: '$0.00',
         location: 'Washington, DC',
-        creator_name: 'The Johnsonian'
+        creator_name: 'the_johnsonian'
       },
       {
         name: 'The Even Freer Gallery of Art',
         description: 'This one is even more free than that other one!',
         price: '$5.99',
         location: 'Washington, DC',
-        creator_name: 'The Johnsonian'
+        creator_name: 'the_johnsonian'
       },
       {
         name: 'The National Going Postal Museum',
@@ -283,21 +293,21 @@ async function createInitialProducts() {
           'The museum of all things relating to violent outbursts of uncontrolled rage!  Fun for whole family!',
         price: '$0.00',
         location: 'Washington, DC',
-        creator_name: 'The Johnsonian'
+        creator_name: 'the_johnsonian'
       },
       {
         name: 'Seven Flags Mediocre America',
         description: 'There will be more here later',
         price: '$69.99',
         location: 'Chicago, IL',
-        creator_name: 'Seven Flags'
+        creator_name: '7flags'
       },
       {
         name: 'Seven Flags over Oklahoma',
         description: 'The original Seven Flags park!',
         price: '$59.99',
         location: 'Oklahoma City, OK',
-        creator_name: 'Seven Flags'
+        creator_name: '7flags'
       },
       {
         name: 'The State Hermit Museum',
@@ -305,7 +315,7 @@ async function createInitialProducts() {
           'The world-famous museum of hermits and everything hermit-related',
         price: '$0.75',
         location: 'St Petersburg, FL',
-        creator_name: 'State Hermit Museum'
+        creator_name: 'statehermitmuseum'
       },
       {
         name: "Noah's Ark",
@@ -313,7 +323,7 @@ async function createInitialProducts() {
           'No, not the waterpark, this is the real thing, so I suggest you get on real soon',
         price: '$0.00',
         location: 'Lake Delton, WI',
-        creator_name: 'Noah'
+        creator_name: 'noah'
       },
       {
         name: 'Salivation Mountain',
@@ -321,7 +331,7 @@ async function createInitialProducts() {
           "A mouth-watering pile of every kind of food imaginable! We promise it hasn't spoiled in the desert sun!",
         price: '$9.99',
         location: 'Niland, CA',
-        creator_name: 'Salivation Mountain'
+        creator_name: 'saliv_mount'
       },
       {
         name: 'The House of Eventual Comeback',
@@ -329,14 +339,14 @@ async function createInitialProducts() {
           'A mind-bending, interactive, explorable art exhibit for all ages',
         price: '$9.99',
         location: 'Santa Fe, NM',
-        creator_name: 'HowlCat'
+        creator_name: 'howlcat'
       },
       {
         name: 'Omicron Mart',
         description: 'A mind-bending interactive art exhibit',
         price: '$9.99',
         location: 'Las Vegas, NV',
-        creator_name: 'HowlCat'
+        creator_name: 'howlcat'
       }
     ];
 
@@ -363,43 +373,43 @@ async function createInitialPhotos() {
       },
       {
         product_id: '1',
-        photo_url: 'https://placeimg.com/480/480/nature'
+        photo_url: 'https://placeimg.com/640/480/nature'
       },
       {
         product_id: '1',
-        photo_url: 'https://placeimg.com/480/480/nature'
+        photo_url: 'https://placeimg.com/480/480/arch'
       },
       {
         product_id: '2',
-        photo_url: 'https://placeimg.com/480/480/nature'
+        photo_url: 'https://placeimg.com/640/480/arch'
       },
       {
         product_id: '1',
-        photo_url: 'https://placeimg.com/480/480/nature'
+        photo_url: 'https://placeimg.com/480/480/tech'
       },
       {
         product_id: '1',
-        photo_url: 'https://placeimg.com/480/480/nature'
+        photo_url: 'https://placeimg.com/640/480/tech'
       },
       {
         product_id: '2',
-        photo_url: 'https://placeimg.com/480/480/nature'
+        photo_url: 'https://placeimg.com/480/560/nature'
       },
       {
         product_id: '2',
-        photo_url: 'https://placeimg.com/480/480/nature'
+        photo_url: 'https://placeimg.com/640/500/tech'
       },
       {
         product_id: '1',
-        photo_url: 'https://placeimg.com/480/480/nature'
+        photo_url: 'https://placeimg.com/560/480/nature'
       },
       {
         product_id: '2',
-        photo_url: 'https://placeimg.com/480/480/nature'
+        photo_url: 'https://placeimg.com/560/480/tech'
       },
       {
         product_id: '1',
-        photo_url: 'https://placeimg.com/480/480/nature'
+        photo_url: 'https://placeimg.com/560/480/arch'
       }
     ];
 

@@ -33,8 +33,8 @@ server.use('/', (err, req, res, next) => {
 // })
 
 // 404 Handler
-server.use('*', (req, res) => {
-  res.status(404).send('Invalid Request.  Try again.');
+server.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 server.listen(PORT, () => console.log(`Starting server on port: ${PORT}`));

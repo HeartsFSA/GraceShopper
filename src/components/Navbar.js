@@ -10,9 +10,10 @@ import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import {DomainDisabled} from '@material-ui/icons';
 
+import {getItemCountInOrder} from '../utils';
+
 function Navbar(props) {
   // Props
-
   const {
     user,
     setUser,
@@ -21,6 +22,7 @@ function Navbar(props) {
     products,
     setCart,
     setOrders,
+    primaryCart,
     messenger,
     showMessage,
     setShowMessage
@@ -192,7 +194,7 @@ function Navbar(props) {
           <ShoppingCartIcon />
           {/* Number of items in the cart */}
           <span className="header__optionLineTwo header__cartCount">
-            {cart?.length}
+            {getItemCountInOrder(primaryCart)}
           </span>
         </div>
       </Link>

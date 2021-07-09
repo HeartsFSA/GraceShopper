@@ -86,6 +86,9 @@ async function createTables() {
         "userId" INTEGER NOT NULL,
         status INTEGER NOT NULL DEFAULT 0,
         datePurchased DATE DEFAULT NULL,
+        subtotal DECIMAL(19,4),
+        tax_rate DECIMAL(9,4),
+        total DECIMAL(19,4),
         FOREIGN KEY ("userId") REFERENCES users(id)
       );
       `);
@@ -114,8 +117,10 @@ async function createTables() {
          */
 
     /* Orders Table Status Codes
-         0 Cart
-         1 Ordered
+         0 Primary Cart
+         1 Pending Cart
+         2 Pending Order
+         3 Shipped Order
          */
 
     // Add tables as you need them (A good place to start is Products and Orders
@@ -447,7 +452,8 @@ async function createInitialOrders() {
         const prodId = Math.floor(Math.random() * prods.length) + 1;
         const quantity = Math.floor(Math.random() * 10) + 1;
         const product = await getProductBy('id', prodId);
-        const totalPrice = product.price;
+        const totalPrice =
+          product.price.slice(1, product.price.length) * quantity;
         return {
           orderId: order.id,
           productId: prodId,

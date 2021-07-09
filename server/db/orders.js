@@ -18,6 +18,18 @@ async function createOrder(userId) {
   }
 }
 
+async function getAllOrders() {
+  try {
+    const {rows: orders} = await client.query(`
+      SELECT *
+      FROM orders
+    `);
+    return orders;
+  } catch (error) {
+    throw error;
+  }
+}
+
 /**
  *
  * @param {number} userId
@@ -106,6 +118,7 @@ async function updateCartToOrderByOrderId(orderId) {
 
 module.exports = {
   createOrder,
+  getAllOrders,
   getOrdersByUserId,
   getCartsByUserId,
   updateCartToOrderByOrderId

@@ -5,6 +5,7 @@ const {
   createUser,
   getUser,
   getUserByUsername,
+  getAllUsers,
   getUserById,
   checkUser,
 
@@ -105,6 +106,13 @@ usersRouter.get('/me', (req, res, next) => {
   }
 });
 
+// GET /api/users/
+usersRouter.get('/', async (req, res, next) => {
+  console.log('USER: ', req.user);
+  try {
+    res.send(await getAllUsers());
+  } catch (error) {
+    next(error);
 // GET /api/users/:username
 usersRouter.get('/:username', async (req, res, next) => {
   try {

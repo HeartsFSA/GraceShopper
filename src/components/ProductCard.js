@@ -2,34 +2,57 @@ import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
-
 import Card from './Card';
-
+import {addCartItem, updateCartItemQuantity} from '../utils';
 import './css/ProductCard.css';
-import {useStateValue} from '../StateProvider';
 
-function ProductCard({product}) {
-  const [{cart}, dispatch] = useStateValue();
+function ProductCard(props) {
+  // want to get access to the props
+  const {product, setCart, primaryCart, setPrimaryCart} = props;
 
-  // function to addToBasket
-  const addToBasket = () => {
-    dispatch({
-      type: 'ADD_TO_BASKET'
-    });
-  };
+  // orderId, productId, quantity, totalPrice
+
+  // function addToCart
+  async function addToCart() {
+    const carts = await addCartItem(
+      primaryCart.id,
+      product.id,
+      1,
+      product.price
+    );
+    setPrimaryCart(carts[0]);
+    setCart(carts);
+  }
+
+  async function updateCart(orderProduct) {
+    const newQuantity = parseInt(orderProduct.quantity) + 1;
+    const totalPrice =
+      orderProduct.product.price.slice(1, orderProduct.product.price.length) *
+      newQuantity;
+    console.log('Quantity: ', newQuantity);
+    console.log('Total Price: ', totalPrice);
+    const carts = await updateCartItemQuantity(
+      orderProduct.id,
+      newQuantity,
+      totalPrice
+    );
+    setPrimaryCart(carts[0]);
+    setCart(carts);
+  }
 
   return (
-    <Card>
+    <Card className="product-card">
       <div className="card-content">
-        <div className="card-header">
-          <Link to={`/products/${product.name}`}>
-            <h1>{product.name}</h1>
-            <h3>{product.price}</h3>
-          </Link>
-        </div>
-        <div className="card-body">
-          {/* <p>{product.description}</p> */}
+        <Link to={`/products/${product.name}`}>
+          <div className="card-header">
+            <div>
+              <h1>{product.name}</h1>
+              <h3>{product.price}</h3>
+            </div>
+          </div>
+        </Link>
 
+        <div className="card-body">
           <Link to={`/products/${product.name}`}>
             <img
               src={
@@ -49,7 +72,18 @@ function ProductCard({product}) {
           <Link to={`/users/${product.creator_name}`}>
             <h4>{product.creator.displayname}</h4>
           </Link>
-          <button onClick={addToBasket}>
+          <button
+            onClick={() => {
+              const orderProduct = primaryCart.orderProducts.find(
+                (orderProduct) => orderProduct.productId === product.id
+              );
+              if (orderProduct) {
+                updateCart(orderProduct);
+              } else {
+                addToCart();
+              }
+            }}
+          >
             <AddShoppingCartIcon fontSize="large" />
           </button>
         </div>

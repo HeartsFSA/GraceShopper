@@ -25,7 +25,7 @@ input[type='checkbox'] {
 
 .dashboard {
   display: grid;
-  grid-template-columns: 1fr 8fr;
+  grid-template-columns: 1fr 12fr;
   grid-template-rows: 1fr 2fr;
   height: 100%;
   background-color: var(--body-background);
@@ -35,6 +35,23 @@ input[type='checkbox'] {
   grid-row-start: 1;
   grid-row-end: 3;
   background-color: var(--navbar-background);
+}
+
+.dashboard-navbar button {
+  display: block;
+  padding: 10px;
+  border-bottom: 1px solid var(--body-background);
+  color: white;
+  font-size: 1.5rem;
+  width: 100%;
+  text-align: left;
+  transition: 0.5s;
+}
+
+.dashboard-navbar button:hover {
+  background-color: var(--body-background);
+  color: var(--navbar-background);
+  box-shadow: 0 0 5px var(--navbar-background);
 }
 
 .dashboard-navbar h1 {
@@ -48,7 +65,7 @@ input[type='checkbox'] {
 
 .dashboard-editor {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 400px;
   border-bottom: 1px solid black;
 }
 
@@ -70,10 +87,15 @@ tr {
   margin-bottom: 10px;
   text-align: left;
   height: 75px;
+  transition: 0.3s;
+}
+
+tbody tr:hover {
+  background-color: var(--body-background);
 }
 
 .active {
-  background-color: white;
+  background-color: var(--light-green);
 }
 
 .inactive {
@@ -87,12 +109,12 @@ tr {
 th {
   /* position: sticky;
   top: 0; */
-  font-size: 2rem;
+  font-size: 1.5rem;
   min-width: 75px;
 }
 
 td {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 th,

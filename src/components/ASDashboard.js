@@ -4,29 +4,120 @@ import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 
 import ProductCard from './ProductCard';
-import {createProduct, updateProduct, getAllProducts} from '../utils';
+import ASDashboardList from './ASDashboardList';
+import {
+  getItemCountInOrder,
+  getStatusText,
+  getUserTypeText,
+  getOrderTotalPrice,
+  getTotalValueByUser,
+  getCartsByUser,
+  getOrdersByUser,
+  createProduct,
+  updateProduct,
+  getAllProducts,
+  getAllOrders,
+  getAllUsers
+} from '../utils';
 
 import './css/ASDashboard.css';
-import {Save} from '@material-ui/icons';
 
 function ASDashboard(props) {
   const {type, user, products, setProducts} = props;
-  const [dashboardProducts, setDashboardProducts] = useState([]);
+  const [dashboardProducts, setDashboardProducts] = useState(products);
+  const [dashboardOrders, setDashboardOrders] = useState([]);
+  const [dashboardUsers, setDashboardUsers] = useState([]);
   const [editorFeature, setEditorFeature] = useState(initializeProductObject());
+  const [presentedList, setPresentedList] = useState('products');
+  const [sorter, setSorter] = useState(['up', 'ID']);
+
+  const PRODUCT_HEADERS = [
+    '',
+    'ID',
+    'Name',
+    'Description',
+    'Category',
+    'Price',
+    'Location'
+  ];
+
+  useEffect(() => {
+    function setDashboardProductsByUserType() {
+      let prods = null;
+      if (type === 'admin') {
+        prods = products;
+      } else {
+        prods = products.filter(
+          (product) => product.creator_name === user.username
+        );
+      }
+      setDashboardProducts(setDashboardProductsBySortType(prods));
+    }
+
+    function setDashboardProductsBySortType(prods) {
+      const direction = sorter[0];
+      const sortingField = sorter[1].toLowerCase();
+      console.log('Sorting Field: ', sortingField);
+      console.log('Direction: ', direction);
+      let sorted = null;
+      if (direction === 'up') {
+        sorted = prods.sort((a, b) => sortByField(a, b, sortingField));
+      } else {
+        sorted = prods
+          .sort((a, b) => sortByField(a, b, sortingField))
+          .reverse();
+      }
+      console.log('Sorted', sorted);
+      return sorted;
+    }
+
+    function sortByField(a, b, field) {
+      let strA = a[field];
+      let strB = b[field];
+
+      if (typeof a[field] === 'string') {
+        if (a[field][0] === '$') {
+          strA = strA.slice(1, strA.length);
+          strB = strB.slice(1, strB.length);
+        }
+        strA = strA.toLowerCase();
+        strB = strB.toLowerCase();
+      }
+
+      let comp = 0;
+      if (strA > strB) {
+        comp = 1;
+      } else if (strA < strB) {
+        comp = -1;
+      }
+      return comp;
+    }
+
+    function sortById(prods, sortingField, direction) {
+      if (direction === 'up') {
+        return prods.sort((a, b) => a[sortingField] - b[sortingField]);
+      }
+      return prods.sort((a, b) => b[sortingField] - a[sortingField]);
+    }
+
+    function sortByPrice(prods, sortingField, direction) {
+      if (direction === 'up') {
+        return prods.sort((a, b) =>
+          parseFloat(
+            a[sortingField].slice(1, a[sortingField].length) -
+              parseFloat(b[sortingField].slice(1, b[sortingField].length))
+          )
+        );
+      }
+    }
+
+    setDashboardProductsByUserType();
+  }, [products, sorter]);
 
   useEffect(async () => {
-    if (type === 'admin') {
-      setDashboardProducts(
-        products.sort((a, b) => {
-          return a.id - b.id;
-        })
-      );
-    } else {
-      setDashboardProducts(
-        products.filter((product) => product.creator_name === user.username)
-      );
-    }
-  }, [products]);
+    await setDashboardOrders(await getAllOrders());
+    await setDashboardUsers(await getAllUsers());
+  }, []);
 
   function initializeProductObject() {
     return {
@@ -62,10 +153,123 @@ function ASDashboard(props) {
     }
   }
 
+  function presentList() {
+    switch (presentedList) {
+      case 'products':
+        return (
+          <ASDashboardList headers={PRODUCT_HEADERS} setSorter={setSorter}>
+            {dashboardProducts.map((product) => {
+              return (
+                <tr
+                  key={product.id}
+                  className={product.is_active ? 'active' : 'inactive'}
+                >
+                  <td>
+                    <span>
+                      <button
+                        onClick={async () => {
+                          setEditorFeature(await initializeProductObject());
+                          setEditorFeature(product);
+                        }}
+                      >
+                        <EditIcon />
+                      </button>
+                    </span>
+                  </td>
+                  <td>{product.id}</td>
+                  <td>{product.name}</td>
+                  <td>{product.description}</td>
+                  <td>{product.category}</td>
+                  <td>{product.price}</td>
+                  <td>{product.location}</td>
+                </tr>
+              );
+            })}
+          </ASDashboardList>
+        );
+      case 'orders':
+        return (
+          <ASDashboardList
+            headers={['ID', 'Status', 'User ID', 'Item Count', 'Total Price']}
+          >
+            {dashboardOrders.map((order) => {
+              return (
+                <tr key={order.id}>
+                  <td>{order.id}</td>
+                  <td>{getStatusText(order.status)}</td>
+                  <td>{order.userId}</td>
+                  <td>{getItemCountInOrder(order)}</td>
+                  <td>{`$${getOrderTotalPrice(order).toFixed(2)}`}</td>
+                </tr>
+              );
+            })}
+          </ASDashboardList>
+        );
+      case 'users':
+        return (
+          <ASDashboardList
+            headers={[
+              'ID',
+              'Username',
+              'Type',
+              'Carts Total',
+              'Orders Total',
+              'Orders Placed'
+            ]}
+          >
+            {dashboardUsers.map((dashboardUser) => {
+              return (
+                <tr>
+                  <td>{dashboardUser.id}</td>
+                  <td>{dashboardUser.username}</td>
+                  <td>{getUserTypeText(dashboardUser.permission)}</td>
+                  <td>
+                    {`$${getTotalValueByUser(
+                      dashboardUser,
+                      getCartsByUser(dashboardUser, dashboardOrders)
+                    ).toFixed(2)}`}
+                  </td>
+                  <td>
+                    {`$${getTotalValueByUser(
+                      dashboardUser,
+                      getOrdersByUser(dashboardUser, dashboardOrders)
+                    ).toFixed(2)}`}
+                  </td>
+                  <td>
+                    {getOrdersByUser(dashboardUser, dashboardOrders).length}
+                  </td>
+                </tr>
+              );
+            })}
+          </ASDashboardList>
+        );
+    }
+  }
+
   return (
     <div className="dashboard">
       <div className="dashboard-navbar">
-        <h1>Navbar</h1>
+        <button
+          onClick={() => {
+            setPresentedList('products');
+          }}
+        >
+          Products
+        </button>
+        <button
+          onClick={() => {
+            setPresentedList('orders');
+          }}
+        >
+          Orders
+        </button>
+        <button
+          onClick={() => {
+            setPresentedList('users');
+          }}
+        >
+          Users
+        </button>
       </div>
       <div className="dashboard-editor">
         <form
@@ -199,65 +403,7 @@ function ASDashboard(props) {
 
         <ProductCard product={editorFeature} />
       </div>
-      <div className="dashboard-list">
-        <table>
-          <thead>
-            <tr className="table-header">
-              <th></th>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dashboardProducts.map((product) => {
-              return (
-                <tr
-                  key={product.id}
-                  className={product.is_active ? 'active' : 'inactive'}
-                >
-                  <td>
-                    <span>
-                      <button
-                        onClick={async () => {
-                          setEditorFeature(await initializeProductObject());
-                          setEditorFeature(product);
-                        }}
-                      >
-                        <EditIcon />
-                      </button>
-                      {/* <input
-                        className="product-active-input"
-                        type="checkbox"
-                        checked={product.is_active}
-                        onChange={async (event) => {
-                          let updatedFeature = {...product};
-                          updatedFeature.is_active = event.target.checked;
-                          console.log('UPDATED: ', updatedFeature);
-                          const product = await updateProduct(
-                            product.id,
-                            updatedFeature
-                          );
-                          setProducts(await getAllProducts());
-                        }}
-                      ></input> */}
-                    </span>
-                  </td>
-                  <td>{product.id}</td>
-                  <td>{product.name}</td>
-                  <td>{product.description}</td>
-                  <td>{product.category}</td>
-                  <td>{product.price}</td>
-                  <td>{product.location}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      {presentList()}
     </div>
   );
 }

@@ -1,0 +1,32 @@
+.table-header span {
+  display: flex;
+  align-items: center;
+}
+
+.arrow {
+  --size: 20px;
+  width: var(--size);
+  height: var(--size);
+  display: inline-block;
+  background-color: black;
+  border-radius: 50%;
+  margin: 0 10px;
+}
+
+.arrow div {
+  margin: auto;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  width: 10px;
+  height: 10px;
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}

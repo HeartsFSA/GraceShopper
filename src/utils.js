@@ -107,17 +107,17 @@ export function getOrderProductTotalPrice(orderProduct) {
 
 export function _createLocalOrderProductObj(quantity, totalPrice, product) {
   return {
+    id: null,
     productId: product.id,
+    orderId: null,
     quantity: quantity,
     totalPrice: totalPrice,
     dateadded: new Date(),
     product: product
-  }
+  };
 }
 
-export function _updateLocalOrderProductObj() {
-
-}
+export function _updateLocalOrderProductObj() {}
 
 // export function addLocalOrderProduct(cart, quantity, totalPrice, product) {
 //   let localCart = {...cart}
@@ -133,7 +133,11 @@ export function _updateLocalOrderProductObj() {
 // }
 
 export function setLocalCart(cart) {
-  localStorage.setItem('cart', cart)
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+export function getLocalCart() {
+  return JSON.parse(localStorage.getItem('cart'));
 }
 
 /* -----------------------------AXIOS/API FUNCTIONS------------------------------- */

@@ -14,7 +14,8 @@ import {
   checkLogin,
   getAllProducts,
   getShoppingCart,
-  getOrderHistory
+  getOrderHistory,
+  getLocalCart
 } from './utils';
 
 function App() {
@@ -58,18 +59,24 @@ function App() {
         setOrders(await getOrderHistory());
       } else {
         console.log('No user found');
-        setPrimaryCart(await initializeGuestCart())
+        console.log('Cart found: ', getLocalCart());
+        const localCart = getLocalCart();
+        if (localCart) {
+          setPrimaryCart(localCart);
+        } else {
+          setPrimaryCart(await initializeGuestCart());
+        }
       }
     };
 
     async function initializeGuestCart() {
-      return   {
-        "id": 0,
-        "userId": null,
-        "status": 0,
-        "datepurchased": null,
-        "orderProducts": []
-      }
+      return {
+        id: null,
+        userId: null,
+        status: 0,
+        datepurchased: null,
+        orderProducts: []
+      };
     }
 
     // setAllProducts()

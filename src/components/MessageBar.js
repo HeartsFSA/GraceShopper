@@ -7,11 +7,11 @@ function MessageBar(props) {
 
   const {message} = props;
 
-  if (message) {
-    return <div id="message">{message}</div>;
-  } else {
-    return <></>;
-  }
+  // if (message) {
+  return <div id="message">{message}</div>;
+  // } else {
+  //   return <></>;
+  // }
 }
 
 export default MessageBar;

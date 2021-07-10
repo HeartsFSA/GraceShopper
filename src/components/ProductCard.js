@@ -3,23 +3,40 @@ import {Link} from 'react-router-dom';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 import Card from './Card';
-import {addCartItem, updateCartItemQuantity} from '../utils';
+import {addCartItem, updateCartItemQuantity, _createLocalOrderProductObj} from '../utils';
 import './css/ProductCard.css';
 
 function ProductCard(props) {
   // want to get access to the props
-  const {product, setCart, primaryCart, setPrimaryCart} = props;
+  const {user, product, setCart, primaryCart, setPrimaryCart} = props;
 
   // orderId, productId, quantity, totalPrice
 
+  function addUpdateOrderProduct() {
+    const foundOP = primaryCart.orderProducts.find(
+      (orderProduct) => orderProduct.productId === product.id
+    );
+    if (foundOP) {
+      updateCart(foundOP);
+    } else {
+      addToCart();
+    }
+  }
+
   // function addToCart
   async function addToCart() {
-    const carts = await addCartItem(
-      primaryCart.id,
-      product.id,
-      1,
-      product.price
-    );
+    if(user) {
+      const carts = await addCartItem(
+        primaryCart.id,
+        product.id,
+        1,
+        product.price
+      );
+    } else {
+      let cart = {...primaryCart}
+      const totalPrice = product.price * 
+      cart.orderProducts.push(_createLocalOrderProductObj(1))
+    }
     setPrimaryCart(carts[0]);
     setCart(carts);
   }
@@ -31,11 +48,15 @@ function ProductCard(props) {
       newQuantity;
     console.log('Quantity: ', newQuantity);
     console.log('Total Price: ', totalPrice);
-    const carts = await updateCartItemQuantity(
-      orderProduct.id,
-      newQuantity,
-      totalPrice
-    );
+    if(user) {
+      const carts = await updateCartItemQuantity(
+        orderProduct.id,
+        newQuantity,
+        totalPrice
+      );
+    } else {
+      
+    }
     setPrimaryCart(carts[0]);
     setCart(carts);
   }

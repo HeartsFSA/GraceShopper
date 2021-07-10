@@ -58,8 +58,19 @@ function App() {
         setOrders(await getOrderHistory());
       } else {
         console.log('No user found');
+        setPrimaryCart(await initializeGuestCart())
       }
     };
+
+    async function initializeGuestCart() {
+      return   {
+        "id": 0,
+        "userId": null,
+        "status": 0,
+        "datepurchased": null,
+        "orderProducts": []
+      }
+    }
 
     // setAllProducts()
     setLogIn();

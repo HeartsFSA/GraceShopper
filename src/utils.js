@@ -14,7 +14,7 @@ import axios from 'axios';
  * @returns {number}
  */
 export function getItemCountInOrder(order) {
-  if (order) {
+  if (order && order.orderProducts.length > 0) {
     const count = order.orderProducts
       .map((orderProduct) => orderProduct.quantity)
       .reduce((acc, cv) => acc + cv);
@@ -103,6 +103,37 @@ export function getOrderProductTotalPrice(orderProduct) {
   const productPrice = orderProduct.product.price;
   const quantity = orderProduct.quantity;
   return parseFloat(quantity * productPrice.slice(1, productPrice.length));
+}
+
+export function _createLocalOrderProductObj(quantity, totalPrice, product) {
+  return {
+    productId: product.id,
+    quantity: quantity,
+    totalPrice: totalPrice,
+    dateadded: new Date(),
+    product: product
+  }
+}
+
+export function _updateLocalOrderProductObj() {
+
+}
+
+// export function addLocalOrderProduct(cart, quantity, totalPrice, product) {
+//   let localCart = {...cart}
+//   const opExists = localCart.orderProducts.length > 0
+//   const foundOP = localCart.orderProducts.find((op) => op.productId === product.id)
+//   if(opExists && foundOP) {
+//     _updateLocalOrderProductObj()
+//   } else {
+//     localCart.orderProducts.push(_createLocalOrderProductObj())
+//   }
+//   setLocalCart(localCart)
+//   return localCart
+// }
+
+export function setLocalCart(cart) {
+  localStorage.setItem('cart', cart)
 }
 
 /* -----------------------------AXIOS/API FUNCTIONS------------------------------- */

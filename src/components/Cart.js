@@ -17,7 +17,7 @@ function Cart(props) {
   return (
     // This is if the user does not have anything in their cart
     <div className="block col-1">
-      {primaryCart.length === 0 ? (
+      {primaryCart.orderProducts.length === 0 ? (
         <div>
           <br></br>
           <h1> Your Shopping Cart is empty</h1>

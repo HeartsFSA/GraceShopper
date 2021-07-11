@@ -7,7 +7,17 @@ import {toast} from 'react-toastify';
 toast.configure();
 
 function Checkout(props) {
-  const {primaryCart, messenger} = props;
+  async function initializeGuestCart() {
+    return {
+      id: null,
+      userId: null,
+      status: 0,
+      datepurchased: null,
+      orderProducts: []
+    };
+  }
+
+  const {setPrimaryCart, primaryCart, messenger} = props;
   console.log('primaryCart Object is: ', primaryCart);
 
   // handleToken function used to display object in console
@@ -21,10 +31,12 @@ function Checkout(props) {
     const {status} = response.data.data;
     console.log('Status is: ', response.data.data.status);
     if (status === 'success') {
+      // toast('Success! Check email for details', {type: 'success'});
       messenger(
         'Success! Your order has been placed thank you for shopping with us!'
       );
-      // toast('Success! Check email for details', {type: 'success'});
+      localStorage.removeItem('cart'); // Remove Products in Guest Cart
+      setPrimaryCart(await initializeGuestCart());
     } else {
       // toast('Something went wrong', {type: 'error'});
       messenger(

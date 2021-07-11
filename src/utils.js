@@ -14,6 +14,7 @@ import axios from 'axios';
  * @returns {number}
  */
 export function getItemCountInOrder(order) {
+  console.log('Order is set to: ', order);
   if (order && order.orderProducts.length > 0) {
     const count = order.orderProducts
       .map((orderProduct) => orderProduct.quantity)

@@ -30,6 +30,7 @@ function Routes(props) {
           <Checkout
             {...props}
             primaryCart={primaryCart}
+            setPrimaryCart={setPrimaryCart}
             messenger={messenger}
           />
         )}

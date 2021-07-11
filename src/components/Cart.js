@@ -14,6 +14,14 @@ function Cart(props) {
   const {cart, primaryCart, setPrimaryCart} = props;
   console.log('CART IN CART.JS: ', primaryCart);
 
+  let total = 0;
+  primaryCart.orderProducts.forEach((line) => {
+    total = total + line.quantity * line.product.price.slice(1);
+  });
+
+  let tax = 0.1 * total;
+  total = total + tax;
+
   return (
     // This is if the user does not have anything in their cart
     <div className="block col-1">
@@ -32,6 +40,7 @@ function Cart(props) {
           <div>
             <h2 className="checkout_title"> Your Shopping Basket </h2>
           </div>
+
           <table>
             <thead>
               <tr>
@@ -47,7 +56,10 @@ function Cart(props) {
                   getOrderProductTotalPrice(orderProduct); // rounds to two decimal places
                 return (
                   <tr key={idx}>
+                    {/* Item */}
                     <td>{orderProduct.product.name}</td>
+
+                    {/* Quantity */}
                     <td>
                       <input
                         type="number"
@@ -63,18 +75,22 @@ function Cart(props) {
                         }}
                       ></input>
                     </td>
+
+                    {/* Price */}
                     <td>{orderProduct.product.price}</td>
+
+                    {/* Subtotal */}
                     <td>{`$${orderProduct.totalprice.toFixed(2)}`}</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+
           <div className="checkout__right">
             <br></br>
-            <h4> Subtotal: $</h4>
-            <h5> Tax: $ </h5>
-            <h1> Total: $ </h1>
+            <h5> Tax: $ {tax.toFixed(2)}</h5>
+            <h1> Total: ${total.toFixed(2)} </h1>
           </div>
 
           <div className="continueShop">
@@ -89,7 +105,6 @@ function Cart(props) {
           </Switch>
         </>
       )}
-      ;
     </div>
   );
 }

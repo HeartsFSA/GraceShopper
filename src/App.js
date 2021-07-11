@@ -140,6 +140,7 @@ function App() {
             primaryCart={primaryCart}
             setPrimaryCart={setPrimaryCart}
             getProduct={getProduct}
+            messenger={messenger}
           />
         </>
       ) : (

@@ -19,11 +19,21 @@ function Routes(props) {
     setCart,
     primaryCart,
     setPrimaryCart,
-    getProduct
+    getProduct,
+    messenger
   } = props;
   return (
     <Switch>
-      <Route path="/checkout" component={Checkout} />
+      <Route
+        path="/checkout"
+        render={(props) => (
+          <Checkout
+            {...props}
+            primaryCart={primaryCart}
+            messenger={messenger}
+          />
+        )}
+      />
 
       <Route
         path="/cart"

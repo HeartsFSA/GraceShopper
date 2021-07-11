@@ -63,7 +63,7 @@ body {
 .home {
   font-size: 24px;
   font-weight: bold;
-  padding: 30px;
+  padding: 0px 30px 30px 30px;
 }
 
 .App {
@@ -90,17 +90,26 @@ body {
 
 #message {
   text-align: center;
-  height: 3.75vh;
+  height: 30px;
   min-height: 10px;
-  padding-top: 1vh;
-  width: 100vw;
-  margin: auto;
-  background: #bbcea8ff;
 
-  position: relative;
+  width: 100vw;
+  margin: 0;
+  color: #0b0a07ff;
+
+  background: #bfbfbf;
+
+  padding-top: 5px;
+  padding-bottom: 33px;
+
+  font-family: var(--body-font2);
+  font-size: 24px; /* half of card header */
+  font-weight: 600;
+
+  /* position: relative;
   animation-name: m1;
   animation-duration: 10s;
-  animation-fill-mode: forwards;
+  animation-fill-mode: forwards; */
 }
 
 @keyframes m1 {
@@ -115,6 +124,7 @@ body {
   }
   100% {
     top: -100px;
+    background: #bbcea8ff;
   }
 }
 
@@ -155,22 +165,22 @@ body {
 } */
 
 .card {
-  animation-duration: 2s;
+  animation-duration: 0.5s;
   animation-name: pullUp;
 }
 
 .card-footer {
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-name: right1;
 }
 
 #product-info-display {
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-name: left1;
 }
 
 #product-info-display-description {
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-name: pullUp;
 }
 

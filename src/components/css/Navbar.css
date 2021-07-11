@@ -111,3 +111,8 @@
   padding-top: 3px;
   padding-bottom: 4px;
 }
+
+.header {
+  border-bottom-color: black;
+  padding-bottom: 1px;
+}

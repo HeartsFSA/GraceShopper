@@ -14,7 +14,8 @@ import {
   checkLogin,
   getAllProducts,
   getShoppingCart,
-  getOrderHistory
+  getOrderHistory,
+  getLocalCart
 } from './utils';
 
 function App() {
@@ -52,11 +53,31 @@ function App() {
       let checkedUser = await checkLogin();
 
       if (checkedUser.id) {
+        console.log('User Found');
         setUser(checkedUser);
         setCart(await getShoppingCart());
         setOrders(await getOrderHistory());
+      } else {
+        console.log('No user found');
+        console.log('Cart found: ', getLocalCart());
+        const localCart = getLocalCart();
+        if (localCart) {
+          setPrimaryCart(localCart);
+        } else {
+          setPrimaryCart(await initializeGuestCart());
+        }
       }
     };
+
+    async function initializeGuestCart() {
+      return {
+        id: null,
+        userId: null,
+        status: 0,
+        datepurchased: null,
+        orderProducts: []
+      };
+    }
 
     // setAllProducts()
     setLogIn();
@@ -104,6 +125,8 @@ function App() {
             products={products}
             primaryCart={primaryCart}
             messenger={messenger}
+            setCart={setCart}
+            setOrders={setOrders}
           />
           <MessageBar message={message} />
 

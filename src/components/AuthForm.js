@@ -67,6 +67,8 @@ function AuthForm(props) {
         // setOrders(await getOrderHistory());
 
         /* SET CART AND SET ORDER NEEDS TO BE ACTIVARED */
+        await setCart(await getShoppingCart());
+        await setOrders(await getOrderHistory());
 
         // console.log(type);
         setAuthFormMessage(data.user.message);

@@ -3,39 +3,72 @@ import {Link} from 'react-router-dom';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 import Card from './Card';
-import {addCartItem, updateCartItemQuantity} from '../utils';
+import {
+  addCartItem,
+  updateCartItemQuantity,
+  _createLocalOrderProductObj,
+  setLocalCart
+} from '../utils';
 import './css/ProductCard.css';
 
 function ProductCard(props) {
   // want to get access to the props
-  const {product, setCart, primaryCart, setPrimaryCart} = props;
+  const {user, product, setCart, primaryCart, setPrimaryCart} = props;
 
   // orderId, productId, quantity, totalPrice
 
+  function addUpdateOrderProduct() {
+    console.log('addUpdateOrderProduct()');
+    const foundOP = primaryCart.orderProducts.find(
+      (orderProduct) => orderProduct.productId === product.id
+    );
+    console.log('foundOP: ', foundOP);
+    if (foundOP) {
+      updateCart(foundOP);
+    } else {
+      addToCart();
+    }
+  }
+
   // function addToCart
   async function addToCart() {
-    const carts = await addCartItem(
-      primaryCart.id,
-      product.id,
-      1,
-      product.price
-    );
-    setPrimaryCart(carts[0]);
-    setCart(carts);
+    console.log('Adding to cart...');
+    if (user.id) {
+      console.log('User found: ', user);
+      const carts = await addCartItem(
+        primaryCart.id,
+        product.id,
+        1,
+        product.price
+      );
+      setPrimaryCart(carts[0]);
+      setCart(carts);
+    } else {
+      console.log('No user found');
+      let cart = {...primaryCart};
+      console.log('Cart: ', cart);
+      cart.orderProducts.push(_createLocalOrderProductObj(1, 10, product));
+      setLocalCart(cart);
+      setPrimaryCart(cart);
+    }
   }
 
   async function updateCart(orderProduct) {
+    console.log('Updating cart...');
     const newQuantity = parseInt(orderProduct.quantity) + 1;
     const totalPrice =
       orderProduct.product.price.slice(1, orderProduct.product.price.length) *
       newQuantity;
     console.log('Quantity: ', newQuantity);
     console.log('Total Price: ', totalPrice);
-    const carts = await updateCartItemQuantity(
-      orderProduct.id,
-      newQuantity,
-      totalPrice
-    );
+    if (user) {
+      const carts = await updateCartItemQuantity(
+        orderProduct.id,
+        newQuantity,
+        totalPrice
+      );
+    } else {
+    }
     setPrimaryCart(carts[0]);
     setCart(carts);
   }
@@ -72,18 +105,7 @@ function ProductCard(props) {
           <Link to={`/users/${product.creator_name}`}>
             <h4>{product.creator.displayname}</h4>
           </Link>
-          <button
-            onClick={() => {
-              const orderProduct = primaryCart.orderProducts.find(
-                (orderProduct) => orderProduct.productId === product.id
-              );
-              if (orderProduct) {
-                updateCart(orderProduct);
-              } else {
-                addToCart();
-              }
-            }}
-          >
+          <button onClick={() => addUpdateOrderProduct()}>
             <AddShoppingCartIcon fontSize="large" />
           </button>
         </div>

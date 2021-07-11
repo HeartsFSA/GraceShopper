@@ -99,6 +99,7 @@ function Routes(props) {
         render={(props) => (
           <Home
             {...props}
+            user={user}
             products={products}
             primaryCart={primaryCart}
             setCart={setCart}

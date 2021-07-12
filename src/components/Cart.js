@@ -42,6 +42,8 @@ function Cart(props) {
         <div>
           <br></br>
           <h1> Your Shopping Cart is empty</h1>
+          <br></br>
+          <br></br>
           <p>
             You have no items in your cart. To buy one or more items, click "Add
             to Cart icon" next to the item.
@@ -93,10 +95,13 @@ function Cart(props) {
                       ></input>
                     </td>
                     <td>
+                      {/* Remove Item Button */}
                       <button
                         className="removeItem"
                         onClick={(e) => {
+                          let updatedCart = {...primaryCart};
                           removeLine(idx);
+                          setPrimaryCart(updatedCart);
                         }}
                       >
                         Remove Item

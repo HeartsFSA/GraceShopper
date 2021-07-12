@@ -118,7 +118,17 @@ export function _createLocalOrderProductObj(quantity, totalPrice, product) {
   };
 }
 
-export function _updateLocalOrderProductObj() {}
+export function _updateLocalOrderProductObj(
+  quantity,
+  totalPrice,
+  orderProduct
+) {
+  let newOrderProduct = {...orderProduct};
+  newOrderProduct.quantity = quantity;
+  newOrderProduct.totalPrice = totalPrice;
+  console.log('New OP: ', newOrderProduct);
+  return newOrderProduct;
+}
 
 // export function addLocalOrderProduct(cart, quantity, totalPrice, product) {
 //   let localCart = {...cart}

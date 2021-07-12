@@ -7,6 +7,7 @@ import {
   addCartItem,
   updateCartItemQuantity,
   _createLocalOrderProductObj,
+  _updateLocalOrderProductObj,
   setLocalCart
 } from '../utils';
 import './css/ProductCard.css';
@@ -20,7 +21,7 @@ function ProductCard(props) {
   function addUpdateOrderProduct() {
     console.log('addUpdateOrderProduct()');
     const foundOP = primaryCart.orderProducts.find(
-      (orderProduct) => orderProduct.productId === product.id
+      (orderProduct, idx) => orderProduct.productId === product.id
     );
     console.log('foundOP: ', foundOP);
     if (foundOP) {
@@ -30,7 +31,7 @@ function ProductCard(props) {
     }
   }
 
-  // function addToCart
+  // Add to cart locally or on DB
   async function addToCart() {
     console.log('Adding to cart...');
     if (user.id) {
@@ -53,24 +54,43 @@ function ProductCard(props) {
     }
   }
 
+  // Update cart locally or on DB
   async function updateCart(orderProduct) {
-    console.log('Updating cart...');
+    console.log(`Updating cart with order product: ${orderProduct}`);
     const newQuantity = parseInt(orderProduct.quantity) + 1;
     const totalPrice =
       orderProduct.product.price.slice(1, orderProduct.product.price.length) *
       newQuantity;
     console.log('Quantity: ', newQuantity);
     console.log('Total Price: ', totalPrice);
-    if (user) {
+    if (user.id) {
+      console.log('Updating DB cart...');
       const carts = await updateCartItemQuantity(
         orderProduct.id,
         newQuantity,
         totalPrice
       );
+      setPrimaryCart(carts[0]);
+      setCart(carts);
     } else {
+      console.log('Updating local cart...');
+      let updatedCart = {...primaryCart};
+      const updatedOP = _updateLocalOrderProductObj(
+        newQuantity,
+        totalPrice,
+        orderProduct
+      );
+      updatedCart.orderProducts.splice(
+        updatedCart.orderProducts.findIndex(
+          (op) => op.productId === product.id
+        ),
+        1,
+        updatedOP
+      );
+      console.log('Updated Cart: ', updatedCart);
+      setLocalCart(updatedCart);
+      setPrimaryCart(updatedCart);
     }
-    setPrimaryCart(carts[0]);
-    setCart(carts);
   }
 
   return (

@@ -1,4 +1,10 @@
 .home {
+  background-color: var(--body-background);
+  min-height: 100%;
+  min-width: 100%;
+}
+
+.products {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   background-color: var(--body-background);

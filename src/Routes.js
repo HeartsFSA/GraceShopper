@@ -19,11 +19,22 @@ function Routes(props) {
     setCart,
     primaryCart,
     setPrimaryCart,
-    getProduct
+    getProduct,
+    messenger
   } = props;
   return (
     <Switch>
-      <Route path="/checkout" component={Checkout} />
+      <Route
+        path="/checkout"
+        render={(props) => (
+          <Checkout
+            {...props}
+            primaryCart={primaryCart}
+            setPrimaryCart={setPrimaryCart}
+            messenger={messenger}
+          />
+        )}
+      />
 
       <Route
         path="/cart"
@@ -79,7 +90,16 @@ function Routes(props) {
 
       <Route
         path="/products/:name"
-        render={(props) => <ProductDetails {...props} products={products} />}
+        render={(props) => (
+          <ProductDetails
+            {...props}
+            user={user}
+            products={products}
+            primaryCart={primaryCart}
+            setPrimaryCart={setPrimaryCart}
+            setCart={setCart}
+          />
+        )}
       />
 
       <Route
@@ -102,8 +122,8 @@ function Routes(props) {
             user={user}
             products={products}
             primaryCart={primaryCart}
-            setCart={setCart}
             setPrimaryCart={setPrimaryCart}
+            setCart={setCart}
             getProduct={getProduct}
           />
         )}

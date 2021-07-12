@@ -1,9 +1,15 @@
 import React, {useEffect, useState} from 'react';
-
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import {
+  addCartItem,
+  updateCartItemQuantity,
+  _createLocalOrderProductObj,
+  setLocalCart
+} from '../utils';
 import './css/ProductDisplay.css';
 
 function ProductDetails(props) {
-  const {products} = props;
+  const {user, products, setCart, primaryCart, setPrimaryCart} = props;
 
   let product = products.find((p) => p.name === props.match.params.name);
 
@@ -24,6 +30,62 @@ function ProductDetails(props) {
 
     console.log(currentImg);
   }, [currentImg]);
+
+  function addUpdateOrderProduct() {
+    console.log('addUpdateOrderProduct()');
+    const foundOP = primaryCart.orderProducts.find(
+      (orderProduct) => orderProduct.productId === product.id
+    );
+    console.log('foundOP: ', foundOP);
+    if (foundOP) {
+      updateCart(foundOP);
+    } else {
+      addToCart();
+    }
+  }
+
+  // function addToCart
+  async function addToCart() {
+    console.log('Adding to cart...');
+    if (user.id) {
+      console.log('User found: ', user);
+      const carts = await addCartItem(
+        primaryCart.id,
+        product.id,
+        1,
+        product.price
+      );
+      setPrimaryCart(carts[0]);
+      setCart(carts);
+    } else {
+      console.log('No user found');
+      let cart = {...primaryCart};
+      console.log('Cart: ', cart);
+      cart.orderProducts.push(_createLocalOrderProductObj(1, 10, product));
+      setLocalCart(cart);
+      setPrimaryCart(cart);
+    }
+  }
+
+  async function updateCart(orderProduct) {
+    console.log('Updating cart...');
+    const newQuantity = parseInt(orderProduct.quantity) + 1;
+    const totalPrice =
+      orderProduct.product.price.slice(1, orderProduct.product.price.length) *
+      newQuantity;
+    console.log('Quantity: ', newQuantity);
+    console.log('Total Price: ', totalPrice);
+    if (user) {
+      const carts = await updateCartItemQuantity(
+        orderProduct.id,
+        newQuantity,
+        totalPrice
+      );
+    } else {
+    }
+    setPrimaryCart(carts[0]);
+    setCart(carts);
+  }
 
   return (
     <div id="product-info-display">
@@ -99,6 +161,12 @@ function ProductDetails(props) {
                 For more information, contact {product.creator.displayname} at{' '}
                 {product.creator.email}
               </p>
+              <button
+                className="cartButton"
+                onClick={() => addUpdateOrderProduct()}
+              >
+                <AddShoppingCartIcon fontSize="large" />
+              </button>
             </div>
           </>
         ) : (

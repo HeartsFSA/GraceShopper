@@ -45,3 +45,13 @@
   border: 1px solid;
   border-color: #a88734 #9c7e31 #846a29;
 }
+
+.cartProduct {
+  display: flex;
+  text-decoration: none;
+  padding-top: 30px;
+}
+
+a:link {
+  text-decoration: none;
+}

@@ -59,7 +59,7 @@ function Cart(props) {
               <tr>
                 <th>Item</th>
                 <th>Quantity</th>
-                <th></th>
+                <th>{/* Remove Button */}</th>
                 <th>Price</th>
                 <th>Subtotal</th>
               </tr>
@@ -70,8 +70,11 @@ function Cart(props) {
                   getOrderProductTotalPrice(orderProduct); // rounds to two decimal places
                 return (
                   <tr key={idx}>
-                    {/* Item */}
-                    <td>{orderProduct.product.name}</td>
+                    <Link to={`/products/${orderProduct.product.name}`}>
+                      <div className="cartProduct">
+                        {orderProduct.product.name}
+                      </div>
+                    </Link>
 
                     {/* Quantity */}
                     <td>
@@ -89,7 +92,6 @@ function Cart(props) {
                         }}
                       ></input>
                     </td>
-
                     <td>
                       <button
                         className="removeItem"
@@ -100,10 +102,8 @@ function Cart(props) {
                         Remove Item
                       </button>
                     </td>
-
                     {/* Price */}
                     <td>{orderProduct.product.price}</td>
-
                     {/* Subtotal */}
                     <td>{`$${orderProduct.totalprice.toFixed(2)}`}</td>
                   </tr>

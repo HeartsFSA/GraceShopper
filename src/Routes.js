@@ -90,7 +90,16 @@ function Routes(props) {
 
       <Route
         path="/products/:name"
-        render={(props) => <ProductDetails {...props} products={products} />}
+        render={(props) => (
+          <ProductDetails
+            {...props}
+            user={user}
+            products={products}
+            primaryCart={primaryCart}
+            setPrimaryCart={setPrimaryCart}
+            setCart={setCart}
+          />
+        )}
       />
 
       <Route
@@ -113,8 +122,8 @@ function Routes(props) {
             user={user}
             products={products}
             primaryCart={primaryCart}
-            setCart={setCart}
             setPrimaryCart={setPrimaryCart}
+            setCart={setCart}
             getProduct={getProduct}
           />
         )}

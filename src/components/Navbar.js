@@ -115,76 +115,78 @@ function Navbar(props) {
         <></>
       )}
 
-      {props.user.username ? (
-        <>
-          {' '}
-          <h3
-            id="signin_register"
-            onClick={(e) => {
-              localStorage.setItem('token', '');
-              setUser({});
-              setPrimaryCart(initializeGuestCart());
-            }}
-          >
-            Logout
-          </h3>
-          <Link to={`/users/${props.user.username}`} id="me">
-            Me
-          </Link>
-        </>
-      ) : (
-        <>
-          {' '}
-          {/* 3 Links */}
-          <div className="header__nav">
-            <button
-              className="header__link"
-              onClick={() => {
-                // setRegisterModalVisible(false);
-                setLoginModalVisible(!loginModalVisible);
+      <div id="navbar-links">
+        {props.user.username ? (
+          <>
+            {' '}
+            <h3
+              id="signin_register"
+              onClick={(e) => {
+                localStorage.setItem('token', '');
+                setUser({});
+                setPrimaryCart(initializeGuestCart());
               }}
             >
-              <div className="header__option">
-                {/* <span className="header__optionLineOne"></span> */}
-                <span className="header__optionLineTwo">
-                  {' '}
-                  Sign In / Register
-                </span>
-              </div>
-            </button>
+              Logout
+            </h3>
+            <Link to={`/users/${props.user.username}`} id="me">
+              Me
+            </Link>
+          </>
+        ) : (
+          <>
+            {' '}
+            {/* 3 Links */}
+            <div className="header__nav">
+              <button
+                className="header__link"
+                onClick={() => {
+                  // setRegisterModalVisible(false);
+                  setLoginModalVisible(!loginModalVisible);
+                }}
+              >
+                <div className="header__option">
+                  {/* <span className="header__optionLineOne"></span> */}
+                  <span className="header__optionLineTwo">
+                    {' '}
+                    Sign In / Register
+                  </span>
+                </div>
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* 3rd Link Cart */}
+        <Link to="/cart" className="header__link">
+          <div className="header__optionCart">
+            {/* Shopping cart icon */}
+            <ShoppingCartIcon />
+            {/* Number of items in the cart */}
+            <span className="header__optionLineTwo header__cartCount">
+              {getItemCountInOrder(primaryCart)}
+            </span>
           </div>
-        </>
-      )}
+        </Link>
 
-      {/* 3rd Link Cart */}
-      <Link to="/cart" className="header__link">
-        <div className="header__optionCart">
-          {/* Shopping cart icon */}
-          <ShoppingCartIcon />
-          {/* Number of items in the cart */}
-          <span className="header__optionLineTwo header__cartCount">
-            {getItemCountInOrder(primaryCart)}
-          </span>
-        </div>
-      </Link>
+        <LoginModal
+          loginModalVisible={loginModalVisible}
+          setUser={setUser}
+          setCart={setCart}
+          primaryCart={primaryCart}
+          setPrimaryCart={setPrimaryCart}
+          setOrders={setOrders}
+          setLoginModalVisible={setLoginModalVisible}
+          user={user}
+          messenger={messenger}
+        />
 
-      <LoginModal
-        loginModalVisible={loginModalVisible}
-        setUser={setUser}
-        setCart={setCart}
-        primaryCart={primaryCart}
-        setPrimaryCart={setPrimaryCart}
-        setOrders={setOrders}
-        setLoginModalVisible={setLoginModalVisible}
-        user={user}
-        messenger={messenger}
-      />
-
-      {/* <RegisterModal
+        {/* <RegisterModal
         registerModalVisible={registerModalVisible}
         setUser={setUser}
         setRegisterModalVisible={setRegisterModalVisible}
       /> */}
+      </div>
     </nav>
   );
 }

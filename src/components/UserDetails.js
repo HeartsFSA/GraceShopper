@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 import {getUserByUsername, updateUser} from '../utils';
 import ProductCard from './ProductCard';
 import './css/UserDetails.css';
@@ -125,12 +126,27 @@ function UserDetails(props) {
             </div>
           )}
           <br></br>
-          {productsToShow.length > 0 ? (
-            <>
+          {productsToShow.length > 0 || user.permission === 4 ? (
+            <div id="display-area">
               <h3>Products:</h3>
-              {currentlyEditing && user.permission >= 2 ? (
+              {currentlyEditing ? (
                 // This button will link to Mike's product edit page
-                <button id="edit-products-btn">Edit Products</button>
+                <>
+                  {user.permission === 2 ? (
+                    <Link to="/seller" id="edit-products-btn">
+                      Edit Products
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                  {user.permission === 4 ? (
+                    <Link to="/admin" id="edit-products-btn">
+                      Admin Dashboard
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                </>
               ) : (
                 ''
               )}
@@ -139,7 +155,7 @@ function UserDetails(props) {
                   return <ProductCard product={prod} key={i} />;
                 })}
               </div>
-            </>
+            </div>
           ) : (
             <></>
           )}

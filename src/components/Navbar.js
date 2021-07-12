@@ -144,34 +144,16 @@ function Navbar(props) {
                 setLoginModalVisible(!loginModalVisible);
               }}
             >
-              Logout
-            </h3>
-            <Link to={`/users/${props.user.username}`} id="me">
-              Me
-            </Link>
-          </>
-        ) : (
-          <>
-            {' '}
-            {/* 3 Links */}
-            <div className="header__nav">
-              <button
-                className="header__link"
-                onClick={() => {
-                  // setRegisterModalVisible(false);
-                  setLoginModalVisible(!loginModalVisible);
-                }}
-              >
-                <div className="header__option">
-                  {/* <span className="header__optionLineOne"></span> */}
-                  <span className="header__optionLineTwo">
-                    {' '}
-                    Sign In / Register
-                  </span>
-                </div>
-              </button>
-            </div>
-            {/* <div className="header__nav">
+              <div className="header__option">
+                {/* <span className="header__optionLineOne"></span> */}
+                <span className="header__optionLineTwo">
+                  {' '}
+                  Sign In / Register
+                </span>
+              </div>
+            </button>
+          </div>
+          {/* <div className="header__nav">
           {/* 1st Link 
           <Link to="/login" className="header__link">
             <div className="header__option">
@@ -180,8 +162,8 @@ function Navbar(props) {
             </div>
           </Link>
         </div> */}
-            {/* 2nd Link */}
-            {/* <div className="header__nav">
+          {/* 2nd Link */}
+          {/* <div className="header__nav">
             <button
               className="header__link"
               onClick={() => {
@@ -195,9 +177,10 @@ function Navbar(props) {
               </div>
             </button>
           </div> */}
-          </>
-        )}
-        {/* <Link to="/signup" className="header__link">
+        </>
+      )}
+
+      {/* <Link to="/signup" className="header__link">
           <div className="header__option">
             <span className="header__optionLineOne"> Hello Guest</span>
             <span className="header__optionLineTwo"> Register</span>
@@ -232,8 +215,7 @@ function Navbar(props) {
         registerModalVisible={registerModalVisible}
         setUser={setUser}
         setRegisterModalVisible={setRegisterModalVisible}
-      /> */}{' '}
-      </div>
+      /> */}
     </nav>
   );
 }

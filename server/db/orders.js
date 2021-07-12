@@ -12,6 +12,7 @@ async function createOrder(userId) {
         `,
       [userId]
     );
+    console.log('New Order: ', order);
     return order;
   } catch (error) {
     throw error;

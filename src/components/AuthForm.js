@@ -8,7 +8,8 @@ import {
   getOrderHistory,
   checkUser,
   validateEmail,
-  regSeller
+  regSeller,
+  createOrder
 } from '../utils';
 
 import './css/AuthForm.css';
@@ -18,6 +19,8 @@ function AuthForm(props) {
     type,
     setUser,
     setCart,
+    primaryCart,
+    setPrimaryCart,
     setOrders,
     setLoginModalVisible,
     setRegisterModalVisible,
@@ -140,12 +143,21 @@ function AuthForm(props) {
         let txt = 'Hi, ' + displayname;
         messenger(txt);
         await setUser(data.user);
+        setLoginModalVisible(false);
+        console.log('Primary Cart: ', primaryCart);
+        console.log('OP: ', primaryCart.orderProducts);
 
         // ** Set Cart needs to be updated to fetch it from local or state variable ** //
+        if (primaryCart) {
+          console.log('User in if statement: ', data.user);
+          console.log('Primary cart exists and OP');
+          const cart = await getShoppingCart();
+          console.log('Cart: ', cart);
+          await setCart([cart]);
+        }
         // setCart(await getShoppingCart());
         // setOrders(await getOrderHistory());
 
-        setLoginModalVisible(false);
         console.log(data.user);
       }
     } catch (error) {

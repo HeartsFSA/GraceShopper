@@ -116,3 +116,7 @@
   border-bottom-color: black;
   padding-bottom: 1px;
 }
+
+#navbar_links {
+  display: flex;
+}

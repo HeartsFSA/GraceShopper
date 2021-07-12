@@ -7,11 +7,11 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 import {Switch, Route, withRouter, Link} from 'react-router-dom';
 
-import {getOrderProductTotalPrice} from '../utils';
+import {getOrderProductTotalPrice, setLocalCart} from '../utils';
 
 function Cart(props) {
   // Change this in the future for multiple carts
-  const {cart, primaryCart, setPrimaryCart} = props;
+  let {cart, primaryCart, setPrimaryCart} = props;
   console.log('CART IN CART.JS: ', primaryCart);
 
   let total = 0;
@@ -21,6 +21,19 @@ function Cart(props) {
 
   let tax = 0.1 * total;
   total = total + tax;
+
+  // useEffect(() => {}, [primaryCart]);
+
+  function removeLine(idx) {
+    // let newCart = primaryCart;
+    // console.log('newCart is: ', newCart);
+
+    primaryCart.orderProducts.splice(idx, 1);
+    setLocalCart(primaryCart);
+    // localStorage.setItem('cart', JSON.stringify(primaryCart));
+    // const updatedCart = primaryCart.orderProducts.splice(idx, 1);
+    setPrimaryCart(primaryCart);
+  }
 
   return (
     // This is if the user does not have anything in their cart
@@ -46,6 +59,7 @@ function Cart(props) {
               <tr>
                 <th>Item</th>
                 <th>Quantity</th>
+                <th></th>
                 <th>Price</th>
                 <th>Subtotal</th>
               </tr>
@@ -76,6 +90,17 @@ function Cart(props) {
                       ></input>
                     </td>
 
+                    <td>
+                      <button
+                        className="removeItem"
+                        onClick={(e) => {
+                          removeLine(idx);
+                        }}
+                      >
+                        Remove Item
+                      </button>
+                    </td>
+
                     {/* Price */}
                     <td>{orderProduct.product.price}</td>
 
@@ -94,7 +119,9 @@ function Cart(props) {
           </div>
 
           <div className="continueShop">
-            <button> Continue Shopping </button>
+            <Link to="/">
+              <button> Continue Shopping </button>
+            </Link>
           </div>
           <Switch>
             <Link to="/checkout">

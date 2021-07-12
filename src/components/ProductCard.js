@@ -20,6 +20,7 @@ function ProductCard(props) {
 
   function addUpdateOrderProduct() {
     console.log('addUpdateOrderProduct()');
+    console.log(primaryCart);
     const foundOP = primaryCart.orderProducts.find(
       (orderProduct, idx) => orderProduct.productId === product.id
     );
@@ -42,8 +43,8 @@ function ProductCard(props) {
         1,
         product.price
       );
-      setPrimaryCart(carts[0]);
-      setCart(carts);
+      // setPrimaryCart(carts[0]);
+      await setCart(carts);
     } else {
       console.log('No user found');
       let cart = {...primaryCart};
@@ -70,7 +71,7 @@ function ProductCard(props) {
         newQuantity,
         totalPrice
       );
-      setPrimaryCart(carts[0]);
+      // setPrimaryCart(carts[0]);
       setCart(carts);
     } else {
       console.log('Updating local cart...');

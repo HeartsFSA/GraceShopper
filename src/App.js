@@ -15,7 +15,8 @@ import {
   getAllProducts,
   getShoppingCart,
   getOrderHistory,
-  getLocalCart
+  getLocalCart,
+  initializeGuestCart
 } from './utils';
 
 function App() {
@@ -36,7 +37,6 @@ function App() {
   useEffect(() => {
     const setAllProducts = async () => {
       let prods = await getAllProducts();
-      console.log(prods);
 
       await setGetProducts(prods);
       await setProducts(prods);
@@ -64,26 +64,17 @@ function App() {
         if (localCart) {
           setPrimaryCart(localCart);
         } else {
-          setPrimaryCart(await initializeGuestCart());
+          setPrimaryCart(initializeGuestCart());
         }
       }
     };
-
-    async function initializeGuestCart() {
-      return {
-        id: null,
-        userId: null,
-        status: 0,
-        datepurchased: null,
-        orderProducts: []
-      };
-    }
 
     // setAllProducts()
     setLogIn();
   }, []);
 
   useEffect(async () => {
+    console.log('Primary Cart being set...');
     await setPrimaryCart(cart[0]);
   }, [cart]);
 
@@ -124,6 +115,7 @@ function App() {
             setQuery={setQuery}
             products={products}
             primaryCart={primaryCart}
+            setPrimaryCart={setPrimaryCart}
             messenger={messenger}
             setCart={setCart}
             setOrders={setOrders}

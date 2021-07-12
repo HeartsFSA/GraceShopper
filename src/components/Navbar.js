@@ -10,7 +10,7 @@ import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import {DomainDisabled} from '@material-ui/icons';
 
-import {getItemCountInOrder} from '../utils';
+import {getItemCountInOrder, initializeGuestCart} from '../utils';
 
 function Navbar(props) {
   // Props
@@ -23,12 +23,11 @@ function Navbar(props) {
     setCart,
     setOrders,
     primaryCart,
+    setPrimaryCart,
     messenger,
     showMessage,
     setShowMessage
   } = props;
-
-  console.log(products);
 
   // UseState
   const [loginModalVisible, setLoginModalVisible] = useState(false);
@@ -115,15 +114,34 @@ function Navbar(props) {
       ) : (
         <></>
       )}
-      <div id="navbar_links">
-        {props.user.username ? (
-          <>
-            {' '}
-            <h3
-              id="signin_register"
-              onClick={(e) => {
-                localStorage.setItem('token', '');
-                setUser({});
+
+      {props.user.username ? (
+        <>
+          {' '}
+          <h3
+            id="signin_register"
+            onClick={(e) => {
+              localStorage.setItem('token', '');
+              setUser({});
+              setPrimaryCart(initializeGuestCart());
+            }}
+          >
+            Logout
+          </h3>
+          <Link to={`/users/${props.user.username}`} id="me">
+            Me
+          </Link>
+        </>
+      ) : (
+        <>
+          {' '}
+          {/* 3 Links */}
+          <div className="header__nav">
+            <button
+              className="header__link"
+              onClick={() => {
+                // setRegisterModalVisible(false);
+                setLoginModalVisible(!loginModalVisible);
               }}
             >
               Logout
@@ -185,27 +203,32 @@ function Navbar(props) {
             <span className="header__optionLineTwo"> Register</span>
           </div>
         </Link> */}
-        {/* 3rd Link Cart */}
-        <Link to="/cart" className="header__link">
-          <div className="header__optionCart">
-            {/* Shopping cart icon */}
-            <ShoppingCartIcon />
-            {/* Number of items in the cart */}
-            <span className="header__optionLineTwo header__cartCount">
-              {getItemCountInOrder(primaryCart)}
-            </span>
-          </div>
-        </Link>
-        <LoginModal
-          loginModalVisible={loginModalVisible}
-          setUser={setUser}
-          setCart={setCart}
-          setOrders={setOrders}
-          setLoginModalVisible={setLoginModalVisible}
-          user={user}
-          messenger={messenger}
-        />
-        {/* <RegisterModal
+
+      {/* 3rd Link Cart */}
+      <Link to="/cart" className="header__link">
+        <div className="header__optionCart">
+          {/* Shopping cart icon */}
+          <ShoppingCartIcon />
+          {/* Number of items in the cart */}
+          <span className="header__optionLineTwo header__cartCount">
+            {getItemCountInOrder(primaryCart)}
+          </span>
+        </div>
+      </Link>
+
+      <LoginModal
+        loginModalVisible={loginModalVisible}
+        setUser={setUser}
+        setCart={setCart}
+        primaryCart={primaryCart}
+        setPrimaryCart={setPrimaryCart}
+        setOrders={setOrders}
+        setLoginModalVisible={setLoginModalVisible}
+        user={user}
+        messenger={messenger}
+      />
+
+      {/* <RegisterModal
         registerModalVisible={registerModalVisible}
         setUser={setUser}
         setRegisterModalVisible={setRegisterModalVisible}

@@ -9,6 +9,8 @@ function LoginModal(props) {
     user,
     setUser,
     setCart,
+    primaryCart,
+    setPrimaryCart,
     setOrders,
     setLoginModalVisible,
     messenger
@@ -21,6 +23,8 @@ function LoginModal(props) {
         {...props}
         setUser={setUser}
         setCart={setCart}
+        primaryCart={primaryCart}
+        setPrimaryCart={setPrimaryCart}
         setOrders={setOrders}
         setLoginModalVisible={setLoginModalVisible}
         user={user}

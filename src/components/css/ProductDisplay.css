@@ -89,3 +89,7 @@
   display: inline-block;
   transition: 0.5s ease;
 }
+
+.cartButton {
+  padding-left: 1250px;
+}

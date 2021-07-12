@@ -7,12 +7,33 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 import {Switch, Route, withRouter, Link} from 'react-router-dom';
 
-import {getOrderProductTotalPrice} from '../utils';
+import {getOrderProductTotalPrice, setLocalCart} from '../utils';
 
 function Cart(props) {
   // Change this in the future for multiple carts
-  const {cart, primaryCart, setPrimaryCart} = props;
+  let {cart, primaryCart, setPrimaryCart} = props;
   console.log('CART IN CART.JS: ', primaryCart);
+
+  let total = 0;
+  primaryCart.orderProducts.forEach((line) => {
+    total = total + line.quantity * line.product.price.slice(1);
+  });
+
+  let tax = 0.1 * total;
+  total = total + tax;
+
+  // useEffect(() => {}, [primaryCart]);
+
+  function removeLine(idx) {
+    // let newCart = primaryCart;
+    // console.log('newCart is: ', newCart);
+
+    primaryCart.orderProducts.splice(idx, 1);
+    setLocalCart(primaryCart);
+    // localStorage.setItem('cart', JSON.stringify(primaryCart));
+    // const updatedCart = primaryCart.orderProducts.splice(idx, 1);
+    setPrimaryCart(primaryCart);
+  }
 
   return (
     // This is if the user does not have anything in their cart
@@ -32,11 +53,13 @@ function Cart(props) {
           <div>
             <h2 className="checkout_title"> Your Shopping Basket </h2>
           </div>
+
           <table>
             <thead>
               <tr>
                 <th>Item</th>
                 <th>Quantity</th>
+                <th>{/* Remove Button */}</th>
                 <th>Price</th>
                 <th>Subtotal</th>
               </tr>
@@ -47,7 +70,13 @@ function Cart(props) {
                   getOrderProductTotalPrice(orderProduct); // rounds to two decimal places
                 return (
                   <tr key={idx}>
-                    <td>{orderProduct.product.name}</td>
+                    <Link to={`/products/${orderProduct.product.name}`}>
+                      <div className="cartProduct">
+                        {orderProduct.product.name}
+                      </div>
+                    </Link>
+
+                    {/* Quantity */}
                     <td>
                       <input
                         type="number"
@@ -63,22 +92,36 @@ function Cart(props) {
                         }}
                       ></input>
                     </td>
+                    <td>
+                      <button
+                        className="removeItem"
+                        onClick={(e) => {
+                          removeLine(idx);
+                        }}
+                      >
+                        Remove Item
+                      </button>
+                    </td>
+                    {/* Price */}
                     <td>{orderProduct.product.price}</td>
+                    {/* Subtotal */}
                     <td>{`$${orderProduct.totalprice.toFixed(2)}`}</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+
           <div className="checkout__right">
             <br></br>
-            <h4> Subtotal: $</h4>
-            <h5> Tax: $ </h5>
-            <h1> Total: $ </h1>
+            <h5> Tax: $ {tax.toFixed(2)}</h5>
+            <h1> Total: ${total.toFixed(2)} </h1>
           </div>
 
           <div className="continueShop">
-            <button> Continue Shopping </button>
+            <Link to="/">
+              <button> Continue Shopping </button>
+            </Link>
           </div>
           <Switch>
             <Link to="/checkout">
@@ -89,7 +132,6 @@ function Cart(props) {
           </Switch>
         </>
       )}
-      ;
     </div>
   );
 }

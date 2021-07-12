@@ -36,3 +36,22 @@
 .checkout__right {
   margin-left: 1200px;
 }
+
+.removeItem {
+  display: flex;
+  justify-content: center;
+  width: 100px;
+  background-color: #f0c14b;
+  border: 1px solid;
+  border-color: #a88734 #9c7e31 #846a29;
+}
+
+.cartProduct {
+  display: flex;
+  text-decoration: none;
+  padding-top: 30px;
+}
+
+a:link {
+  text-decoration: none;
+}

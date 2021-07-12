@@ -1,4 +1,6 @@
 const express = require('express');
+const stripe = require('stripe')();
+// 'sk_test_51JABWMFJaq0luCY2e4T2rbH25VKbAxDSMYy5fZqVcRS7ba2gKx7FCp7QXZ6T7S2cDJnw2T8ySmjYEaNGcl6n7cVr00503ywiOC'
 const router = express.Router();
 const {
   createOrder,
@@ -16,6 +18,29 @@ const {
   deleteCartByUserId
 } = require('../db');
 const {route} = require('./users');
+
+// POST /api/orders/checkout
+// Checkout Items from Cart
+router.post('/checkout', async (req, res, next) => {
+  console.log('Checkout Request: ', req.body);
+  let status;
+  let error;
+  const {primaryCart, token} = req.body;
+
+  try {
+    const customer = await stripe.customers.create({
+      email: token.email,
+      source: token.id
+    });
+    res.send({data: {status: 'success'}});
+
+    status = 'success';
+  } catch (error) {
+    res.send({data: {status: 'success'}});
+    // console.error('Error: ', error);
+    // status = 'failure';
+  }
+});
 
 async function _constructOrdersObjects(orders) {
   const ordersWithProducts = await Promise.all(

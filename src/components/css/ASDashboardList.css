@@ -4,29 +4,20 @@
 }
 
 .arrow {
-  --size: 20px;
-  width: var(--size);
-  height: var(--size);
-  display: inline-block;
-  background-color: black;
-  border-radius: 50%;
+  --size: 7px;
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
   margin: 0 10px;
 }
 
-.arrow div {
-  margin: auto;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  width: 10px;
-  height: 10px;
-}
-
 .up {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
+  width: 0;
+  height: 0;
+  border-bottom: var(--size) solid black;
 }
 
 .down {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
+  width: 0;
+  height: 0;
+  border-top: var(--size) solid black;
 }

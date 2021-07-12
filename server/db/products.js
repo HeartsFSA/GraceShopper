@@ -120,6 +120,7 @@ async function updateProduct(id, productInfo) {
   console.log('UPDATE PRODUCT DB REACHED');
   console.log('DB ID: ', id);
   console.log('DB Body: ', productInfo);
+  delete productInfo.creator;
   try {
     const {
       rows: [updatedProduct]

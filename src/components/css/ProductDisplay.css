@@ -2,6 +2,14 @@
   --dot-default: #999;
 }
 
+.display-photos {
+  height: 600px;
+}
+
+.display-photos img {
+  height: 100%;
+}
+
 #product-info-display {
   display: flex;
   justify-content: center;

@@ -115,45 +115,45 @@ function Navbar(props) {
       ) : (
         <></>
       )}
-
-      {props.user.username ? (
-        <>
-          {' '}
-          <h3
-            id="signin_register"
-            onClick={(e) => {
-              localStorage.setItem('token', '');
-              setUser({});
-            }}
-          >
-            Logout
-          </h3>
-          <Link to={`/users/${props.user.username}`} id="me">
-            Me
-          </Link>
-        </>
-      ) : (
-        <>
-          {' '}
-          {/* 3 Links */}
-          <div className="header__nav">
-            <button
-              className="header__link"
-              onClick={() => {
-                // setRegisterModalVisible(false);
-                setLoginModalVisible(!loginModalVisible);
+      <div id="navbar_links">
+        {props.user.username ? (
+          <>
+            {' '}
+            <h3
+              id="signin_register"
+              onClick={(e) => {
+                localStorage.setItem('token', '');
+                setUser({});
               }}
             >
-              <div className="header__option">
-                {/* <span className="header__optionLineOne"></span> */}
-                <span className="header__optionLineTwo">
-                  {' '}
-                  Sign In / Register
-                </span>
-              </div>
-            </button>
-          </div>
-          {/* <div className="header__nav">
+              Logout
+            </h3>
+            <Link to={`/users/${props.user.username}`} id="me">
+              Me
+            </Link>
+          </>
+        ) : (
+          <>
+            {' '}
+            {/* 3 Links */}
+            <div className="header__nav">
+              <button
+                className="header__link"
+                onClick={() => {
+                  // setRegisterModalVisible(false);
+                  setLoginModalVisible(!loginModalVisible);
+                }}
+              >
+                <div className="header__option">
+                  {/* <span className="header__optionLineOne"></span> */}
+                  <span className="header__optionLineTwo">
+                    {' '}
+                    Sign In / Register
+                  </span>
+                </div>
+              </button>
+            </div>
+            {/* <div className="header__nav">
           {/* 1st Link 
           <Link to="/login" className="header__link">
             <div className="header__option">
@@ -162,8 +162,8 @@ function Navbar(props) {
             </div>
           </Link>
         </div> */}
-          {/* 2nd Link */}
-          {/* <div className="header__nav">
+            {/* 2nd Link */}
+            {/* <div className="header__nav">
             <button
               className="header__link"
               onClick={() => {
@@ -177,43 +177,40 @@ function Navbar(props) {
               </div>
             </button>
           </div> */}
-        </>
-      )}
-
-      {/* <Link to="/signup" className="header__link">
+          </>
+        )}
+        {/* <Link to="/signup" className="header__link">
           <div className="header__option">
             <span className="header__optionLineOne"> Hello Guest</span>
             <span className="header__optionLineTwo"> Register</span>
           </div>
         </Link> */}
-
-      {/* 3rd Link Cart */}
-      <Link to="/cart" className="header__link">
-        <div className="header__optionCart">
-          {/* Shopping cart icon */}
-          <ShoppingCartIcon />
-          {/* Number of items in the cart */}
-          <span className="header__optionLineTwo header__cartCount">
-            {getItemCountInOrder(primaryCart)}
-          </span>
-        </div>
-      </Link>
-
-      <LoginModal
-        loginModalVisible={loginModalVisible}
-        setUser={setUser}
-        setCart={setCart}
-        setOrders={setOrders}
-        setLoginModalVisible={setLoginModalVisible}
-        user={user}
-        messenger={messenger}
-      />
-
-      {/* <RegisterModal
+        {/* 3rd Link Cart */}
+        <Link to="/cart" className="header__link">
+          <div className="header__optionCart">
+            {/* Shopping cart icon */}
+            <ShoppingCartIcon />
+            {/* Number of items in the cart */}
+            <span className="header__optionLineTwo header__cartCount">
+              {getItemCountInOrder(primaryCart)}
+            </span>
+          </div>
+        </Link>
+        <LoginModal
+          loginModalVisible={loginModalVisible}
+          setUser={setUser}
+          setCart={setCart}
+          setOrders={setOrders}
+          setLoginModalVisible={setLoginModalVisible}
+          user={user}
+          messenger={messenger}
+        />
+        {/* <RegisterModal
         registerModalVisible={registerModalVisible}
         setUser={setUser}
         setRegisterModalVisible={setRegisterModalVisible}
-      /> */}
+      /> */}{' '}
+      </div>
     </nav>
   );
 }

@@ -153,39 +153,8 @@ function Navbar(props) {
               </div>
             </button>
           </div>
-          {/* <div className="header__nav">
-          {/* 1st Link 
-          <Link to="/login" className="header__link">
-            <div className="header__option">
-              <span className="header__optionLineOne"></span>
-              <span className="header__optionLineTwo"> Sign In</span>
-            </div>
-          </Link>
-        </div> */}
-          {/* 2nd Link */}
-          {/* <div className="header__nav">
-            <button
-              className="header__link"
-              onClick={() => {
-                setLoginModalVisible(false);
-                setRegisterModalVisible(!registerModalVisible);
-              }}
-            >
-              <div className="header__option">
-                <span className="header__optionLineOne"> </span>
-                <span className="header__optionLineTwo"> Register</span>
-              </div>
-            </button>
-          </div> */}
         </>
       )}
-
-      {/* <Link to="/signup" className="header__link">
-          <div className="header__option">
-            <span className="header__optionLineOne"> Hello Guest</span>
-            <span className="header__optionLineTwo"> Register</span>
-          </div>
-        </Link> */}
 
       {/* 3rd Link Cart */}
       <Link to="/cart" className="header__link">

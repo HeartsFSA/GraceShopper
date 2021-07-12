@@ -59,6 +59,7 @@ function App() {
         setOrders(await getOrderHistory());
       } else {
         console.log('No user found');
+        console.log('Creating Primary Cart...');
         console.log('Cart found: ', getLocalCart());
         const localCart = getLocalCart();
         if (localCart) {

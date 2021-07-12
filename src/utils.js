@@ -134,18 +134,109 @@ export function _updateLocalOrderProductObj(
   return newOrderProduct;
 }
 
-// export function addLocalOrderProduct(cart, quantity, totalPrice, product) {
-//   let localCart = {...cart}
-//   const opExists = localCart.orderProducts.length > 0
-//   const foundOP = localCart.orderProducts.find((op) => op.productId === product.id)
-//   if(opExists && foundOP) {
-//     _updateLocalOrderProductObj()
-//   } else {
-//     localCart.orderProducts.push(_createLocalOrderProductObj())
-//   }
-//   setLocalCart(localCart)
-//   return localCart
-// }
+// params: primaryCart, user, product
+export async function addUpdateOrderProduct(
+  user,
+  primaryCart,
+  product,
+  quantity = 1,
+  method = 'add'
+) {
+  console.log('addUpdateOrderProduct()');
+  console.log('Primary Cart: ', primaryCart);
+  const foundOP = primaryCart.orderProducts.find(
+    (orderProduct, idx) => orderProduct.productId === product.id
+  );
+  console.log('foundOP: ', foundOP);
+  if (foundOP) {
+    return await _updateCart(
+      user,
+      primaryCart,
+      foundOP,
+      product,
+      quantity,
+      method
+    );
+  } else {
+    return await _addToCart(user, primaryCart, product, quantity);
+  }
+}
+
+// Add to cart locally or on DB
+async function _addToCart(user, primaryCart, product, quantity) {
+  console.log('Adding to cart...');
+  if (user.id) {
+    console.log('User found: ', user);
+    const carts = await addCartItem(
+      primaryCart.id,
+      product.id,
+      1,
+      product.price
+    );
+    // setPrimaryCart(carts[0]);
+    // await setCart(carts);
+    return carts;
+  } else {
+    console.log('No user found');
+    let cart = {...primaryCart};
+    console.log('Cart: ', cart);
+    cart.orderProducts.push(_createLocalOrderProductObj(quantity, 10, product));
+    setLocalCart(cart);
+    // setPrimaryCart(cart);
+    return [cart];
+  }
+}
+
+// Update cart locally or on DB
+async function _updateCart(
+  user,
+  primaryCart,
+  orderProduct,
+  product,
+  quantity,
+  method
+) {
+  console.log(`Updating cart with order product: ${orderProduct}`);
+  let newQuantity = null;
+  if (method === 'add') {
+    newQuantity = parseInt(orderProduct.quantity) + quantity;
+  } else if (method === 'replace') {
+    newQuantity = quantity;
+  }
+  const totalPrice =
+    orderProduct.product.price.slice(1, orderProduct.product.price.length) *
+    newQuantity;
+  console.log('Quantity: ', newQuantity);
+  console.log('Total Price: ', totalPrice);
+  if (user.id) {
+    console.log('Updating DB cart...');
+    const carts = await updateCartItemQuantity(
+      orderProduct.id,
+      newQuantity,
+      totalPrice
+    );
+    // setPrimaryCart(carts[0]);
+    // setCart(carts);
+    return carts;
+  } else {
+    console.log('Updating local cart...');
+    let updatedCart = {...primaryCart};
+    const updatedOP = _updateLocalOrderProductObj(
+      newQuantity,
+      totalPrice,
+      orderProduct
+    );
+    updatedCart.orderProducts.splice(
+      updatedCart.orderProducts.findIndex((op) => op.productId === product.id),
+      1,
+      updatedOP
+    );
+    console.log('Updated Cart: ', updatedCart);
+    setLocalCart(updatedCart);
+    // setPrimaryCart(updatedCart);
+    return [updatedCart];
+  }
+}
 
 export function setLocalCart(cart) {
   localStorage.setItem('cart', JSON.stringify(cart));
@@ -158,7 +249,7 @@ export function getLocalCart() {
 export function initializeGuestCart() {
   return {
     id: null,
-    userId: null,
+    userId: undefined,
     status: 0,
     datepurchased: null,
     orderProducts: []

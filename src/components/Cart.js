@@ -7,11 +7,15 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 import {Switch, Route, withRouter, Link} from 'react-router-dom';
 
-import {getOrderProductTotalPrice, setLocalCart} from '../utils';
+import {
+  getOrderProductTotalPrice,
+  setLocalCart,
+  addUpdateOrderProduct
+} from '../utils';
 
 function Cart(props) {
   // Change this in the future for multiple carts
-  let {cart, primaryCart, setPrimaryCart} = props;
+  let {user, setCart, cart, primaryCart, setPrimaryCart} = props;
   console.log('CART IN CART.JS: ', primaryCart);
 
   let total = 0;
@@ -84,13 +88,19 @@ function Cart(props) {
                         type="number"
                         value={orderProduct.quantity}
                         min="1" // limits to 1 as lowest value
-                        onChange={(event) => {
+                        onChange={async (event) => {
                           console.log(event.target.value);
-                          let updatedCart = {...primaryCart};
-                          updatedCart.orderProducts[idx].quantity = parseFloat(
-                            event.target.value
+                          const quantity = parseFloat(event.target.value);
+                          const product = orderProduct.product;
+                          setCart(
+                            await addUpdateOrderProduct(
+                              user,
+                              primaryCart,
+                              product,
+                              quantity,
+                              'replace'
+                            )
                           );
-                          setPrimaryCart(updatedCart);
                         }}
                       ></input>
                     </td>

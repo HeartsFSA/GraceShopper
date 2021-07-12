@@ -102,6 +102,11 @@ router.get('/carts', async (req, res, next) => {
   const {id: userId} = req.user;
   try {
     req.data = await getCartsByUserId(userId);
+    if (req.data.length === 0) {
+      req.data = await createOrder(userId);
+      req.data.orderProducts = [];
+      res.send(req.data);
+    }
     next();
   } catch (error) {
     next({

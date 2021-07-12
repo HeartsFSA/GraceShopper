@@ -10,7 +10,7 @@ import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import {DomainDisabled} from '@material-ui/icons';
 
-import {getItemCountInOrder} from '../utils';
+import {getItemCountInOrder, initializeGuestCart} from '../utils';
 
 function Navbar(props) {
   // Props
@@ -23,12 +23,11 @@ function Navbar(props) {
     setCart,
     setOrders,
     primaryCart,
+    setPrimaryCart,
     messenger,
     showMessage,
     setShowMessage
   } = props;
-
-  console.log(products);
 
   // UseState
   const [loginModalVisible, setLoginModalVisible] = useState(false);
@@ -124,6 +123,7 @@ function Navbar(props) {
             onClick={(e) => {
               localStorage.setItem('token', '');
               setUser({});
+              setPrimaryCart(initializeGuestCart());
             }}
           >
             Logout
@@ -203,6 +203,8 @@ function Navbar(props) {
         loginModalVisible={loginModalVisible}
         setUser={setUser}
         setCart={setCart}
+        primaryCart={primaryCart}
+        setPrimaryCart={setPrimaryCart}
         setOrders={setOrders}
         setLoginModalVisible={setLoginModalVisible}
         user={user}

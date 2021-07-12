@@ -14,7 +14,6 @@ import axios from 'axios';
  * @returns {number}
  */
 export function getItemCountInOrder(order) {
-  console.log('Order is set to: ', order);
   if (order && order.orderProducts.length > 0) {
     const count = order.orderProducts
       .map((orderProduct) => orderProduct.quantity)
@@ -84,10 +83,15 @@ export function getTotalValueByUser(user, orders) {
  * @returns {number}
  */
 export function getOrderTotalPrice(order) {
-  const totalPrice = order.orderProducts
-    .map((orderProduct) => parseFloat(getOrderProductTotalPrice(orderProduct)))
-    .reduce((acc, cv) => acc + cv);
-  return totalPrice;
+  if (order.orderProducts.length > 0) {
+    const totalPrice = order.orderProducts
+      .map((orderProduct) =>
+        parseFloat(getOrderProductTotalPrice(orderProduct))
+      )
+      .reduce((acc, cv) => acc + cv);
+    return totalPrice;
+  }
+  return 0;
 }
 
 /**
@@ -149,6 +153,16 @@ export function setLocalCart(cart) {
 
 export function getLocalCart() {
   return JSON.parse(localStorage.getItem('cart'));
+}
+
+export function initializeGuestCart() {
+  return {
+    id: null,
+    userId: null,
+    status: 0,
+    datepurchased: null,
+    orderProducts: []
+  };
 }
 
 /* -----------------------------AXIOS/API FUNCTIONS------------------------------- */
@@ -359,6 +373,15 @@ export async function deleteProduct(id) {
 }
 
 /* ORDER FUNCTIONS */
+
+export async function createOrder() {
+  try {
+    const {data} = await axios.get('/api/orders/newcart', setHeaders());
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
 
 export async function getAllOrders() {
   try {

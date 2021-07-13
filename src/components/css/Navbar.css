@@ -2,6 +2,7 @@
   background-color: var(--navbar-background);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: sticky;
   height: 60px;
   top: 0;
@@ -92,6 +93,11 @@
   width: 60px;
 }
 
+#navbar-links {
+  display: flex;
+  flex-direction: row;
+}
+
 #me {
   text-decoration: none;
 }
@@ -110,6 +116,7 @@
   text-align: center;
   padding-top: 3px;
   padding-bottom: 4px;
+  cursor: pointer;
 }
 
 .header {

@@ -44,6 +44,16 @@
   background-color: var(--body-background);
 }
 
+#edit-products-btn {
+  margin: 1em;
+  color: var(--black);
+  text-decoration: none;
+}
+
+#display-area h3 {
+  margin: 15px;
+}
+
 #user-products-display {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

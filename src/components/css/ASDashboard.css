@@ -64,16 +64,28 @@ input[type='checkbox'] {
 }
 
 .dashboard-editor {
-  /* display: grid;
-  grid-template-columns: 1fr 1fr 1fr; */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 30px;
+  grid-template-areas:
+    '#product-form .photo-editor'
+    '.form-controls';
   border-bottom: 1px solid black;
 }
 
-.dashboard-editor > form {
+.form-controls {
+  display: flex;
+  justify-content: center;
+  background-color: var(--navbar-background);
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+/* .dashboard-editor > form {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-}
+} */
 
 .dashboard-list {
   overflow-y: scroll;

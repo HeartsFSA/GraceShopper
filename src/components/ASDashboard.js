@@ -285,6 +285,7 @@ function ASDashboard(props) {
       </div>
       <div className="dashboard-editor">
         <form
+          id="product-form"
           onSubmit={(event) => {
             event.preventDefault();
             handleSubmit();
@@ -425,11 +426,15 @@ function ASDashboard(props) {
               }}
             ></input>
           </div>
-
-          <button type="submit">
+        </form>
+        <div className="photo-editor">
+          <h1>Photos</h1>
+        </div>
+        <div className="form-controls">
+          <button type="submit" form="product-form">
             <SaveIcon />
           </button>
-        </form>
+        </div>
 
         {/* <ProductCard product={editorFeature} /> */}
       </div>

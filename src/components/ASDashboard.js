@@ -115,6 +115,17 @@ function ASDashboard(props) {
   }, [products, sorter]);
 
   useEffect(async () => {
+    // console.log('Props: ', props)
+    async function checkPermission() {
+      console.log('Checking permissions')
+      console.log('User permissions: ', user.permissions)
+      console.log('Type: ', type)
+      if((!user.id) || (user.permission < 3 && type === 'admin') || (user.permission === 2 && type === 'seller')) {
+        console.log('Pushing to login')
+        props.history.push('/')
+      }
+    }
+    await checkPermission()
     await setDashboardOrders(await getAllOrders());
     await setDashboardUsers(await getAllUsers());
   }, []);

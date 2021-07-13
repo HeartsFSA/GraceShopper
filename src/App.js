@@ -102,7 +102,7 @@ function App() {
   }
 
   useEffect(() => {
-    messenger('Welcome to Wonderful World of Banana Land');
+    messenger('Welcome to Wonderful World of TicketMain!');
   }, []);
 
   return (

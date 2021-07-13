@@ -7,20 +7,39 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 import {Switch, Route, withRouter, Link} from 'react-router-dom';
 
-import {getOrderProductTotalPrice, setLocalCart} from '../utils';
+import {
+  getOrderProductTotalPrice,
+  getOrderTotalPrice,
+  setLocalCart,
+  addUpdateOrderProduct,
+  removeOrderProduct
+} from '../utils';
 
 function Cart(props) {
   // Change this in the future for multiple carts
-  let {cart, primaryCart, setPrimaryCart} = props;
-  console.log('CART IN CART.JS: ', primaryCart);
+  let {user, setCart, cart, primaryCart, setPrimaryCart} = props;
+  const [total, setTotal] = useState(0);
+  const [tax, setTax] = useState(0);
+  // console.log('CART IN CART.JS: ', primaryCart);
 
-  let total = 0;
-  primaryCart.orderProducts.forEach((line) => {
-    total = total + line.quantity * line.product.price.slice(1);
-  });
+  useEffect(() => {
+    function setTotalAndTax() {
+      const taxRate = 0.1;
+      let newTotal = getOrderTotalPrice(primaryCart);
+      setTax(newTotal * taxRate);
+      newTotal = newTotal + tax;
+      setTotal(newTotal);
+    }
+    setTotalAndTax();
+  }, [primaryCart]);
 
-  let tax = 0.1 * total;
-  total = total + tax;
+  // let total = 0;
+  // primaryCart.orderProducts.forEach((line) => {
+  //   total = total + line.quantity * line.product.price.slice(1);
+  // });
+
+  // let tax = 0.1 * total;
+  // total = total + tax;
 
   // useEffect(() => {}, [primaryCart]);
 
@@ -84,13 +103,19 @@ function Cart(props) {
                         type="number"
                         value={orderProduct.quantity}
                         min="1" // limits to 1 as lowest value
-                        onChange={(event) => {
+                        onChange={async (event) => {
                           console.log(event.target.value);
-                          let updatedCart = {...primaryCart};
-                          updatedCart.orderProducts[idx].quantity = parseFloat(
-                            event.target.value
+                          const quantity = parseFloat(event.target.value);
+                          const product = orderProduct.product;
+                          setCart(
+                            await addUpdateOrderProduct(
+                              user,
+                              primaryCart,
+                              product,
+                              quantity,
+                              'replace'
+                            )
                           );
-                          setPrimaryCart(updatedCart);
                         }}
                       ></input>
                     </td>
@@ -98,10 +123,18 @@ function Cart(props) {
                       {/* Remove Item Button */}
                       <button
                         className="removeItem"
-                        onClick={(e) => {
-                          let updatedCart = {...primaryCart};
-                          removeLine(idx);
-                          setPrimaryCart(updatedCart);
+                        onClick={async (e) => {
+                          // let updatedCart = {...primaryCart};
+                          // removeLine(idx);
+                          // setPrimaryCart(updatedCart);
+                          await setCart(
+                            await removeOrderProduct(
+                              user,
+                              primaryCart,
+                              orderProduct
+                            )
+                          );
+                          console.log('CART: ', cart);
                         }}
                       >
                         Remove Item

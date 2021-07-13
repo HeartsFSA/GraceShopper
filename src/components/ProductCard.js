@@ -6,8 +6,7 @@ import Card from './Card';
 import {
   addCartItem,
   updateCartItemQuantity,
-  _createLocalOrderProductObj,
-  _updateLocalOrderProductObj,
+  addUpdateOrderProduct,
   setLocalCart
 } from '../utils';
 import './css/ProductCard.css';
@@ -18,81 +17,82 @@ function ProductCard(props) {
 
   // orderId, productId, quantity, totalPrice
 
-  function addUpdateOrderProduct() {
-    console.log('addUpdateOrderProduct()');
-    console.log(primaryCart);
-    const foundOP = primaryCart.orderProducts.find(
-      (orderProduct, idx) => orderProduct.productId === product.id
-    );
-    console.log('foundOP: ', foundOP);
-    if (foundOP) {
-      updateCart(foundOP);
-    } else {
-      addToCart();
-    }
-  }
+  // // params: primaryCart, user
+  // function addUpdateOrderProduct() {
+  //   console.log('addUpdateOrderProduct()');
+  //   console.log('Primary Cart: ', primaryCart);
+  //   const foundOP = primaryCart.orderProducts.find(
+  //     (orderProduct, idx) => orderProduct.productId === product.id
+  //   );
+  //   console.log('foundOP: ', foundOP);
+  //   if (foundOP) {
+  //     updateCart(foundOP);
+  //   } else {
+  //     addToCart();
+  //   }
+  // }
 
-  // Add to cart locally or on DB
-  async function addToCart() {
-    console.log('Adding to cart...');
-    if (user.id) {
-      console.log('User found: ', user);
-      const carts = await addCartItem(
-        primaryCart.id,
-        product.id,
-        1,
-        product.price
-      );
-      // setPrimaryCart(carts[0]);
-      await setCart(carts);
-    } else {
-      console.log('No user found');
-      let cart = {...primaryCart};
-      console.log('Cart: ', cart);
-      cart.orderProducts.push(_createLocalOrderProductObj(1, 10, product));
-      setLocalCart(cart);
-      setPrimaryCart(cart);
-    }
-  }
+  // // Add to cart locally or on DB
+  // async function addToCart() {
+  //   console.log('Adding to cart...');
+  //   if (user.id) {
+  //     console.log('User found: ', user);
+  //     const carts = await addCartItem(
+  //       primaryCart.id,
+  //       product.id,
+  //       1,
+  //       product.price
+  //     );
+  //     // setPrimaryCart(carts[0]);
+  //     await setCart(carts);
+  //   } else {
+  //     console.log('No user found');
+  //     let cart = {...primaryCart};
+  //     console.log('Cart: ', cart);
+  //     cart.orderProducts.push(_createLocalOrderProductObj(1, 10, product));
+  //     setLocalCart(cart);
+  //     setPrimaryCart(cart);
+  //   }
+  // }
 
-  // Update cart locally or on DB
-  async function updateCart(orderProduct) {
-    console.log(`Updating cart with order product: ${orderProduct}`);
-    const newQuantity = parseInt(orderProduct.quantity) + 1;
-    const totalPrice =
-      orderProduct.product.price.slice(1, orderProduct.product.price.length) *
-      newQuantity;
-    console.log('Quantity: ', newQuantity);
-    console.log('Total Price: ', totalPrice);
-    if (user.id) {
-      console.log('Updating DB cart...');
-      const carts = await updateCartItemQuantity(
-        orderProduct.id,
-        newQuantity,
-        totalPrice
-      );
-      // setPrimaryCart(carts[0]);
-      setCart(carts);
-    } else {
-      console.log('Updating local cart...');
-      let updatedCart = {...primaryCart};
-      const updatedOP = _updateLocalOrderProductObj(
-        newQuantity,
-        totalPrice,
-        orderProduct
-      );
-      updatedCart.orderProducts.splice(
-        updatedCart.orderProducts.findIndex(
-          (op) => op.productId === product.id
-        ),
-        1,
-        updatedOP
-      );
-      console.log('Updated Cart: ', updatedCart);
-      setLocalCart(updatedCart);
-      setPrimaryCart(updatedCart);
-    }
-  }
+  // // Update cart locally or on DB
+  // async function updateCart(orderProduct) {
+  //   console.log(`Updating cart with order product: ${orderProduct}`);
+  //   const newQuantity = parseInt(orderProduct.quantity) + 1;
+  //   const totalPrice =
+  //     orderProduct.product.price.slice(1, orderProduct.product.price.length) *
+  //     newQuantity;
+  //   console.log('Quantity: ', newQuantity);
+  //   console.log('Total Price: ', totalPrice);
+  //   if (user.id) {
+  //     console.log('Updating DB cart...');
+  //     const carts = await updateCartItemQuantity(
+  //       orderProduct.id,
+  //       newQuantity,
+  //       totalPrice
+  //     );
+  //     // setPrimaryCart(carts[0]);
+  //     setCart(carts);
+  //   } else {
+  //     console.log('Updating local cart...');
+  //     let updatedCart = {...primaryCart};
+  //     const updatedOP = _updateLocalOrderProductObj(
+  //       newQuantity,
+  //       totalPrice,
+  //       orderProduct
+  //     );
+  //     updatedCart.orderProducts.splice(
+  //       updatedCart.orderProducts.findIndex(
+  //         (op) => op.productId === product.id
+  //       ),
+  //       1,
+  //       updatedOP
+  //     );
+  //     console.log('Updated Cart: ', updatedCart);
+  //     setLocalCart(updatedCart);
+  //     setPrimaryCart(updatedCart);
+  //   }
+  // }
 
   return (
     <Card className="product-card">
@@ -126,7 +126,13 @@ function ProductCard(props) {
           <Link to={`/users/${product.creator_name}`}>
             <h4>{product.creator.displayname}</h4>
           </Link>
-          <button onClick={() => addUpdateOrderProduct()}>
+          <button
+            onClick={async () =>
+              setCart(
+                await addUpdateOrderProduct(user, primaryCart, product, 1)
+              )
+            }
+          >
             <AddShoppingCartIcon fontSize="large" />
           </button>
         </div>

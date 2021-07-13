@@ -42,6 +42,8 @@ function Routes(props) {
           <Cart
             {...props}
             cart={cart}
+            user={user}
+            setCart={setCart}
             primaryCart={primaryCart}
             setPrimaryCart={setPrimaryCart}
           />

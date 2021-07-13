@@ -10,7 +10,7 @@ input[type='checkbox'] {
 }
 
 .dashboard label {
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 .dashboard .card {
@@ -64,9 +64,15 @@ input[type='checkbox'] {
 }
 
 .dashboard-editor {
-  display: grid;
-  grid-template-columns: 1fr 400px;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr 1fr; */
   border-bottom: 1px solid black;
+}
+
+.dashboard-editor > form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
 }
 
 .dashboard-list {

@@ -12,9 +12,8 @@ const {
   getOrderProductsByOrderId,
   updateOrderProductsById,
   getProductBy,
-  getCartByUserId,
+  deleteCartItem,
   updateCartItemQuantity,
-  deleteCartItemByCartId,
   deleteCartByUserId
 } = require('../db');
 const {route} = require('./users');
@@ -171,14 +170,15 @@ router.patch('/carts', async (req, res, next) => {
 });
 
 // ***
-// DELETE /api/carts/item
+// DELETE /api/orders/item
 // Delete individual item from cart
 router.delete('/item', async (req, res, next) => {
   const {itemId} = req.body;
   const {id: userId} = req.user;
   try {
-    await deleteCartItemByCartId(itemId);
-    req.data = await getCartByUserId(userId);
+    await deleteCartItem(itemId);
+    req.data = await getCartsByUserId(userId);
+    console.log(req.data);
     next();
   } catch (error) {
     next({

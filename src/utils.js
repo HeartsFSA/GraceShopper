@@ -162,6 +162,27 @@ export async function addUpdateOrderProduct(
   }
 }
 
+export async function removeOrderProduct(user, primaryCart, orderProduct) {
+  if (user.id) {
+    console.log('User Found');
+    const carts = await deleteShoppingCartItem(orderProduct.id);
+    console.log('CARTS IN REMOVE: ', carts);
+    return carts;
+  } else {
+    console.log('No User found');
+    let updatedCart = {...primaryCart};
+    console.log('Cart: ', updatedCart);
+    const idx = updatedCart.orderProducts.findIndex(
+      (op) => op.id === orderProduct.id
+    );
+    console.log('Index: ', idx);
+    updatedCart.orderProducts.splice(idx, 1);
+    console.log('Updated Cart: ', updatedCart);
+    setLocalCart(updatedCart);
+    return [updatedCart];
+  }
+}
+
 // Add to cart locally or on DB
 async function _addToCart(user, primaryCart, product, quantity) {
   console.log('Adding to cart...');
@@ -531,11 +552,12 @@ export async function deleteShoppingCart() {
 }
 
 export async function deleteShoppingCartItem(itemId) {
-  const config = {
+  let config = setHeaders();
+  config.data = {
     itemId: itemId
   };
   try {
-    const {data} = await axios.delete('/api/carts/item', config, setHeaders());
+    const {data} = await axios.delete('/api/orders/item', config);
     return data;
   } catch (error) {
     return error;

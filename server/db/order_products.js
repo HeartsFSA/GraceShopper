@@ -75,8 +75,26 @@ async function updateOrderProductsById({orderProductId, quantity, totalPrice}) {
   }
 }
 
+async function deleteCartItem(itemId) {
+  try {
+    const {
+      rows: [orderProduct]
+    } = await client.query(
+      `
+      DELETE FROM order_products
+      WHERE id=$1
+    `,
+      [itemId]
+    );
+    return orderProduct;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   createOrderProduct,
   getOrderProductsByOrderId,
-  updateOrderProductsById
+  updateOrderProductsById,
+  deleteCartItem
 };

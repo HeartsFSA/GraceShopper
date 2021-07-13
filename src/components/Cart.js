@@ -9,22 +9,37 @@ import {Switch, Route, withRouter, Link} from 'react-router-dom';
 
 import {
   getOrderProductTotalPrice,
+  getOrderTotalPrice,
   setLocalCart,
-  addUpdateOrderProduct
+  addUpdateOrderProduct,
+  removeOrderProduct
 } from '../utils';
 
 function Cart(props) {
   // Change this in the future for multiple carts
   let {user, setCart, cart, primaryCart, setPrimaryCart} = props;
-  console.log('CART IN CART.JS: ', primaryCart);
+  const [total, setTotal] = useState(0);
+  const [tax, setTax] = useState(0);
+  // console.log('CART IN CART.JS: ', primaryCart);
 
-  let total = 0;
-  primaryCart.orderProducts.forEach((line) => {
-    total = total + line.quantity * line.product.price.slice(1);
-  });
+  useEffect(() => {
+    function setTotalAndTax() {
+      const taxRate = 0.1;
+      let newTotal = getOrderTotalPrice(primaryCart);
+      setTax(newTotal * taxRate);
+      newTotal = newTotal + tax;
+      setTotal(newTotal);
+    }
+    setTotalAndTax();
+  }, [primaryCart]);
 
-  let tax = 0.1 * total;
-  total = total + tax;
+  // let total = 0;
+  // primaryCart.orderProducts.forEach((line) => {
+  //   total = total + line.quantity * line.product.price.slice(1);
+  // });
+
+  // let tax = 0.1 * total;
+  // total = total + tax;
 
   // useEffect(() => {}, [primaryCart]);
 
@@ -108,10 +123,18 @@ function Cart(props) {
                       {/* Remove Item Button */}
                       <button
                         className="removeItem"
-                        onClick={(e) => {
-                          let updatedCart = {...primaryCart};
-                          removeLine(idx);
-                          setPrimaryCart(updatedCart);
+                        onClick={async (e) => {
+                          // let updatedCart = {...primaryCart};
+                          // removeLine(idx);
+                          // setPrimaryCart(updatedCart);
+                          await setCart(
+                            await removeOrderProduct(
+                              user,
+                              primaryCart,
+                              orderProduct
+                            )
+                          );
+                          console.log('CART: ', cart);
                         }}
                       >
                         Remove Item

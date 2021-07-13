@@ -88,10 +88,9 @@ function App() {
       console.log(query);
       console.log(filtered);
       // props.history.push('/');
+    } else {
+      setGetProducts(products);
     }
-    // else {
-    //   setProducts(getProduct);
-    // }
   }, [query]);
 
   function messenger(incmoingMessage) {

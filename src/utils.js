@@ -105,9 +105,10 @@ export function getOrderTotalPrice(order) {
  * @returns number
  */
 export function getOrderProductTotalPrice(orderProduct) {
-  const productPrice = orderProduct.product.price;
+  let productPrice = orderProduct.product.price;
+  productPrice = parseFloat(productPrice.replace('$', '').replace(',', ''));
   const quantity = orderProduct.quantity;
-  return parseFloat(quantity * productPrice.slice(1, productPrice.length));
+  return quantity * productPrice;
 }
 
 export function _createLocalOrderProductObj(quantity, totalPrice, product) {

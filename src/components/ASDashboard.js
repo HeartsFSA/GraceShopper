@@ -2,6 +2,7 @@ import React from 'react';
 import {useEffect, useState} from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import ProductCard from './ProductCard';
 import ASDashboardList from './ASDashboardList';
@@ -21,15 +22,10 @@ import {
 } from '../utils';
 
 import './css/ASDashboard.css';
+import jss from 'jss';
 
 function ASDashboard(props) {
   const {type, user, products, setProducts} = props;
-  const [dashboardProducts, setDashboardProducts] = useState(products);
-  const [dashboardOrders, setDashboardOrders] = useState([]);
-  const [dashboardUsers, setDashboardUsers] = useState([]);
-  const [editorFeature, setEditorFeature] = useState(initializeProductObject());
-  const [presentedList, setPresentedList] = useState('products');
-  const [sorter, setSorter] = useState(['up', 'ID']);
 
   const PRODUCT_HEADERS = [
     '',
@@ -40,6 +36,17 @@ function ASDashboard(props) {
     'Price',
     'Location'
   ];
+
+  const FEATURE_PHOTO_PLACEHOLDER =
+    'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg';
+
+  const [dashboardProducts, setDashboardProducts] = useState(products);
+  const [dashboardOrders, setDashboardOrders] = useState([]);
+  const [dashboardUsers, setDashboardUsers] = useState([]);
+  const [editorFeature, setEditorFeature] = useState(initializeProductObject());
+  const [featurePhoto, setFeaturePhoto] = useState(FEATURE_PHOTO_PLACEHOLDER);
+  const [presentedList, setPresentedList] = useState('products');
+  const [sorter, setSorter] = useState(['up', 'ID']);
 
   useEffect(() => {
     function setDashboardProductsByUserType() {
@@ -57,8 +64,6 @@ function ASDashboard(props) {
     function setDashboardProductsBySortType(prods) {
       const direction = sorter[0];
       const sortingField = sorter[1].toLowerCase();
-      console.log('Sorting Field: ', sortingField);
-      console.log('Direction: ', direction);
       let sorted = null;
       if (direction === 'up') {
         sorted = prods.sort((a, b) => sortByField(a, b, sortingField));
@@ -67,7 +72,6 @@ function ASDashboard(props) {
           .sort((a, b) => sortByField(a, b, sortingField))
           .reverse();
       }
-      console.log('Sorted', sorted);
       return sorted;
     }
 
@@ -131,6 +135,15 @@ function ASDashboard(props) {
     await setDashboardUsers(await getAllUsers());
   }, []);
 
+  useEffect(() => {
+    console.log(editorFeature);
+    if (editorFeature.photos && editorFeature.photos.length > 0) {
+      setFeaturePhoto(editorFeature.photos[0].photo_url);
+    } else {
+      setFeaturePhoto(FEATURE_PHOTO_PLACEHOLDER);
+    }
+  }, [editorFeature]);
+
   function initializeProductObject() {
     return {
       category: '',
@@ -141,8 +154,7 @@ function ASDashboard(props) {
       is_active: true,
       location: '',
       name: '',
-      price: '',
-      photos: []
+      price: ''
     };
   }
 
@@ -181,6 +193,7 @@ function ASDashboard(props) {
                       <button
                         onClick={async () => {
                           setEditorFeature(await initializeProductObject());
+                          console.log(product);
                           setEditorFeature(product);
                         }}
                       >
@@ -428,9 +441,27 @@ function ASDashboard(props) {
           </div>
         </form>
         <div className="photo-editor">
-          <h1>Photos</h1>
+          <div className="photo-container">
+            <img src={featurePhoto} />
+          </div>
+          {/* <input
+            type="text"
+            value={
+              featurePhoto === FEATURE_PHOTO_PLACEHOLDER ? '' : featurePhoto
+            }
+            onChange={(event) => {
+              setFeaturePhoto(event.target.value);
+            }}
+          ></input> */}
         </div>
         <div className="form-controls">
+          <button
+            onClick={() => {
+              setEditorFeature(initializeProductObject());
+            }}
+          >
+            <DeleteIcon />
+          </button>
           <button type="submit" form="product-form">
             <SaveIcon />
           </button>

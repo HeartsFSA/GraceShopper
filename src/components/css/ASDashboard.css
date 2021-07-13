@@ -76,10 +76,43 @@ input[type='checkbox'] {
 .form-controls {
   display: flex;
   justify-content: center;
-  background-color: var(--navbar-background);
   grid-column-start: 1;
   grid-column-end: 3;
 }
+
+.form-controls button {
+  margin: 0 20px;
+}
+
+.photo-editor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto;
+  height: 100%;
+  max-width: 450px;
+  max-height: 450px;
+  /* background-color: var(--navbar-background); */
+}
+
+.photo-container {
+  display: flex;
+  justify-content: center;
+  height: 90%;
+  width: 90%;
+}
+
+.photo-container img {
+  height: 100%;
+  margin: 0 auto;
+  max-height: 375px;
+}
+
+/* .photo-editor input {
+  margin-top: 10px;
+  width: 300px;
+} */
 
 /* .dashboard-editor > form {
   display: grid;

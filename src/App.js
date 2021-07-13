@@ -120,7 +120,11 @@ function App() {
             setCart={setCart}
             setOrders={setOrders}
           />
-          <MessageBar message={message} />
+          {location.pathname === '/admin' || location.pathname === '/seller' ? (
+            <></>
+          ) : (
+            <MessageBar message={message} />
+          )}
 
           <Routes
             user={user}

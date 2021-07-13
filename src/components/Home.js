@@ -7,6 +7,8 @@ import './css/Home.css';
 function Home(props) {
   const {user, products, primaryCart, setCart, setPrimaryCart, getProduct} =
     props;
+
+  console.log('PROPS: ', props);
   // const [user, setUser] = useState({});
   // products is non fileted array
   // getProduct is filtered array

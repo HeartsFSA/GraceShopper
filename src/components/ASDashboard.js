@@ -117,15 +117,16 @@ function ASDashboard(props) {
   useEffect(async () => {
     // console.log('Props: ', props)
     async function checkPermission() {
-      console.log('Checking permissions')
-      console.log('User permissions: ', user.permissions)
-      console.log('Type: ', type)
-      if((!user.id) || (user.permission < 3 && type === 'admin') || (user.permission === 2 && type === 'seller')) {
-        console.log('Pushing to login')
-        props.history.push('/')
+      if (
+        !user.id ||
+        (user.permission < 3 && type === 'admin') ||
+        (user.permission !== 2 && type === 'seller')
+      ) {
+        console.log('Pushing to login');
+        props.history.push('/');
       }
     }
-    await checkPermission()
+    await checkPermission();
     await setDashboardOrders(await getAllOrders());
     await setDashboardUsers(await getAllUsers());
   }, []);
@@ -284,6 +285,7 @@ function ASDashboard(props) {
       </div>
       <div className="dashboard-editor">
         <form
+          id="product-form"
           onSubmit={(event) => {
             event.preventDefault();
             handleSubmit();
@@ -424,11 +426,15 @@ function ASDashboard(props) {
               }}
             ></input>
           </div>
-
-          <button type="submit">
+        </form>
+        <div className="photo-editor">
+          <h1>Photos</h1>
+        </div>
+        <div className="form-controls">
+          <button type="submit" form="product-form">
             <SaveIcon />
           </button>
-        </form>
+        </div>
 
         {/* <ProductCard product={editorFeature} /> */}
       </div>
